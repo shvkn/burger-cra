@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
-import { selectIngredientById } from '../../utils/selectors';
 import { useSelector } from 'react-redux';
+import ingredientsSelectors from '../../services/selectors/ingredients';
 
 function IngredientDetails() {
   const { id } = useParams();
-  const ingredient = useSelector(selectIngredientById(id));
+  const ingredient = useSelector(ingredientsSelectors.selectById(id));
   return !ingredient ? null : (
     <>
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />

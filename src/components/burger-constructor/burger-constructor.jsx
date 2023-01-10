@@ -17,8 +17,6 @@ import { actions as burgerActions } from '../../services/slices/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
-  selectIngredientById,
-  selectIngredientsEntities,
   selectIsBurgerBunEmpty,
   selectIsBurgerIngredientsEmpty,
   selectIsUserAuthorized,
@@ -28,6 +26,7 @@ import {
 } from '../../utils/selectors';
 import { useHistory } from 'react-router-dom';
 import { makeOrder } from '../../services/actions/order';
+import ingredientsSelectors from '../../services/selectors/ingredients';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
@@ -36,12 +35,12 @@ function BurgerConstructor() {
   const orderSlice = useSelector(selectOrderSlice);
   const order = history.state?.order ?? orderSlice;
   const orderNumber = useSelector(selectOrderNumber);
-  const ingredientsEntities = useSelector(selectIngredientsEntities);
+  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
   const burgerIngredients = useSelector(selectBurgerIngredients);
   const totalPrice = useSelector(selectTotalPrice);
 
   const burgerBunId = useSelector(selectBurgerBun);
-  const burgerBun = useSelector(selectIngredientById(burgerBunId));
+  const burgerBun = useSelector(ingredientsSelectors.selectById(burgerBunId));
 
   const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);

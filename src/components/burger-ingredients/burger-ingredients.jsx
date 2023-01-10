@@ -4,7 +4,7 @@ import styles from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
 import { IngredientTypes } from '../../utils/constants';
 import IngredientsCategory from '../ingredients-category/ingredients-category';
-import { selectIngredients } from '../../utils/selectors';
+import ingredientsSelectors from '../../services/selectors/ingredients';
 
 const typeBun = IngredientTypes.BUN;
 const typeSauce = IngredientTypes.SAUCE;
@@ -12,7 +12,7 @@ const typeMain = IngredientTypes.MAIN;
 
 function BurgerIngredients() {
   const [activeTab, setActiveTab] = useState(typeBun);
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useSelector(ingredientsSelectors.selectAll);
 
   const ingredientsTypeBun = useMemo(
     () => ingredients.filter(({ type }) => type === typeBun),
