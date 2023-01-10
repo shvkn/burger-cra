@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchIngredients, ingredientsAdapter } from '../actions/ingredients';
 
-const initialState = ingredientsAdapter.getInitialState({ isLoading: false, error: null });
+const initialState = ingredientsAdapter.getInitialState({ status: 'idle', error: null });
 
 const ingredients = createSlice({
   name: 'ingredients',
@@ -9,15 +9,15 @@ const ingredients = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
-        state.isLoading = true;
+        state.status = 'loading';
         state.error = null;
       })
       .addCase(fetchIngredients.rejected, (state, { error }) => {
-        state.isLoading = false;
+        state.status = 'failed';
         state.error = error;
       })
       .addCase(fetchIngredients.fulfilled, (state, { payload: { data } }) => {
-        state.isLoading = false;
+        state.status = 'succeeded';
         state.error = null;
         ingredientsAdapter.setAll(state, data);
       });
