@@ -28,7 +28,7 @@ function AppHeader() {
               </Link>
             </li>
             <li>
-              <Link to={'/'} className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
+              <Link to={'/feed'} className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
                 <ListIcon type={'secondary'} />
                 <p className={`ml-2 text text_type_main-default text_color_inactive`}>
                   Лента заказов

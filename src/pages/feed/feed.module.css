@@ -1,0 +1,20 @@
+.layout {
+  display: grid;
+  grid-template-areas:
+    "title title"
+    "orders dashboard";
+  grid-template-rows: auto 1fr;
+  width: 100%;
+}
+
+.title {
+  grid-area: title;
+}
+
+.orders {
+  grid-area: orders;
+}
+
+.dashboard {
+  grid-area: dashboard;
+}

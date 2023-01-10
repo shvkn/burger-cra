@@ -21,6 +21,7 @@ import Modal from '../modal/modal';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../services/actions/auth';
 import { fetchIngredients } from '../../services/actions/ingredients';
+import FeedPage from '../../pages/feed/feed';
 
 function App() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
           <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
           <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
           <ProtectedRoute path='/profile' component={ProfilePage} />
+          <Route path='/feed' component={FeedPage} />
           <Route path='/ingredient/:id' component={IngredientPage} />
           <Route path='*' component={NotFoundedPage} />
         </Switch>
