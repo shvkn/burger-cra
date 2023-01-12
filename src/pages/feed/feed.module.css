@@ -2,19 +2,53 @@
   display: grid;
   grid-template-areas:
     "title title"
-    "orders dashboard";
-  grid-template-rows: auto 1fr;
-  width: 100%;
+    "feed dashboard";
+  grid-template-columns: 1fr 1fr;
 }
 
 .title {
   grid-area: title;
 }
 
-.orders {
-  grid-area: orders;
-}
-
 .dashboard {
   grid-area: dashboard;
+}
+
+.ordersFeed {
+  grid-area: feed;
+  max-width: 608px;
+  max-height: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ordersFeed::-webkit-scrollbar-track {
+  margin-bottom: calc(var(--offset-base-size) * 15);
+}
+
+.ordersNumbers {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(5, min-content);
+  grid-template-rows: repeat(10, auto);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.orderNumber:nth-of-type(10n) {
+  margin-bottom: 0;
+}
+
+.orderNumber:nth-of-type(-n + 10) {
+  margin-left: 0;
+}
+
+.dashboardOrderList {
+  display: flex;
+}
+
+.textShadow {
+  text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
 }

@@ -14,6 +14,10 @@ const isFailed = createSelector(ordersSlice, (orders) => orders.status === 'fail
 
 const isLoading = createSelector(ordersSlice, (orders) => orders.status === 'loading');
 
+const total = createSelector(ordersSlice, (orders) => orders.total);
+
+const totalToday = createSelector(ordersSlice, (orders) => orders.totalToday);
+
 const ordersSelectors = {
   selectIds,
   selectEntities,
@@ -24,6 +28,8 @@ const ordersSelectors = {
   isSucceeded,
   isFailed,
   isLoading,
+  total,
+  totalToday,
 };
 
 export default ordersSelectors;
