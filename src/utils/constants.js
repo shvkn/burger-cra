@@ -13,3 +13,9 @@ export const Tokens = {
   ACCESS_TOKEN: 'accessToken',
   REFRESH_TOKEN: 'refreshToken',
 };
+
+export const OrderStatuses = {
+  done: 'Выполнен',
+  pending: 'Готовится',
+  created: 'Создан',
+};
