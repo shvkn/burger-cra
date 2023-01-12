@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
 import { orderPropTypes } from '../../utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -12,6 +12,8 @@ const visibleIngredientsCount = 6;
 
 function Order({ order, showStatus = false }) {
   const { url } = useRouteMatch();
+  const location = useLocation();
+
   const status = useMemo(() => OrderStatuses[order.status.trim().toLowerCase()], [order]);
   const date = new Date(order.createdAt);
 
@@ -26,7 +28,10 @@ function Order({ order, showStatus = false }) {
   }, [order.ingredients, orderIngredients]);
 
   return (
-    <Link to={`${url}/${order._id}`} className={`pt-6 pr-6 pb-6 pl-6 ${styles.order}`}>
+    <Link
+      to={{ pathname: `${url}/${order._id}`, state: { background: location } }}
+      className={`pt-6 pr-6 pb-6 pl-6 ${styles.order}`}
+    >
       <div className={styles.line}>
         <p className={`text text_type_digits-default ${styles.number}`}>{`#${order.number}`}</p>
         <p className={`ml-4 text text_type_main-default text_color_inactive ${styles.timestamp}`}>
