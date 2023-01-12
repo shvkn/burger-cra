@@ -1,5 +1,6 @@
 import { ordersEntityAdapter } from '../slices/orders';
 import { createSelector } from '@reduxjs/toolkit';
+import ingredientsSelectors from './ingredients';
 
 const ordersSlice = (state) => state.orders;
 
@@ -18,6 +19,11 @@ const total = createSelector(ordersSlice, (orders) => orders.total);
 
 const totalToday = createSelector(ordersSlice, (orders) => orders.totalToday);
 
+const ingredientsByOrderId = (id) =>
+  createSelector([selectOrderById(id), ingredientsSelectors.selectEntities], (order, ingredients) =>
+    order.ingredients.map((id) => ingredients[id])
+  );
+
 const ordersSelectors = {
   selectIds,
   selectEntities,
@@ -30,6 +36,7 @@ const ordersSelectors = {
   isLoading,
   total,
   totalToday,
+  ingredientsByOrderId,
 };
 
 export default ordersSelectors;
