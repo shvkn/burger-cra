@@ -19,9 +19,20 @@ const total = createSelector(ordersSlice, (orders) => orders.total);
 
 const totalToday = createSelector(ordersSlice, (orders) => orders.totalToday);
 
-const ingredientsByOrderId = (id) =>
-  createSelector([selectOrderById(id), ingredientsSelectors.selectEntities], (order, ingredients) =>
-    order.ingredients.map((id) => ingredients[id])
+const ingredients = (id) =>
+  createSelector(
+    [selectOrderById(id), ingredientsSelectors.selectEntities],
+    (order, ingredients) => {
+      return order.ingredients.map((id) => ingredients[id]);
+    }
+  );
+
+const totalPrice = (id) =>
+  createSelector(
+    [selectOrderById(id), ingredientsSelectors.selectEntities],
+    (order, ingredients) => {
+      return order.ingredients.reduce((total, id) => total + ingredients[id].price, 0);
+    }
   );
 
 const ordersSelectors = {
@@ -36,7 +47,8 @@ const ordersSelectors = {
   isLoading,
   total,
   totalToday,
-  ingredientsByOrderId,
+  ingredients,
+  totalPrice,
 };
 
 export default ordersSelectors;
