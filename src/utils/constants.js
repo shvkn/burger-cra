@@ -15,7 +15,7 @@ export const Tokens = {
 };
 
 export const OrderStatuses = {
-  done: 'Выполнен',
-  pending: 'Готовится',
-  created: 'Создан',
+  DONE: 'done',
+  CREATED: 'created',
+  PENDING: 'pending',
 };

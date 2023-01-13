@@ -5,17 +5,14 @@ import { orderPropTypes } from '../../utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientsSelectors from '../../services/selectors/ingredients';
 import { useSelector } from 'react-redux';
-import { OrderStatuses } from '../../utils/constants';
 import _ from 'lodash';
+import OrderStatus from '../order-status/order-status';
 
 const visibleIngredientsCount = 6;
 
 function Order({ order, showStatus = false }) {
   const { url } = useRouteMatch();
   const location = useLocation();
-
-  const status = useMemo(() => OrderStatuses[order.status.trim().toLowerCase()], [order]);
-  const date = new Date(order.createdAt);
 
   const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
   const orderIngredients = order.ingredients.map((id) => ingredientsEntities[id]);
@@ -26,7 +23,6 @@ function Order({ order, showStatus = false }) {
     const ingredientsCounts = _.countBy(order.ingredients);
     return _.sumBy(orderIngredients, ({ _id, price }) => ingredientsCounts[_id] * price);
   }, [order.ingredients, orderIngredients]);
-
   return (
     <Link
       to={{ pathname: `${url}/${order._id}`, state: { background: location } }}
@@ -35,19 +31,18 @@ function Order({ order, showStatus = false }) {
       <div className={styles.line}>
         <p className={`text text_type_digits-default ${styles.number}`}>{`#${order.number}`}</p>
         <p className={`ml-4 text text_type_main-default text_color_inactive ${styles.timestamp}`}>
-          <FormattedDate date={date} />
+          <FormattedDate date={new Date(order.createdAt)} />
         </p>
       </div>
       <div className={`mt-6 ${styles.line} ${styles.column}`}>
         <p className={`text text_type_main-medium`}>{order.name}</p>
         {showStatus && (
-          <p
+          <OrderStatus
+            status={order.status}
             className={`mt-2 text text_type_main-small ${
               order.status === 'done' && 'text_color_success'
             }`}
-          >
-            {status}
-          </p>
+          />
         )}
       </div>
       <div className={`mt-6 ${styles.line}`}>
