@@ -35,69 +35,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "prettier": {
-    "singleQuote": true,
-    "jsxSingleQuote": true,
-    "printWidth": 100
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:import/typescript",
-      "plugin:prettier/recommended"
-    ],
-    "plugins": [
-      "react"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "jsxSingleQuote": true,
-          "endOfLine": "auto"
-        }
-      ],
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error",
-      "react/jsx-filename-extension": [
-        1,
-        {
-          "extensions": [
-            ".js",
-            ".jsx",
-            ".ts",
-            ".tsx"
-          ]
-        }
-      ],
-      "react/jsx-indent-props": [
-        2,
-        2
-      ],
-      "react/jsx-indent": [
-        2,
-        2
-      ],
-      "react/jsx-one-expression-per-line": [
-        0
-      ],
-      "react/prefer-stateless-function": [
-        1
-      ],
-      "react/static-property-placement": [
-        1,
-        "property assignment"
-      ]
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
