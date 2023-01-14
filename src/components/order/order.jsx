@@ -3,69 +3,73 @@ import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
 import { orderPropTypes } from '../../utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientsSelectors from '../../services/selectors/ingredients';
 import { useSelector } from 'react-redux';
-import _ from 'lodash';
 import OrderStatus from '../order-status/order-status';
+import ordersSelectors from '../../services/selectors/orders';
+import PropTypes from 'prop-types';
 
-const visibleIngredientsCount = 6;
+const ingredientsToRenderCount = 6;
 
-function Order({ order, showStatus = false }) {
+function Order({ order, hideStatus = false }) {
   const { url } = useRouteMatch();
   const location = useLocation();
+  const orderIngredients = useSelector(ordersSelectors.ingredients(order._id));
+  const totalPrice = useSelector(ordersSelectors.totalPrice(order._id));
 
-  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
-  const orderIngredients = order.ingredients.map((id) => ingredientsEntities[id]);
-  const reversedVisibleIngredients = orderIngredients.slice(0, visibleIngredientsCount).reverse();
-  const extra = Math.max(orderIngredients.length - visibleIngredientsCount, 0);
+  const ingredientsToRender = useMemo(
+    () => orderIngredients.slice(0, ingredientsToRenderCount).reverse(),
+    [orderIngredients]
+  );
 
-  const totalPrice = useMemo(() => {
-    const ingredientsCounts = _.countBy(order.ingredients);
-    return _.sumBy(orderIngredients, ({ _id, price }) => ingredientsCounts[_id] * price);
-  }, [order.ingredients, orderIngredients]);
+  const extraIngredientsCount = useMemo(
+    () => Math.max(orderIngredients.length - ingredientsToRenderCount, 0),
+    [orderIngredients]
+  );
+
   return (
     <Link
       to={{ pathname: `${url}/${order._id}`, state: { background: location } }}
-      className={`pt-6 pr-6 pb-6 pl-6 ${styles.order}`}
+      className={`pt-6 pr-6 pb-6 pl-6 ${styles.container}`}
     >
-      <div className={styles.line}>
+      <div className={styles.row}>
         <p className={`text text_type_digits-default ${styles.number}`}>{`#${order.number}`}</p>
         <p className={`ml-4 text text_type_main-default text_color_inactive ${styles.timestamp}`}>
           <FormattedDate date={new Date(order.createdAt)} />
         </p>
       </div>
-      <div className={`mt-6 ${styles.line} ${styles.column}`}>
+      <div className={`mt-6`}>
         <p className={`text text_type_main-medium`}>{order.name}</p>
-        {showStatus && (
-          <OrderStatus
-            status={order.status}
+        {!hideStatus && (
+          <p
             className={`mt-2 text text_type_main-small ${
               order.status === 'done' && 'text_color_success'
             }`}
-          />
+          >
+            <OrderStatus status={order.status} />
+          </p>
         )}
       </div>
-      <div className={`mt-6 ${styles.line}`}>
+      <div className={`mt-6 ${styles.row}`}>
         <ul className={styles.ingredients}>
-          {reversedVisibleIngredients.map((ingredient, idx) => (
+          {ingredientsToRender.map((ingredient, idx) => (
             <li key={idx} className={styles.ingredient}>
               <img
                 className={styles.ingredientImage}
                 src={ingredient.image}
                 alt={ingredient.name}
               />
-              {extra > 0 && idx === 0 && (
+              {idx === 0 && extraIngredientsCount > 0 && (
                 <div className={styles.extra}>
                   <p
                     className={`text text_type_main-default ${styles.extraCount}`}
-                  >{`+${extra}`}</p>
+                  >{`+${extraIngredientsCount}`}</p>
                 </div>
               )}
             </li>
           ))}
         </ul>
         <div className={`ml-6 ${styles.price}`}>
-          <p className='mr-2 text text_type_digits-default'>{totalPrice}</p>
+          <p className={`mr-2 text text_type_digits-default`}>{totalPrice}</p>
           <CurrencyIcon type='primary' />
         </div>
       </div>
@@ -73,6 +77,9 @@ function Order({ order, showStatus = false }) {
   );
 }
 
-Order.propTypes = orderPropTypes.isRequired;
+Order.propTypes = {
+  order: orderPropTypes.isRequired,
+  hideStatus: PropTypes.bool,
+};
 
 export default Order;

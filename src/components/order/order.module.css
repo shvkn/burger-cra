@@ -1,4 +1,4 @@
-.order {
+.container {
   display: block;
   background-color: var(--background);
   border-radius: 40px;
@@ -6,12 +6,8 @@
   text-decoration: none;
 }
 
-.line {
+.row {
   display: flex;
-}
-
-.column {
-  flex-direction: column;
 }
 
 .number {
