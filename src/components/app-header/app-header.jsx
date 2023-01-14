@@ -1,53 +1,45 @@
 import React from 'react';
-import {
-  BurgerIcon,
-  ListIcon,
-  Logo,
-  ProfileIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { BurgerIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useRouteMatch } from 'react-router-dom';
 import styles from './app-header.module.css';
-import { Link, useLocation } from 'react-router-dom';
+
+const getLinkCN = (isActive) => {
+  return `pt-4 pl-5 pb-4 pr-5 text text_type_main-default text_color_${
+    isActive ? 'primary' : 'inactive'
+  } ${styles.link}`;
+};
 
 function AppHeader() {
-  const { pathname } = useLocation(); //
+  const isActiveFeed = useRouteMatch('/feed');
+  const isActiveProfile = useRouteMatch('/profile');
+  const isActiveConstructor = useRouteMatch({ path: '/', exact: true });
+
   return (
     <header className={`p-4 ${styles.header}`}>
       <div className={`${styles.container}`}>
         <nav className={styles.nav}>
           <ul className={styles.items}>
             <li>
-              <Link to='/' className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-                <BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'} />
-                <p
-                  className={`ml-2 text text_type_main-default ${
-                    pathname === '/' ? 'text_color_primary' : 'text_color_inactive'
-                  }`}
-                >
-                  Конструктор
-                </p>
+              <Link to={'/'} className={`${getLinkCN(isActiveConstructor)}`}>
+                <BurgerIcon type={isActiveConstructor ? 'primary' : 'secondary'} />
+                <span className='ml-2'>Конструктор</span>
               </Link>
             </li>
             <li>
-              <Link to={'/feed'} className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-                <ListIcon type={'secondary'} />
-                <p className={`ml-2 text text_type_main-default text_color_inactive`}>
-                  Лента заказов
-                </p>
+              <Link to={'/feed'} className={`${getLinkCN(isActiveFeed)}`}>
+                <BurgerIcon type={isActiveFeed ? 'primary' : 'secondary'} />
+                <span className='ml-2'>Лента заказов</span>
               </Link>
             </li>
           </ul>
         </nav>
-        <Logo />
+        <Link to={'/'}>
+          <Logo />
+        </Link>
         <nav className={`${styles.nav} ${styles.end}`}>
-          <Link to='/profile' className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-            <ProfileIcon type={pathname.includes('/profile') ? 'primary' : 'secondary'} />
-            <p
-              className={`ml-2 text text_type_main-default ${
-                pathname.includes('/profile') ? 'text_color_primary' : 'text_color_inactive'
-              }`}
-            >
-              Личный кабинет
-            </p>
+          <Link to={'/profile'} className={`${getLinkCN(isActiveProfile)}`}>
+            <BurgerIcon type={isActiveProfile ? 'primary' : 'secondary'} />
+            <span className='ml-2'>Личный кабинет</span>
           </Link>
         </nav>
       </div>
