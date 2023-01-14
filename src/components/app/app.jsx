@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import '../../style/common.css';
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
@@ -7,21 +7,26 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 
 import {
   ConstructorPage,
-  LoginPage,
-  RegistrationPage,
   ForgotPasswordPage,
-  ResetPasswordPage,
-  ProfilePage,
   IngredientPage,
+  LoginPage,
   NotFoundedPage,
+  ProfilePage,
+  RegistrationPage,
+  ResetPasswordPage,
+  OrderPage,
+  FeedPage,
 } from '../../pages';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../services/actions/auth';
 import { fetchIngredients } from '../../services/actions/ingredients';
-import FeedPage from '../../pages/feed/feed';
+import ordersSelectors from '../../services/selectors/orders';
+import OrderInfo from '../order-info/order-info';
+import { ordersWsActions } from '../../services/slices/orders';
+import ingredientsSelectors from '../../services/selectors/ingredients';
 
 function App() {
   const location = useLocation();
@@ -32,11 +37,42 @@ function App() {
   useEffect(() => {
     dispatch(fetchIngredients());
     dispatch(getUser());
+    dispatch(ordersWsActions.connect());
   }, [dispatch]);
 
   const handleClose = (e) => {
     history.goBack();
   };
+
+  const matchOrderId = useRouteMatch('/feed/:id');
+  const orders = useSelector(ordersSelectors.selectEntities);
+  const order = useMemo(() => {
+    if (!matchOrderId) {
+      return null;
+    }
+    const {
+      path,
+      params: { id },
+    } = matchOrderId;
+    switch (path) {
+      case '/feed/:id':
+        return orders[id] ?? null;
+      default:
+        return null;
+    }
+  }, [orders, matchOrderId]);
+
+  const matchIngredientId = useRouteMatch('/ingredient/:id');
+  const ingredients = useSelector(ingredientsSelectors.selectEntities);
+  const ingredient = useMemo(() => {
+    if (!matchIngredientId) {
+      return null;
+    }
+    const {
+      params: { id },
+    } = matchIngredientId;
+    return ingredients[id];
+  }, [ingredients, matchIngredientId]);
 
   return (
     <div className={styles.app}>
@@ -49,16 +85,40 @@ function App() {
           <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
           <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
           <ProtectedRoute path='/profile' component={ProfilePage} />
-          <Route path='/feed' component={FeedPage} />
-          <Route path='/ingredient/:id' component={IngredientPage} />
+          <Route exact path='/feed' component={FeedPage} />
+          <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
+          <Route path='/ingredient/:id'>
+            {ingredient && <IngredientPage ingredient={ingredient} />}
+          </Route>
           <Route path='*' component={NotFoundedPage} />
         </Switch>
         {background && (
-          <Route path='/ingredient/:id'>
-            <Modal handleClose={handleClose} title='Детали ингредиента'>
-              <IngredientDetails />
-            </Modal>
-          </Route>
+          <Switch>
+            <Route path='/ingredient/:id'>
+              {ingredient && (
+                <Modal handleClose={handleClose}>
+                  <Modal.Header>
+                    <p className={'text text_type_main-large'}>Детали ингредиента</p>
+                  </Modal.Header>
+                  <Modal.Content>
+                    <IngredientDetails ingredient={ingredient} />
+                  </Modal.Content>
+                </Modal>
+              )}
+            </Route>
+            <Route path='/feed/:id'>
+              {order && (
+                <Modal handleClose={handleClose}>
+                  <Modal.Header>
+                    <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
+                  </Modal.Header>
+                  <Modal.Content>
+                    <OrderInfo order={order} />
+                  </Modal.Content>
+                </Modal>
+              )}
+            </Route>
+          </Switch>
         )}
       </main>
     </div>
