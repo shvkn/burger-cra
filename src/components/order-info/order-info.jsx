@@ -3,7 +3,7 @@ import { orderPropTypes } from '../../utils/prop-types';
 import { useSelector } from 'react-redux';
 import ordersSelectors from '../../services/selectors/orders';
 import _ from 'lodash';
-import styles from './order-info-content/order-info-content.module.css';
+import styles from './order-info.module.css';
 import OrderStatus from '../order-status/order-status';
 import { OrderStatuses } from '../../utils/constants';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
