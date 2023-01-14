@@ -1,13 +1,9 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import ingredientsSelectors from '../../services/selectors/ingredients';
+import { ingredientPropTypes } from '../../utils/prop-types';
 
-function IngredientDetails() {
-  const { id } = useParams();
-  const ingredient = useSelector(ingredientsSelectors.selectById(id));
-  return !ingredient ? null : (
+function IngredientDetails({ ingredient }) {
+  return (
     <>
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
       <p className={`mt-4 mb-8 text text_type_main-medium ${styles.name}`}>{ingredient.name}</p>
@@ -30,5 +26,9 @@ function IngredientDetails() {
     </>
   );
 }
+
+IngredientDetails.propTypes = {
+  ingredient: ingredientPropTypes.isRequired,
+};
 
 export default IngredientDetails;
