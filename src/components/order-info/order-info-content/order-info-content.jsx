@@ -5,24 +5,26 @@ import styles from './order-info-content.module.css';
 import OrderStatus from '../../order-status/order-status';
 import { OrderStatuses } from '../../../utils/constants';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { orderPropTypes } from '../../../utils/prop-types';
 
 export function OrderInfoContent({ order }) {
   const ingredients = useSelector(ordersSelectors.ingredients(order._id));
   const totalPrice = useSelector(ordersSelectors.totalPrice(order._id));
-  const uniqIngredients = _.uniqBy(ingredients, '_id');
-  const ingredientsCounts = _.countBy(order.ingredients);
+
+  const uniqIngredients = useMemo(() => _.uniqBy(ingredients, '_id'), [ingredients]);
+  const ingredientsCounts = useMemo(() => _.countBy(order.ingredients), [order.ingredients]);
 
   return (
     <article className={styles.container}>
       <h1 className={'mt-5 text text_type_main-medium'}>{order.name}</h1>
-      <OrderStatus
-        status={order.status}
+      <p
         className={`mt-2 text text_type_main-default ${
           order.status === OrderStatuses.DONE && 'text_color_success'
         }`}
-      />
+      >
+        <OrderStatus status={order.status} />
+      </p>
       <h2 className={'mt-15 mb-6 text text_type_main-medium'}>Состав:</h2>
       <ul className={`${styles.ingredients} scroll`}>
         {uniqIngredients.map((ingredient) => (
