@@ -22,16 +22,20 @@ const totalToday = createSelector(ordersSlice, (orders) => orders.totalToday);
 const ingredients = (id) =>
   createSelector(
     [selectOrderById(id), ingredientsSelectors.selectEntities],
-    (order, ingredients) => {
-      return order.ingredients.map((id) => ingredients[id]);
+    (order, ingredientsEntities) => {
+      return order.ingredients
+        .map((id) => ingredientsEntities[id])
+        .filter((ingredient) => !!ingredient);
     }
   );
 
 const totalPrice = (id) =>
   createSelector(
-    [selectOrderById(id), ingredientsSelectors.selectEntities],
-    (order, ingredients) => {
-      return order.ingredients.reduce((total, id) => total + ingredients[id].price, 0);
+    [ingredients(id), ingredientsSelectors.selectEntities],
+    (orderIngredients, ingredientsEntities) => {
+      return orderIngredients.reduce((total, ingredient) => {
+        return total + ingredientsEntities[ingredient._id].price;
+      }, 0);
     }
   );
 
