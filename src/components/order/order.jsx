@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import OrderStatus from '../order-status/order-status';
 import ordersSelectors from '../../services/selectors/orders';
 import PropTypes from 'prop-types';
+import { OrderStatuses } from '../../utils/constants';
 
 const ingredientsToRenderCount = 6;
 
@@ -42,7 +43,7 @@ function Order({ order, hideStatus = false }) {
         {!hideStatus && (
           <p
             className={`mt-2 text text_type_main-small ${
-              order.status === 'done' && 'text_color_success'
+              order.status === OrderStatuses.DONE && 'text_color_success'
             }`}
           >
             <OrderStatus status={order.status} />
