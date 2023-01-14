@@ -96,15 +96,18 @@ function BurgerConstructor() {
     <div className={`${styles.burgerConstructor}`} ref={dropTarget}>
       {showModal && (
         <Modal handleClose={handleCloseModal}>
-          {order.isLoading && (
-            <p className='mt-8 mb-30 text text_type_main-default'>Оформляем ваш заказ</p>
-          )}
-          {order.error && (
-            <p className='mt-8 mb-30 text text_type_main-default'>
-              Произошла ошибка и мы не смогли принять ваш заказ. Пожалуйста, повторите позже.
-            </p>
-          )}
-          {!order.isLoading && !order.error && <OrderDetails number={orderNumber} />}
+          <Modal.Header />
+          <Modal.Content>
+            {order.isLoading && (
+              <p className='mt-8 mb-30 text text_type_main-default'>Оформляем ваш заказ</p>
+            )}
+            {order.error && (
+              <p className='mt-8 mb-30 text text_type_main-default'>
+                Произошла ошибка и мы не смогли принять ваш заказ. Пожалуйста, повторите позже.
+              </p>
+            )}
+            {!order.isLoading && !order.error && <OrderDetails number={orderNumber} />}
+          </Modal.Content>
         </Modal>
       )}
       <div className={`ml-4 ${styles.container}`}>

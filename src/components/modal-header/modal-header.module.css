@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 64px;
+}
+
+.close {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.absolute {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
