@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './feed.module.css';
 import { useSelector } from 'react-redux';
 import ordersSelectors from '../../services/selectors/orders';
@@ -10,9 +10,17 @@ function FeedPage() {
   const total = useSelector(ordersSelectors.total);
   const totalToday = useSelector(ordersSelectors.totalToday);
 
-  const sortedOrders = _.orderBy(orders, 'createdAt', 'desc');
-  const ordersStateDone = _.filter(sortedOrders, { status: 'done' }).slice(0, 20);
-  const ordersStatePending = _.filter(sortedOrders, { status: 'pending' }).slice(0, 20);
+  const sortedOrders = useMemo(() => _.orderBy(orders, 'createdAt', 'desc'), [orders]);
+
+  const ordersStateDone = useMemo(
+    () => _.filter(sortedOrders, { status: 'done' }).slice(0, 20),
+    [sortedOrders]
+  );
+
+  const ordersStatePending = useMemo(
+    () => _.filter(sortedOrders, { status: 'pending' }).slice(0, 20),
+    [sortedOrders]
+  );
 
   return (
     <div className={styles.layout}>
