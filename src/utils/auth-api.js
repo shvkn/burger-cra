@@ -33,7 +33,7 @@ export const refreshTokenRequest = (refreshToken) => {
 export const getUserRequest = (accessToken) => {
   return fetch(`${NORMA_API}/auth/user`, {
     headers: {
-      Authorization: accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   }).then((response) => response.json());
 };
@@ -43,7 +43,7 @@ export const patchUserRequest = (userdata, accessToken) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(userdata),
   }).then((response) => response.json());

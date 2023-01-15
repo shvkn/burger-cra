@@ -1,8 +1,11 @@
 const WebSocketMiddleware = (wsUrl, wsActions) => {
   let socket = null;
   return (store) => (next) => (action) => {
+    const { payload } = action;
     if (wsActions.connect.match(action)) {
-      socket = new WebSocket(wsUrl);
+      const accessToken = payload?.accessToken;
+      const url = accessToken ? `${wsUrl}?token=${accessToken}` : wsUrl;
+      socket = new WebSocket(url);
     }
     if (socket) {
       socket.onopen = (event) => {
@@ -16,7 +19,6 @@ const WebSocketMiddleware = (wsUrl, wsActions) => {
         store.dispatch(wsActions.getMessage(JSON.parse(data)));
       };
       if (wsActions.sendMessage.match(action)) {
-        const { payload } = action;
         socket.send(JSON.stringify(payload));
       }
     }

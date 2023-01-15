@@ -44,19 +44,29 @@ export const getAccessToken = () => {
   return getCookie(Tokens.ACCESS_TOKEN);
 };
 
-export const setCredentials = (accessToken, refreshToken) => {
-  setCookie(Tokens.ACCESS_TOKEN, accessToken, { expires: 20 * 60 });
+export const setRefreshToken = (refreshToken) => {
   setCookie(Tokens.REFRESH_TOKEN, refreshToken);
+};
+
+export const setAccessToken = (accessToken) => {
+  setCookie(Tokens.ACCESS_TOKEN, accessToken, { expires: 20 * 60 });
+};
+
+export const setCredentials = (accessToken, refreshToken) => {
+  setAccessToken(accessToken);
+  setRefreshToken(refreshToken);
 };
 
 export const getOrRefreshAccessToken = async (forceRefresh = false) => {
   const accessToken = getAccessToken();
   if (!accessToken || forceRefresh) {
+    eraseCookie(Tokens.ACCESS_TOKEN);
     await refreshTokens();
     return getAccessToken();
   }
   return accessToken;
 };
+export const extractToken = (token) => token.split('Bearer ')[1];
 
 export const refreshTokens = async () => {
   try {
@@ -71,7 +81,9 @@ export const refreshTokens = async () => {
       refreshToken: newRefreshToken,
     } = await refreshTokenRequest(refreshToken);
     if (success) {
-      setCredentials(newAccessToken, newRefreshToken);
+      eraseCookie(Tokens.ACCESS_TOKEN);
+      eraseCookie(Tokens.REFRESH_TOKEN);
+      setCredentials(extractToken(newAccessToken), newRefreshToken);
     } else {
       console.log(message);
     }

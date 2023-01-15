@@ -10,6 +10,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../utils/selectors';
 import { logout, patchUser } from '../../services/actions/auth';
+import { userOrdersWsActions } from '../../services/slices/user-orders';
+import { getAccessToken } from '../../utils/utils';
 
 function ProfilePage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -18,6 +20,11 @@ function ProfilePage() {
   const isFormChanged = user?.name !== form.name || user?.email !== form.email;
   const dispatch = useDispatch();
   const formRef = useRef();
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+    dispatch(userOrdersWsActions.connect({ accessToken }));
+  }, [dispatch]);
 
   useEffect(() => {
     setForm({ name: user.name, email: user.email, password: '' });

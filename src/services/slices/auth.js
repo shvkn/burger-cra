@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { eraseCookie, setCredentials } from '../../utils/utils';
+import { eraseCookie, extractToken, setCredentials } from '../../utils/utils';
 import { getUser, login, logout, patchUser, registerUser } from '../actions/auth';
 import { Tokens } from '../../utils/constants';
 
@@ -24,7 +24,7 @@ const auth = createSlice({
         (state, { payload: { success, message, user, accessToken, refreshToken } }) => {
           if (success) {
             state.user = user;
-            setCredentials(accessToken, refreshToken);
+            setCredentials(extractToken(accessToken), refreshToken);
           } else {
             console.log(message);
           }
@@ -45,7 +45,7 @@ const auth = createSlice({
         (state, { payload: { success, message, user, accessToken, refreshToken } }) => {
           if (success) {
             state.user = user;
-            setCredentials(accessToken, refreshToken);
+            setCredentials(extractToken(accessToken), refreshToken);
           } else {
             console.log(message);
             if (message.trim().toLowerCase() === 'email or password are incorrect') {
@@ -67,7 +67,6 @@ const auth = createSlice({
       .addCase(logout.fulfilled, (state, { payload: { message, success } }) => {
         if (success) {
           state.user = null;
-          console.log('success!');
           eraseCookie(Tokens.ACCESS_TOKEN);
           eraseCookie(Tokens.REFRESH_TOKEN);
         } else {
