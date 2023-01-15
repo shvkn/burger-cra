@@ -10,7 +10,9 @@ function FeedPage() {
   const total = useSelector(ordersSelectors.total);
   const totalToday = useSelector(ordersSelectors.totalToday);
 
-  const sortedOrders = useMemo(() => _.orderBy(orders, 'createdAt', 'desc'), [orders]);
+  const sortedOrders = useMemo(() => {
+    return _.orderBy(orders, 'createdAt', 'desc');
+  }, [orders]);
 
   const ordersStateDone = useMemo(
     () => _.filter(sortedOrders, { status: 'done' }).slice(0, 20),

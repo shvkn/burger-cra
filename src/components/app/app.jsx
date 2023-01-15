@@ -7,15 +7,15 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 
 import {
   ConstructorPage,
+  FeedPage,
   ForgotPasswordPage,
   IngredientPage,
   LoginPage,
   NotFoundedPage,
+  OrderPage,
   ProfilePage,
   RegistrationPage,
   ResetPasswordPage,
-  OrderPage,
-  FeedPage,
 } from '../../pages';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -27,6 +27,9 @@ import ordersSelectors from '../../services/selectors/orders';
 import OrderInfo from '../order-info/order-info';
 import { ordersWsActions } from '../../services/slices/orders';
 import ingredientsSelectors from '../../services/selectors/ingredients';
+import { userOrdersSelectors } from '../../services/selectors/user-orders';
+import { getAccessToken } from '../../utils/utils';
+import { userOrdersWsActions } from '../../services/slices/user-orders';
 
 function App() {
   const location = useLocation();
@@ -34,43 +37,43 @@ function App() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const feedOrders = useSelector(ordersSelectors.selectEntities);
+  const userOrders = useSelector(userOrdersSelectors.selectEntities);
+  const ingredients = useSelector(ingredientsSelectors.selectEntities);
+
   useEffect(() => {
     dispatch(fetchIngredients());
     dispatch(getUser());
     dispatch(ordersWsActions.connect());
+    const accessToken = getAccessToken();
+    if (accessToken) {
+      dispatch(userOrdersWsActions.connect({ accessToken }));
+    }
   }, [dispatch]);
 
   const handleClose = (e) => {
     history.goBack();
   };
 
-  const matchOrderId = useRouteMatch('/feed/:id');
-  const orders = useSelector(ordersSelectors.selectEntities);
+  const matchFeedOrderId = useRouteMatch({ path: '/feed/:id', exact: true });
+  const matchUserOrderId = useRouteMatch({ path: '/profile/orders/:id', exact: true });
+  const matchIngredientId = useRouteMatch({ path: '/ingredient/:id', exact: true });
+
   const order = useMemo(() => {
-    if (!matchOrderId) {
+    const match = matchFeedOrderId ?? matchUserOrderId;
+    if (!match) {
       return null;
     }
-    const {
-      path,
-      params: { id },
-    } = matchOrderId;
-    switch (path) {
-      case '/feed/:id':
-        return orders[id] ?? null;
-      default:
-        return null;
-    }
-  }, [orders, matchOrderId]);
+    const id = match.params.id;
+    const orders = matchFeedOrderId ? feedOrders : matchUserOrderId ? userOrders : null;
+    return orders ? orders[id] : null;
+  }, [matchFeedOrderId, matchUserOrderId, feedOrders, userOrders]);
 
-  const matchIngredientId = useRouteMatch('/ingredient/:id');
-  const ingredients = useSelector(ingredientsSelectors.selectEntities);
   const ingredient = useMemo(() => {
     if (!matchIngredientId) {
       return null;
     }
-    const {
-      params: { id },
-    } = matchIngredientId;
+    const id = matchIngredientId.params.id;
     return ingredients[id];
   }, [ingredients, matchIngredientId]);
 
@@ -84,10 +87,13 @@ function App() {
           <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
           <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
           <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
+          <ProtectedRoute path='/profile/orders/:id'>
+            {order && <OrderPage order={order} />}
+          </ProtectedRoute>
           <ProtectedRoute path='/profile' component={ProfilePage} />
-          <Route exact path='/feed' component={FeedPage} />
           <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
-          <Route path='/ingredient/:id'>
+          <Route path='/feed' component={FeedPage} />
+          <Route exact path='/ingredient/:id'>
             {ingredient && <IngredientPage ingredient={ingredient} />}
           </Route>
           <Route path='*' component={NotFoundedPage} />
@@ -106,7 +112,7 @@ function App() {
                 </Modal>
               )}
             </Route>
-            <Route path='/feed/:id'>
+            <Route path='/(profile/orders|feed)/:id'>
               {order && (
                 <Modal handleClose={handleClose}>
                   <Modal.Header>

@@ -15,7 +15,7 @@
 
 .buttons {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -27,4 +27,11 @@
 
 .link {
   text-decoration: none;
+}
+
+.orders {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
 }
