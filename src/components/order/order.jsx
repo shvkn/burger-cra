@@ -5,27 +5,35 @@ import { orderPropTypes } from '../../utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
 import OrderStatus from '../order-status/order-status';
-import ordersSelectors from '../../services/selectors/orders';
 import PropTypes from 'prop-types';
 import { OrderStatuses } from '../../utils/constants';
+import ingredientsSelectors from '../../services/selectors/ingredients';
+import _ from 'lodash';
 
 const ingredientsToRenderCount = 6;
 
 function Order({ order, hideStatus = false }) {
   const { url } = useRouteMatch();
   const location = useLocation();
-  const orderIngredients = useSelector(ordersSelectors.ingredients(order._id));
-  const totalPrice = useSelector(ordersSelectors.totalPrice(order._id));
+  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
 
-  const ingredientsToRender = useMemo(
-    () => orderIngredients.slice(0, ingredientsToRenderCount).reverse(),
-    [orderIngredients]
-  );
+  const orderIngredients = useMemo(() => {
+    return order.ingredients
+      .map((id) => ingredientsEntities[id])
+      .filter((ingredient) => ingredient !== undefined && ingredient !== null);
+  }, [order.ingredients, ingredientsEntities]);
 
-  const extraIngredientsCount = useMemo(
-    () => Math.max(orderIngredients.length - ingredientsToRenderCount, 0),
-    [orderIngredients]
-  );
+  const totalPrice = useMemo(() => {
+    return _.sumBy(orderIngredients, 'price');
+  }, [orderIngredients]);
+
+  const ingredientsToRender = useMemo(() => {
+    return orderIngredients.slice(0, ingredientsToRenderCount).reverse();
+  }, [orderIngredients]);
+
+  const extraIngredientsCount = useMemo(() => {
+    return Math.max(orderIngredients.length - ingredientsToRenderCount, 0);
+  }, [orderIngredients]);
 
   return (
     <Link
