@@ -1,70 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { eraseCookie, extractToken, setCredentials } from '../../utils/utils';
-import { getUser, login, logout, patchUser, registerUser } from '../actions/auth';
+import { getUser, login, logout, patchUser, register } from '../actions/auth';
 import { Tokens } from '../../utils/constants';
 
-const initialState = { user: null, isLoading: false, error: null };
+const initialState = { user: null, isLoading: false, error: null, isAuthorized: false };
+const isAnyActionsPending = isPending(getUser, login, logout, patchUser, register);
+const isAuthActionsFulfilled = isFulfilled(login, logout, register);
+const isUserActionsFulfilled = isFulfilled(getUser, patchUser);
+const isAnyActionsRejected = isRejected(getUser, login, logout, patchUser, register);
+const isAuthActionsRejected = isRejected(login, logout, register);
+const isUserActionsRejected = isRejected(getUser, patchUser);
 
-const auth = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.rejected, (state, { error }) => {
-        state.isLoading = false;
-        state.error = error;
-      })
-      .addCase(
-        registerUser.fulfilled,
-        (state, { payload: { success, message, user, accessToken, refreshToken } }) => {
-          if (success) {
-            state.user = user;
-            setCredentials(extractToken(accessToken), refreshToken);
-          } else {
-            console.log(message);
-          }
-          state.isLoading = false;
-          state.error = null;
-        }
-      )
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(login.rejected, (state, { error }) => {
-        state.isLoading = false;
-        state.error = error;
-      })
-      .addCase(
-        login.fulfilled,
-        (state, { payload: { success, message, user, accessToken, refreshToken } }) => {
-          if (success) {
-            state.user = user;
-            setCredentials(extractToken(accessToken), refreshToken);
-          } else {
-            console.log(message);
-            if (message.trim().toLowerCase() === 'email or password are incorrect') {
-              alert('Неверный логин или пароль');
-            }
-          }
-          state.isLoading = false;
-          state.error = null;
-        }
-      )
-      .addCase(logout.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(logout.rejected, (state, { error }) => {
-        state.isLoading = false;
-        state.error = error;
-      })
-      .addCase(logout.fulfilled, (state, { payload: { message, success } }) => {
+      .addCase(logout.fulfilled, (state, action) => {
+        const { message, success } = action.payload;
         if (success) {
           state.user = null;
           eraseCookie(Tokens.ACCESS_TOKEN);
@@ -75,42 +29,39 @@ const auth = createSlice({
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getUser.pending, (state) => {
+      .addMatcher(isAnyActionsPending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getUser.rejected, (state, { error }) => {
+      .addMatcher(isAnyActionsRejected, (state, { error }) => {
         state.isLoading = false;
         state.error = error;
       })
-      .addCase(getUser.fulfilled, (state, { payload: { user, success, message } }) => {
+      .addMatcher(isAuthActionsFulfilled, (state, action) => {
+        const { success, message, user, accessToken, refreshToken } = action.payload;
         if (success) {
           state.user = user;
+          state.error = null;
+          state.isAuthorized = true;
+          setCredentials(extractToken(accessToken), refreshToken);
         } else {
-          console.log('message', message);
+          state.error = message;
+          state.isAuthorized = false;
         }
         state.isLoading = false;
-        state.error = null;
       })
-      .addCase(patchUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(patchUser.rejected, (state, { error }) => {
-        state.isLoading = false;
-        state.error = error;
-      })
-      .addCase(patchUser.fulfilled, (state, { payload: { user, success, message } }) => {
+      .addMatcher(isUserActionsFulfilled, (state, action) => {
+        const { success, user, message } = action.payload;
         if (success) {
           state.user = user;
+          state.error = null;
         } else {
-          console.log('message', message);
+          state.error = message;
         }
         state.isLoading = false;
-        state.error = null;
       });
   },
 });
 
-export const { actions } = auth;
-export default auth.reducer;
+export const { actions } = authSlice;
+export default authSlice.reducer;

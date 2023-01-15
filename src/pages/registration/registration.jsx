@@ -8,7 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../../services/actions/auth';
+import { register } from '../../services/actions/auth';
 
 function RegistrationPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
@@ -19,10 +19,10 @@ function RegistrationPage() {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const register = useCallback(
+  const handleRegister = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(registerUser(form));
+      dispatch(register(form));
     },
     [form, dispatch]
   );
@@ -58,7 +58,7 @@ function RegistrationPage() {
           onChange={onChange}
           placeholder={'Пароль'}
         />
-        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={register}>
+        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={handleRegister}>
           Зарегистрироваться
         </Button>
       </form>
