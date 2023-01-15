@@ -20,7 +20,11 @@ function Modal({ children, handleClose }) {
   return ReactDOM.createPortal(
     <>
       <div className={`${styles.modal}`}>
-        {React.Children.map(children, (el) => React.cloneElement(el, { handleClose }))}
+        {React.Children.map(children, (child) => {
+          return child.type.name === Modal.Header.name
+            ? React.cloneElement(child, { handleClose })
+            : child;
+        })}
       </div>
       <ModalOverlay onClick={handleClose} />
     </>,
