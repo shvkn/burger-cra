@@ -1,58 +1,78 @@
 import { NORMA_API } from './constants';
 
-const postRequest = (url, data) => {
-  return fetch(url, {
+const processResponse = (response) => {
+  return response.json();
+};
+
+const processError = (error) => {
+  console.log(error);
+  throw error;
+};
+
+const request = ({ url, method = 'GET', payload = null, accessToken = null }) => {
+  const options = { url, method };
+  if (accessToken) {
+    options['headers'] = { ...options.headers, Authorization: `Bearer ${accessToken}` };
+  }
+  if (payload) {
+    options['headers'] = { ...options.headers, 'Content-Type': 'application/json' };
+    options['body'] = JSON.stringify(payload);
+  }
+  return fetch(url, options).then(processResponse).catch(processError);
+};
+
+export const registerUserRequest = async (payload) =>
+  request({
+    url: `${NORMA_API}/auth/register`,
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .catch((e) => {
-      console.log(e);
-      throw e;
-    });
-};
-export const registerUserRequest = (userdata) => {
-  return postRequest(`${NORMA_API}/auth/register`, userdata);
-};
+    payload,
+  });
 
-export const loginRequest = (userdata) => {
-  return postRequest(`${NORMA_API}/auth/login`, userdata);
-};
+export const loginRequest = async (payload) =>
+  request({
+    url: `${NORMA_API}/auth/login`,
+    method: 'POST',
+    payload,
+  });
 
-export const logoutRequest = (refreshToken) => {
-  return postRequest(`${NORMA_API}/auth/logout`, { token: refreshToken });
-};
+export const logoutRequest = async (refreshToken) =>
+  request({
+    url: `${NORMA_API}/auth/logout`,
+    method: 'POST',
+    payload: { token: refreshToken },
+  });
 
-export const refreshTokenRequest = (refreshToken) => {
-  return postRequest(`${NORMA_API}/auth/token`, { token: refreshToken });
-};
+export const refreshTokenRequest = async (refreshToken) =>
+  request({
+    url: `${NORMA_API}/auth/token`,
+    method: 'POST',
+    payload: { token: refreshToken },
+  });
 
-export const getUserRequest = (accessToken) => {
-  return fetch(`${NORMA_API}/auth/user`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  }).then((response) => response.json());
-};
+export const getUserRequest = async (accessToken) =>
+  request({
+    url: `${NORMA_API}/auth/user`,
+    accessToken,
+  });
 
-export const patchUserRequest = (userdata, accessToken) => {
-  return fetch(`${NORMA_API}/auth/user`, {
+export const patchUserRequest = async (payload, accessToken) =>
+  request({
+    url: `${NORMA_API}/auth/user`,
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(userdata),
-  }).then((response) => response.json());
-};
+    accessToken,
+    payload,
+  });
 
-export const getResetCodeRequest = (form) => {
-  return postRequest(`${NORMA_API}/password-reset`, form);
-};
+export const getResetCodeRequest = async (payload) =>
+  request({
+    url: `${NORMA_API}/password-reset`,
+    method: 'POST',
+    payload,
+  });
 
-export const resetPasswordRequest = (form) => {
-  return postRequest(`${NORMA_API}/password-reset/reset`, form);
-};
+export const resetPasswordRequest = async (payload) =>
+  request({
+    url: `${NORMA_API}/password-reset/reset`,
+    method: 'POST',
+    payload,
+  });
