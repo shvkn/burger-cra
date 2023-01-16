@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { selectIsUserAuthorized } from '../../utils/selectors';
+import authActions from '../../services/actions/auth';
+import authSelectors from '../../services/selectors/auth';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
-  const isAuthorized = useSelector(selectIsUserAuthorized);
+  const isAuthorized = useSelector(authSelectors.isAuthorized);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(authActions.getUser());
+  }, [dispatch]);
+
   return (
     <Route
       {...rest}
       render={({ location }) => {
-        return isAuthorized ? (
-          nonAuthOnly ? (
+        if (isAuthorized) {
+          return nonAuthOnly ? (
             <Redirect to={location.state?.from ?? '/'} />
           ) : (
             children ?? React.createElement(component)
-          )
-        ) : nonAuthOnly ? (
-          children ?? React.createElement(component)
-        ) : (
-          <Redirect to={{ pathname: '/login', state: { from: location } }} />
-        );
+          );
+        } else {
+          return nonAuthOnly ? (
+            children ?? React.createElement(component)
+          ) : (
+            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+          );
+        }
       }}
     />
   );

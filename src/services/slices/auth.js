@@ -1,7 +1,8 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { dropAuthTokens, extractToken, setAuthTokens } from '../../utils/utils';
-import { getUser, login, logout, patchUser, register } from '../actions/auth';
+import authActions from '../actions/auth';
 
+const { getUser, login, logout, patchUser, register } = authActions;
 const initialState = { user: null, isLoading: false, error: null, isAuthorized: false };
 const isAnyActionsPending = isPending(getUser, login, logout, patchUser, register);
 const isAuthActionsFulfilled = isFulfilled(login, logout, register);

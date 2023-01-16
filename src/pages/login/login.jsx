@@ -7,7 +7,7 @@ import {
 import styles from '../page.module.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../../services/actions/auth';
+import authActions from '../../services/actions/auth';
 
 function LoginPage() {
   const [form, setValue] = useState({ email: '', password: '' });
@@ -20,7 +20,7 @@ function LoginPage() {
   const handleLogin = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(login(form));
+      dispatch(authActions.login(form));
     },
     [form, dispatch]
   );

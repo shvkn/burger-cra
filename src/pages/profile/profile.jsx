@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './profile.module.css';
-import { NavLink, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { NavLink, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import {
   Button,
   EmailInput,
@@ -9,9 +9,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../utils/selectors';
-import { logout, patchUser } from '../../services/actions/auth';
-import { userOrdersWsActions } from '../../services/slices/user-orders';
-import { getAccessToken } from '../../utils/utils';
+import authActions from '../../services/actions/auth';
 import { userOrdersSelectors } from '../../services/selectors/user-orders';
 import Order from '../../components/order/order';
 import _ from 'lodash';
@@ -42,7 +40,7 @@ function ProfilePage() {
   const updateUser = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(patchUser(form));
+      dispatch(authActions.patchUser(form));
     },
     [dispatch, form]
   );
@@ -63,7 +61,7 @@ function ProfilePage() {
   };
 
   const handleLogout = (e) => {
-    dispatch(logout()).then(() => {
+    dispatch(authActions.logout()).then(() => {
       history.replace({ pathname: '/' });
     });
   };

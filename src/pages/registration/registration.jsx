@@ -8,7 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { register } from '../../services/actions/auth';
+import authActions from '../../services/actions/auth';
 
 function RegistrationPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
@@ -22,16 +22,16 @@ function RegistrationPage() {
   const handleRegister = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(register(form));
+      dispatch(authActions.register(form));
     },
     [form, dispatch]
   );
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', register);
-    return () => formRefValue?.removeEventListener('submit', register);
-  }, [register]);
+    formRefValue?.addEventListener('submit', handleRegister);
+    return () => formRefValue?.removeEventListener('submit', handleRegister);
+  }, [handleRegister]);
 
   return (
     <div className={`${styles.container}`}>

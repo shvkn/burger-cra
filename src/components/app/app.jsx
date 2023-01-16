@@ -21,7 +21,7 @@ import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../services/actions/auth';
+import authActions from '../../services/actions/auth';
 import { fetchIngredients } from '../../services/actions/ingredients';
 import ordersSelectors from '../../services/selectors/orders';
 import OrderInfo from '../order-info/order-info';
@@ -43,7 +43,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-    dispatch(getUser());
+    dispatch(authActions.getUser());
     dispatch(ordersWsActions.connect());
     const accessToken = getAccessToken();
     if (accessToken) {
@@ -87,9 +87,9 @@ function App() {
           <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
           <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
           <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
-          <ProtectedRoute path='/profile/orders/:id'>
-            {order && <OrderPage order={order} />}
-          </ProtectedRoute>
+          {/*<ProtectedRoute path='/profile/orders/:id'>*/}
+          {/*  {order && <OrderPage order={order} />}*/}
+          {/*</ProtectedRoute>*/}
           <ProtectedRoute path='/profile' component={ProfilePage} />
           <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
           <Route path='/feed' component={FeedPage} />
