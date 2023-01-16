@@ -45,34 +45,57 @@ export const getAccessToken = () => {
 };
 
 export const setRefreshToken = (refreshToken) => {
-  setCookie(Tokens.REFRESH_TOKEN, refreshToken);
+  setCookie(Tokens.REFRESH_TOKEN, refreshToken, { path: '/' });
 };
 
 export const setAccessToken = (accessToken) => {
-  setCookie(Tokens.ACCESS_TOKEN, accessToken, { expires: 20 * 60 });
+  setCookie(Tokens.ACCESS_TOKEN, accessToken, { expires: 20 * 60, path: '/' });
 };
 
-export const setCredentials = (accessToken, refreshToken) => {
+export const dropRefreshToken = () => {
+  eraseCookie(Tokens.REFRESH_TOKEN);
+};
+
+export const dropAccessToken = () => {
+  eraseCookie(Tokens.ACCESS_TOKEN);
+};
+
+export const setAuthTokens = ({ accessToken, refreshToken }) => {
   setAccessToken(accessToken);
   setRefreshToken(refreshToken);
 };
 
-export const getOrRefreshAccessToken = async (forceRefresh = false) => {
-  const accessToken = getAccessToken();
-  if (!accessToken || forceRefresh) {
-    eraseCookie(Tokens.ACCESS_TOKEN);
-    await refreshTokens();
-    return getAccessToken();
-  }
-  return accessToken;
+export const dropAuthTokens = () => {
+  dropAccessToken();
+  dropRefreshToken();
 };
-export const extractToken = (token) => token.split('Bearer ')[1];
+
+export const getOrRefreshAccessToken = async (forceRefresh = false) => {
+  try {
+    const accessToken = getAccessToken();
+    if (!accessToken || forceRefresh) {
+      await refreshTokens();
+      return getAccessToken();
+    }
+    return accessToken;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const extractToken = (token) => {
+  try {
+    return token.split('Bearer ')[1];
+  } catch (e) {
+    return undefined;
+  }
+};
 
 export const refreshTokens = async () => {
   try {
     const refreshToken = getRefreshToken();
     if (!refreshToken) {
-      return;
+      return { success: false, message: 'You should be authorized' };
     }
     const {
       success,
@@ -81,14 +104,17 @@ export const refreshTokens = async () => {
       refreshToken: newRefreshToken,
     } = await refreshTokenRequest(refreshToken);
     if (success) {
-      eraseCookie(Tokens.ACCESS_TOKEN);
-      eraseCookie(Tokens.REFRESH_TOKEN);
-      setCredentials(extractToken(newAccessToken), newRefreshToken);
+      const tokens = {
+        success,
+        accessToken: extractToken(newAccessToken),
+        refreshToken: newRefreshToken,
+      };
+      setAuthTokens(tokens);
+      return tokens;
     } else {
-      console.log(message);
+      return { success, message };
     }
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };

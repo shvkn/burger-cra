@@ -1,15 +1,12 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
-import { eraseCookie, extractToken, setCredentials } from '../../utils/utils';
+import { dropAuthTokens, extractToken, setAuthTokens } from '../../utils/utils';
 import { getUser, login, logout, patchUser, register } from '../actions/auth';
-import { Tokens } from '../../utils/constants';
 
 const initialState = { user: null, isLoading: false, error: null, isAuthorized: false };
 const isAnyActionsPending = isPending(getUser, login, logout, patchUser, register);
 const isAuthActionsFulfilled = isFulfilled(login, logout, register);
 const isUserActionsFulfilled = isFulfilled(getUser, patchUser);
 const isAnyActionsRejected = isRejected(getUser, login, logout, patchUser, register);
-const isAuthActionsRejected = isRejected(login, logout, register);
-const isUserActionsRejected = isRejected(getUser, patchUser);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -21,11 +18,10 @@ const authSlice = createSlice({
         const { message, success } = action.payload;
         if (success) {
           state.user = null;
-          eraseCookie(Tokens.ACCESS_TOKEN);
-          eraseCookie(Tokens.REFRESH_TOKEN);
         } else {
-          console.log(message);
+          state.error = message;
         }
+        dropAuthTokens();
         state.isLoading = false;
         state.error = null;
       })
@@ -43,7 +39,7 @@ const authSlice = createSlice({
           state.user = user;
           state.error = null;
           state.isAuthorized = true;
-          setCredentials(extractToken(accessToken), refreshToken);
+          setAuthTokens({ accessToken: extractToken(accessToken), refreshToken });
         } else {
           state.error = message;
           state.isAuthorized = false;
@@ -56,6 +52,7 @@ const authSlice = createSlice({
           state.user = user;
           state.error = null;
         } else {
+          state.user = null;
           state.error = message;
         }
         state.isLoading = false;
