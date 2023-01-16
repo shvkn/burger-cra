@@ -40,7 +40,7 @@ export const getUser = createAsyncThunk('auth/get-user', async () => {
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
-      return { success: false, message: 'Token missed' };
+      return { success: false, message: 'You should be authorized' };
     }
     const response = await getUserRequest(accessToken);
     if (response.success) {
@@ -58,7 +58,7 @@ export const patchUser = createAsyncThunk('auth/patch-user', async (userdata) =>
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
-      return { success: false, message: 'Token missed' };
+      return { success: false, message: 'You should be authorized' };
     }
     const response = await patchUserRequest(userdata, accessToken);
     if (response.success) {
