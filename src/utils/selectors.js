@@ -32,5 +32,5 @@ export const selectUser = (state) => state.auth.user;
 export const selectAuth = (state) => state.auth;
 export const selectIsUserAuthorized = createSelector(selectAuth, (auth) => {
   const refreshToken = getRefreshToken();
-  return refreshToken && auth.user !== null;
+  return auth.user !== null;
 });
