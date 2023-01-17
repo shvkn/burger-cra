@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
-import { IngredientTypes } from '../../utils/constants';
-import IngredientsCategory from '../ingredients-category/ingredients-category';
-import ingredientsSelectors from '../../services/selectors/ingredients';
+import { IngredientTypes } from 'utils/constants';
+import IngredientsCategory from 'components/ingredients-category';
+import ingredientsSelectors from 'services/selectors/ingredients';
 
 const typeBun = IngredientTypes.BUN;
 const typeSauce = IngredientTypes.SAUCE;

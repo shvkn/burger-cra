@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import authActions from '../../services/actions/auth';
-import authSelectors from '../../services/selectors/auth';
+import authActions from 'services/actions/auth';
+import authSelectors from 'services/selectors/auth';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const isAuthorized = useSelector(authSelectors.isAuthorized);

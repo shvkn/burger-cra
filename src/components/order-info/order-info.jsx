@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { orderPropTypes } from '../../utils/prop-types';
+import { orderPropTypes } from 'utils/prop-types';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import styles from './order-info.module.css';
-import OrderStatus from '../order-status/order-status';
-import { OrderStatuses } from '../../utils/constants';
+import OrderStatus from 'components/order-status';
+import { OrderStatuses } from 'utils/constants';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientsSelectors from '../../services/selectors/ingredients';
+import ingredientsSelectors from 'services/selectors/ingredients';
 
 function OrderInfo({ order }) {
   const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);

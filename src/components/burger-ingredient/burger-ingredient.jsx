@@ -1,11 +1,11 @@
-import styles from '../burger-ingredient/burger-ingredient.module.css';
+import styles from './burger-ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import { ingredientPropTypes } from '../../utils/prop-types';
+import { ingredientPropTypes } from 'utils/prop-types';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '../../utils/constants';
+import { ItemTypes } from 'utils/constants';
 import { useSelector } from 'react-redux';
-import { selectIngredientCountById } from '../../utils/selectors';
+import { selectIngredientCountById } from 'utils/selectors';
 import { Link, useLocation } from 'react-router-dom';
 
 function BurgerIngredient({ ingredient }) {

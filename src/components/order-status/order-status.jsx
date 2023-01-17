@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OrderStatuses } from '../../utils/constants';
+import { OrderStatuses } from 'utils/constants';
 
 const dict = {
   done: 'Выполнен',

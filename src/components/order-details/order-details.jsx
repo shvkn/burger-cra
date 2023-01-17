@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './order-details.module.css';
-import doneImage from '../../images/done.svg';
+import doneImage from 'images/done.svg';
 import PropTypes from 'prop-types';
 
 function OrderDetails({ number }) {

@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
-import { orderPropTypes } from '../../utils/prop-types';
+import { orderPropTypes } from 'utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
-import OrderStatus from '../order-status/order-status';
+import OrderStatus from 'components/order-status';
 import PropTypes from 'prop-types';
-import { OrderStatuses } from '../../utils/constants';
-import ingredientsSelectors from '../../services/selectors/ingredients';
+import { OrderStatuses } from 'utils/constants';
+import ingredientsSelectors from 'services/selectors/ingredients';
 import _ from 'lodash';
 
 const ingredientsToRenderCount = 6;

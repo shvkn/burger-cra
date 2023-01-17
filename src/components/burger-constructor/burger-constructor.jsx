@@ -1,19 +1,18 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import styles from './burger-constructor.module.css';
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDrop } from 'react-dnd';
-import SortableElement from '../sortable-element/sortable-element';
-import { IngredientTypes, ItemTypes } from '../../utils/constants';
-
-import { actions as burgerActions } from '../../services/slices/burger';
+import Modal from 'components/modal/modal';
+import OrderDetails from 'components/order-details';
+import SortableElement from 'components/sortable-element';
+import { IngredientTypes, ItemTypes } from 'utils/constants';
+import { actions as burgerActions } from 'services/slices/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
@@ -23,10 +22,10 @@ import {
   selectOrderNumber,
   selectOrderSlice,
   selectTotalPrice,
-} from '../../utils/selectors';
+} from 'utils/selectors';
 import { useHistory } from 'react-router-dom';
-import { makeOrder } from '../../services/actions/order';
-import ingredientsSelectors from '../../services/selectors/ingredients';
+import { makeOrder } from 'services/actions/order';
+import ingredientsSelectors from 'services/selectors/ingredients';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);

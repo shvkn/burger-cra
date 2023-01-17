@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import styles from './feed.module.css';
 import { useSelector } from 'react-redux';
-import ordersSelectors from '../../services/selectors/orders';
+import ordersSelectors from 'services/selectors/orders';
 import _ from 'lodash';
-import Order from '../../components/order/order';
+import Order from 'components/order';
 
 function FeedPage() {
   const orders = useSelector(ordersSelectors.selectAll);

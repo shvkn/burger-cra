@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import '../../style/common.css';
+import 'style/common.css';
 import styles from './app.module.css';
-import AppHeader from '../app-header/app-header';
 import '@ya.praktikum/react-developer-burger-ui-components';
-
 import {
   ConstructorPage,
   FeedPage,
@@ -16,20 +14,21 @@ import {
   ProfilePage,
   RegistrationPage,
   ResetPasswordPage,
-} from '../../pages';
-import ProtectedRoute from '../protected-route/protected-route';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
+} from 'pages';
 import { useDispatch, useSelector } from 'react-redux';
-import authActions from '../../services/actions/auth';
-import { fetchIngredients } from '../../services/actions/ingredients';
-import ordersSelectors from '../../services/selectors/orders';
-import OrderInfo from '../order-info/order-info';
-import { ordersWsActions } from '../../services/slices/orders';
-import ingredientsSelectors from '../../services/selectors/ingredients';
-import { userOrdersSelectors } from '../../services/selectors/user-orders';
-import { getAccessToken } from '../../utils/utils';
-import { userOrdersWsActions } from '../../services/slices/user-orders';
+import ProtectedRoute from 'components/protected-route';
+import IngredientDetails from 'components/ingredient-details';
+import Modal from 'components/modal';
+import OrderInfo from 'components/order-info/order-info';
+import AppHeader from 'components/app-header';
+import authActions from 'services/actions/auth';
+import { fetchIngredients } from 'services/actions/ingredients';
+import ordersSelectors from 'services/selectors/orders';
+import ingredientsSelectors from 'services/selectors/ingredients';
+import { userOrdersSelectors } from 'services/selectors/user-orders';
+import { ordersWsActions } from 'services/slices/orders';
+import { userOrdersWsActions } from 'services/slices/user-orders';
+import { getAccessToken } from 'utils/utils';
 
 function App() {
   const location = useLocation();

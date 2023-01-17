@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import styles from './modal.module.css';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import ModalOverlay from './modal-overlay/modal-overlay';
-import ModalContent from './modal-content/modal-content';
-import ModalHeader from './modal-header/modal-header';
+import ModalOverlay from './modal-overlay';
+import ModalContent from './modal-content';
+import ModalHeader from './modal-header';
 
 const MODAL_ROOT = document.getElementById('react-modals');
 

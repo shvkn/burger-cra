@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../burger-ingredients/burger-ingredients.module.css';
-import BurgerIngredient from '../burger-ingredient/burger-ingredient';
+import styles from './ingredients-category.module.css';
+import BurgerIngredient from 'components/burger-ingredient';
 
 IngredientsCategory.propTypes = {
   items: PropTypes.array.isRequired,
