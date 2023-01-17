@@ -26,9 +26,9 @@ import { fetchIngredients } from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { userOrdersWsActions } from 'services/slices/user-orders';
 import { getAccessToken } from 'utils/utils';
 import ordersWsActions from 'services/actions/orders';
+import userOrdersWsActions from 'services/actions/user-orders';
 
 function App() {
   const location = useLocation();
