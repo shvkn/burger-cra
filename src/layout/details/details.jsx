@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DetailsPageHeader from './details-header';
-import DetailsPageContent from './details-content';
+import DetailsPageHeader from 'layout/details/details-header';
+import DetailsPageContent from 'layout/details/details-content';
 import styles from './details.module.css';
 
 function Details({ children }) {

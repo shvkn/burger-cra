@@ -1,5 +1,5 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { initialState } from '../slices/burger';
+import { initialState } from 'services/slices/burger';
 
 export const setBun = (state, { payload: id }) => {
   delete state.counts[state.bun];

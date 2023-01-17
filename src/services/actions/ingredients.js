@@ -1,5 +1,5 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { getIngredientsRequest } from '../../utils/burger-api';
+import { getIngredientsRequest } from 'utils/burger-api';
 
 export const ingredientsAdapter = createEntityAdapter({
   selectId: ({ _id }) => _id,
