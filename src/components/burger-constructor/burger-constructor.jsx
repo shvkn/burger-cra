@@ -24,7 +24,7 @@ import {
   selectTotalPrice,
 } from 'utils/selectors';
 import { useHistory } from 'react-router-dom';
-import { makeOrder } from 'services/actions/order';
+import orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
 
 function BurgerConstructor() {
@@ -84,7 +84,7 @@ function BurgerConstructor() {
     } else {
       const burgerIngredientsIds = burgerIngredients.map(({ id }) => id);
       handleOpenModal();
-      dispatch(makeOrder([burgerBunId, ...burgerIngredientsIds]));
+      dispatch(orderActions.makeOrder([burgerBunId, ...burgerIngredientsIds]));
     }
   };
   const handleMove = (hoverIndex, dragIndex) => {

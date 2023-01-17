@@ -6,7 +6,9 @@ import {
   reset,
   setBun,
 } from 'services/actions/burger';
-import { makeOrder } from 'services/actions/order';
+import orderActions from 'services/actions/order';
+
+const { makeOrder } = orderActions;
 
 export const initialState = {
   bun: null,

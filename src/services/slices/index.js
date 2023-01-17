@@ -3,9 +3,10 @@ import ingredients from './ingredients';
 import burger from './burger';
 import order from './order';
 import auth from './auth';
-import orders, { ordersWsActions } from './orders';
+import orders from './orders';
 import userOrders, { userOrdersWsActions } from './user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
+import ordersWsActions from 'services/actions/orders';
 
 export default configureStore({
   reducer: {
