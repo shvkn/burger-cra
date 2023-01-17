@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../page.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
-import { getResetCodeRequest } from '../../utils/auth-api';
+import { getResetCodeRequest } from 'utils/auth-api';
 
 function ForgotPasswordPage() {
   const [form, setValue] = useState({ email: '' });

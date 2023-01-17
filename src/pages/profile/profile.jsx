@@ -8,10 +8,10 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from '../../utils/selectors';
-import authActions from '../../services/actions/auth';
-import { userOrdersSelectors } from '../../services/selectors/user-orders';
-import Order from '../../components/order/order';
+import { selectUser } from 'utils/selectors';
+import authActions from 'services/actions/auth';
+import userOrdersSelectors from 'services/selectors/user-orders';
+import Order from 'components/order/order';
 import _ from 'lodash';
 
 const linkCN = (isActive) => {

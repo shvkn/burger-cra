@@ -1,7 +1,7 @@
 import React from 'react';
-import Details from '../../layouts/details/details';
-import OrderInfo from '../../components/order-info/order-info';
-import { orderPropTypes } from '../../utils/prop-types';
+import Details from 'layout/details/details';
+import OrderInfo from 'components/order-info/order-info';
+import { orderPropTypes } from 'utils/prop-types';
 
 function OrderPage({ order }) {
   return (

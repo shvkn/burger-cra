@@ -1,4 +1,4 @@
-import { ingredientsAdapter } from '../actions/ingredients';
+import { ingredientsAdapter } from 'services/actions/ingredients';
 import { createSelector } from '@reduxjs/toolkit';
 
 const ingredientsSlice = (state) => state.ingredients;

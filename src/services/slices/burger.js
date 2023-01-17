@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addIngredient, moveIngredient, removeIngredient, reset, setBun } from '../actions/burger';
-import { makeOrder } from '../actions/order';
+import {
+  addIngredient,
+  moveIngredient,
+  removeIngredient,
+  reset,
+  setBun,
+} from 'services/actions/burger';
+import { makeOrder } from 'services/actions/order';
 
 export const initialState = {
   bun: null,

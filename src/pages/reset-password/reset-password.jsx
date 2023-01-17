@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../page.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { resetPasswordRequest } from '../../utils/auth-api';
+import { resetPasswordRequest } from 'utils/auth-api';
 
 function ResetPasswordPage() {
   const [form, setValue] = useState({ password: '', token: '' });

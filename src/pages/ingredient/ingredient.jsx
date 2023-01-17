@@ -1,7 +1,7 @@
 import React from 'react';
-import IngredientDetails from '../../components/ingredient-details/ingredient-details';
-import { ingredientPropTypes } from '../../utils/prop-types';
-import Details from '../../layouts/details/details';
+import IngredientDetails from 'components/ingredient-details';
+import { ingredientPropTypes } from 'utils/prop-types';
+import Details from 'layout/details';
 
 function IngredientPage({ ingredient }) {
   return (

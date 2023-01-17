@@ -1,6 +1,6 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
-import { dropAuthTokens, extractToken, setAuthTokens } from '../../utils/utils';
-import authActions from '../actions/auth';
+import { dropAuthTokens, extractToken, setAuthTokens } from 'utils/utils';
+import authActions from 'services/actions/auth';
 
 const { getUser, login, logout, patchUser, register } = authActions;
 const initialState = { user: null, isLoading: false, error: null, isAuthorized: false };

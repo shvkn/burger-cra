@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchIngredients, ingredientsAdapter } from '../actions/ingredients';
+import { fetchIngredients, ingredientsAdapter } from 'services/actions/ingredients';
 
 const initialState = ingredientsAdapter.getInitialState({ status: 'idle', error: null });
 

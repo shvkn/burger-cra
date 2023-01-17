@@ -1,4 +1,4 @@
-import { NORMA_API } from './constants';
+import { NORMA_API } from 'utils/constants';
 
 const processResponse = (response) => {
   return response.json();

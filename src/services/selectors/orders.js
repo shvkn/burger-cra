@@ -1,6 +1,6 @@
-import { ordersEntityAdapter } from '../slices/orders';
+import { ordersEntityAdapter } from 'services/slices/orders';
 import { createSelector } from '@reduxjs/toolkit';
-import ingredientsSelectors from './ingredients';
+import ingredientsSelectors from 'services/selectors/ingredients';
 
 const ordersSlice = (state) => state.orders;
 

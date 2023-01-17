@@ -1,5 +1,5 @@
-import { Tokens } from './constants';
-import { refreshTokenRequest } from './auth-api';
+import { Tokens } from 'utils/constants';
+import { refreshTokenRequest } from 'utils/auth-api';
 
 export function setCookie(name, value, props) {
   props = props || {};
