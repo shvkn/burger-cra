@@ -25,7 +25,7 @@ import authActions from 'services/actions/auth';
 import { fetchIngredients } from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { userOrdersSelectors } from 'services/selectors/user-orders';
+import userOrdersSelectors from 'services/selectors/user-orders';
 import { ordersWsActions } from 'services/slices/orders';
 import { userOrdersWsActions } from 'services/slices/user-orders';
 import { getAccessToken } from 'utils/utils';
@@ -54,19 +54,15 @@ function App() {
     history.goBack();
   };
 
-  const matchFeedOrderId = useRouteMatch({ path: '/feed/:id', exact: true });
-  const matchUserOrderId = useRouteMatch({ path: '/profile/orders/:id', exact: true });
   const matchIngredientId = useRouteMatch({ path: '/ingredient/:id', exact: true });
-
+  const matchOrderId = useRouteMatch({ path: '/(profile/orders|feed)/:id', exact: true });
   const order = useMemo(() => {
-    const match = matchFeedOrderId ?? matchUserOrderId;
-    if (!match) {
+    if (!matchOrderId) {
       return null;
     }
-    const id = match.params.id;
-    const orders = matchFeedOrderId ? feedOrders : matchUserOrderId ? userOrders : null;
-    return orders ? orders[id] : null;
-  }, [matchFeedOrderId, matchUserOrderId, feedOrders, userOrders]);
+    const id = matchOrderId.params.id;
+    return feedOrders[id] ?? userOrders[id];
+  }, [matchOrderId, feedOrders, userOrders]);
 
   const ingredient = useMemo(() => {
     if (!matchIngredientId) {
