@@ -1,5 +1,5 @@
-import { ingredientsAdapter } from 'services/actions/ingredients';
 import { createSelector } from '@reduxjs/toolkit';
+import { ingredientsAdapter } from 'services/slices/ingredients';
 
 const ingredientsSlice = (state) => state.ingredients;
 

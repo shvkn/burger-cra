@@ -1,5 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchIngredients, ingredientsAdapter } from 'services/actions/ingredients';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import ingredientsActions from 'services/actions/ingredients';
+
+const { fetchIngredients } = ingredientsActions;
+
+const ingredientsAdapter = createEntityAdapter({
+  selectId: ({ _id }) => _id,
+});
 
 const initialState = ingredientsAdapter.getInitialState({ status: 'idle', error: null });
 
@@ -24,4 +30,5 @@ const ingredients = createSlice({
   },
 });
 
+export { ingredientsAdapter };
 export default ingredients.reducer;

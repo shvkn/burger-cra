@@ -22,7 +22,7 @@ import Modal from 'components/modal';
 import OrderInfo from 'components/order-info/order-info';
 import AppHeader from 'components/app-header';
 import authActions from 'services/actions/auth';
-import { fetchIngredients } from 'services/actions/ingredients';
+import ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
@@ -41,7 +41,7 @@ function App() {
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(ingredientsActions.fetchIngredients());
     dispatch(authActions.getUser());
     dispatch(ordersWsActions.connect());
     const accessToken = getAccessToken();
