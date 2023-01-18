@@ -7,7 +7,7 @@ import {
 import styles from '../page.module.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import authActions from 'services/actions/auth';
+import * as authActions from 'services/actions/auth';
 
 function LoginPage() {
   const [form, setValue] = useState({ email: '', password: '' });

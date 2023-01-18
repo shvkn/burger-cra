@@ -2,24 +2,24 @@ import { ordersEntityAdapter } from 'services/slices/orders';
 import { createSelector } from '@reduxjs/toolkit';
 import ingredientsSelectors from 'services/selectors/ingredients';
 
-const ordersSlice = (state) => state.orders;
+const selectOrders = (state) => state.orders;
 
-const { selectIds, selectEntities, selectAll, selectTotal, selectById } =
-  ordersEntityAdapter.getSelectors(ordersSlice);
+const { selectIds, selectEntities, selectAll, selectById } =
+  ordersEntityAdapter.getSelectors(selectOrders);
 
 const selectOrderById = (id) => (state) => selectById(state, id);
 
-const isSucceeded = createSelector(ordersSlice, (orders) => orders.status === 'succeeded');
+const selectIsSucceeded = createSelector(selectOrders, (orders) => orders.status === 'succeeded');
 
-const isFailed = createSelector(ordersSlice, (orders) => orders.status === 'failed');
+const selectIsFailed = createSelector(selectOrders, (orders) => orders.status === 'failed');
 
-const isLoading = createSelector(ordersSlice, (orders) => orders.status === 'loading');
+const selectIsLoading = createSelector(selectOrders, (orders) => orders.status === 'loading');
 
-const total = createSelector(ordersSlice, (orders) => orders.total);
+const selectTotal = createSelector(selectOrders, (orders) => orders.total);
 
-const totalToday = createSelector(ordersSlice, (orders) => orders.totalToday);
+const selectTotalToday = createSelector(selectOrders, (orders) => orders.totalToday);
 
-const ingredients = (id) =>
+const selectIngredients = (id) =>
   createSelector(
     [selectOrderById(id), ingredientsSelectors.selectEntities],
     (order, ingredientsEntities) => {
@@ -29,9 +29,9 @@ const ingredients = (id) =>
     }
   );
 
-const totalPrice = (id) =>
+const selectTotalPrice = (id) =>
   createSelector(
-    [ingredients(id), ingredientsSelectors.selectEntities],
+    [selectIngredients(id), ingredientsSelectors.selectEntities],
     (orderIngredients, ingredientsEntities) => {
       return orderIngredients.reduce((total, ingredient) => {
         return total + ingredientsEntities[ingredient._id].price;
@@ -40,19 +40,18 @@ const totalPrice = (id) =>
   );
 
 const ordersSelectors = {
-  selectIds,
-  selectEntities,
   selectAll,
-  selectTotal,
   selectById,
+  selectEntities,
+  selectIds,
+  selectIngredients,
+  selectIsFailed,
+  selectIsLoading,
+  selectIsSucceeded,
   selectOrderById,
-  isSucceeded,
-  isFailed,
-  isLoading,
-  total,
-  totalToday,
-  ingredients,
-  totalPrice,
+  selectTotal,
+  selectTotalPrice,
+  selectTotalToday,
 };
 
 export default ordersSelectors;

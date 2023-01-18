@@ -12,20 +12,20 @@ import Modal from 'components/modal/modal';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { IngredientTypes, ItemTypes } from 'utils/constants';
-import { actions as burgerActions } from 'services/slices/burger';
+import * as burgerActions from 'services/actions/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
   selectIsBurgerBunEmpty,
   selectIsBurgerIngredientsEmpty,
-  selectIsUserAuthorized,
   selectOrderNumber,
   selectOrderSlice,
   selectTotalPrice,
 } from 'utils/selectors';
 import { useHistory } from 'react-router-dom';
-import { makeOrder } from 'services/actions/order';
+import * as orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
+import authSelectors from 'services/selectors/auth';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
@@ -44,7 +44,7 @@ function BurgerConstructor() {
   const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);
 
-  const isAuthorized = useSelector(selectIsUserAuthorized);
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
 
   const isOrderValid = useMemo(
     () => !isBunEmpty && !isIngredientsEmpty,
@@ -84,7 +84,13 @@ function BurgerConstructor() {
     } else {
       const burgerIngredientsIds = burgerIngredients.map(({ id }) => id);
       handleOpenModal();
-      dispatch(makeOrder([burgerBunId, ...burgerIngredientsIds]));
+      dispatch(orderActions.makeOrder([burgerBunId, ...burgerIngredientsIds, burgerBunId]))
+        .unwrap()
+        .then((response) => {
+          if (response.success) {
+            dispatch(burgerActions.reset());
+          }
+        });
     }
   };
   const handleMove = (hoverIndex, dragIndex) => {

@@ -1,12 +1,15 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { dropAuthTokens, extractToken, setAuthTokens } from 'utils/utils';
-import authActions from 'services/actions/auth';
+import { getUser, login, logout, patchUser, register } from 'services/actions/auth';
+import { AuthStatuses } from 'utils/constants';
 
-const { getUser, login, logout, patchUser, register } = authActions;
-const initialState = { user: null, isLoading: false, error: null, isAuthorized: false };
+const initialState = {
+  user: null,
+  status: AuthStatuses.NOT_AUTHORIZED,
+  error: null,
+};
 const isAnyActionsPending = isPending(getUser, login, logout, patchUser, register);
 const isAuthActionsFulfilled = isFulfilled(login, logout, register);
-const isUserActionsFulfilled = isFulfilled(getUser, patchUser);
 const isAnyActionsRejected = isRejected(getUser, login, logout, patchUser, register);
 
 const authSlice = createSlice({
@@ -23,40 +26,38 @@ const authSlice = createSlice({
           state.error = message;
         }
         dropAuthTokens();
-        state.isLoading = false;
-        state.error = null;
+        state.status = AuthStatuses.NOT_AUTHORIZED;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        const { success, user, message } = action.payload;
+        if (success) {
+          state.status = AuthStatuses.AUTHORIZED;
+          state.user = user;
+        } else {
+          state.status = AuthStatuses.NOT_AUTHORIZED;
+          state.user = null;
+          state.error = message;
+        }
       })
       .addMatcher(isAnyActionsPending, (state) => {
-        state.isLoading = true;
+        state.status = AuthStatuses.LOADING;
         state.error = null;
       })
       .addMatcher(isAnyActionsRejected, (state, { error }) => {
-        state.isLoading = false;
+        state.status = AuthStatuses.NOT_AUTHORIZED;
         state.error = error;
       })
       .addMatcher(isAuthActionsFulfilled, (state, action) => {
         const { success, message, user, accessToken, refreshToken } = action.payload;
         if (success) {
+          state.status = AuthStatuses.AUTHORIZED;
           state.user = user;
-          state.error = null;
-          state.isAuthorized = true;
           setAuthTokens({ accessToken: extractToken(accessToken), refreshToken });
         } else {
-          state.error = message;
-          state.isAuthorized = false;
-        }
-        state.isLoading = false;
-      })
-      .addMatcher(isUserActionsFulfilled, (state, action) => {
-        const { success, user, message } = action.payload;
-        if (success) {
-          state.user = user;
-          state.error = null;
-        } else {
+          state.status = AuthStatuses.NOT_AUTHORIZED;
           state.user = null;
           state.error = message;
         }
-        state.isLoading = false;
       });
   },
 });

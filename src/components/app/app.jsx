@@ -21,14 +21,14 @@ import IngredientDetails from 'components/ingredient-details';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info/order-info';
 import AppHeader from 'components/app-header';
-import authActions from 'services/actions/auth';
-import { fetchIngredients } from 'services/actions/ingredients';
+import * as authActions from 'services/actions/auth';
+import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { ordersWsActions } from 'services/slices/orders';
-import { userOrdersWsActions } from 'services/slices/user-orders';
 import { getAccessToken } from 'utils/utils';
+import * as ordersWsActions from 'services/actions/orders';
+import * as userOrdersWsActions from 'services/actions/user-orders';
 
 function App() {
   const location = useLocation();
@@ -41,7 +41,7 @@ function App() {
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(ingredientsActions.fetchIngredients());
     dispatch(authActions.getUser());
     dispatch(ordersWsActions.connect());
     const accessToken = getAccessToken();

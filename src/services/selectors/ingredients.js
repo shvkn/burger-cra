@@ -1,7 +1,7 @@
-import { ingredientsAdapter } from 'services/actions/ingredients';
 import { createSelector } from '@reduxjs/toolkit';
+import { ingredientsAdapter } from 'services/slices/ingredients';
 
-const ingredientsSlice = (state) => state.ingredients;
+const selectIngredients = (state) => state.ingredients;
 
 const {
   selectIds,
@@ -9,19 +9,22 @@ const {
   selectAll,
   selectTotal,
   selectById: _selectById,
-} = ingredientsAdapter.getSelectors(ingredientsSlice);
+} = ingredientsAdapter.getSelectors(selectIngredients);
 
 const selectById = (id) => (state) => _selectById(state, id);
 
-const isSucceeded = createSelector(
-  ingredientsSlice,
+const selectIsSucceeded = createSelector(
+  selectIngredients,
   (ingredients) => ingredients.status === 'succeeded'
 );
 
-const isFailed = createSelector(ingredientsSlice, (ingredients) => ingredients.status === 'failed');
+const selectIsFailed = createSelector(
+  selectIngredients,
+  (ingredients) => ingredients.status === 'failed'
+);
 
-const isLoading = createSelector(
-  ingredientsSlice,
+const selectIsLoading = createSelector(
+  selectIngredients,
   (ingredients) => ingredients.status === 'loading'
 );
 
@@ -31,9 +34,9 @@ const ingredientsSelectors = {
   selectAll,
   selectTotal,
   selectById,
-  isSucceeded,
-  isFailed,
-  isLoading,
+  selectIsSucceeded,
+  selectIsFailed,
+  selectIsLoading,
 };
 
 export default ingredientsSelectors;

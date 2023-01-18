@@ -8,9 +8,9 @@ import BurgerConstructor from 'components/burger-constructor';
 import ingredientsSelectors from 'services/selectors/ingredients';
 
 function ConstructorPage() {
-  const isIngredientsSucceeded = useSelector(ingredientsSelectors.isSucceeded);
-  const isIngredientsFailed = useSelector(ingredientsSelectors.isFailed);
-  const isIngredientsLoading = useSelector(ingredientsSelectors.isLoading);
+  const isIngredientsSucceeded = useSelector(ingredientsSelectors.selectIsSucceeded);
+  const isIngredientsFailed = useSelector(ingredientsSelectors.selectIsFailed);
+  const isIngredientsLoading = useSelector(ingredientsSelectors.selectIsLoading);
   return (
     <>
       {(isIngredientsLoading || isIngredientsFailed) && (

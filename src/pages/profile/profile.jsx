@@ -8,11 +8,11 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from 'utils/selectors';
-import authActions from 'services/actions/auth';
+import * as authActions from 'services/actions/auth';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import Order from 'components/order/order';
 import _ from 'lodash';
+import authSelectors from 'services/selectors/auth';
 
 const linkCN = (isActive) => {
   return `${styles.link} text text_type_main-medium ${
@@ -22,7 +22,7 @@ const linkCN = (isActive) => {
 
 function ProfilePage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const user = useSelector(selectUser);
+  const user = useSelector(authSelectors.selectUser);
   const history = useHistory();
   const { url, path } = useRouteMatch();
   const isFormChanged = user?.name !== form.name || user?.email !== form.email;
