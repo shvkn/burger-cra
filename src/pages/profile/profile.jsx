@@ -22,7 +22,7 @@ const linkCN = (isActive) => {
 
 function ProfilePage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const user = useSelector(authSelectors.user);
+  const user = useSelector(authSelectors.selectUser);
   const history = useHistory();
   const { url, path } = useRouteMatch();
   const isFormChanged = user?.name !== form.name || user?.email !== form.email;

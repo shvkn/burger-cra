@@ -1,11 +1,11 @@
 import { userOrdersEntityAdapter } from 'services/slices/user-orders';
 
-const userOrdersSlice = (state) => state.userOrders;
+const selectUserOrders = (state) => state.userOrders;
 
 const { selectIds, selectEntities, selectAll, selectTotal, selectById } =
-  userOrdersEntityAdapter.getSelectors(userOrdersSlice);
+  userOrdersEntityAdapter.getSelectors(selectUserOrders);
 
-const selectOrderById = (id) => (state) => selectById(state, id);
+const selectUserOrderById = (id) => (state) => selectById(state, id);
 
 const userOrdersSelectors = {
   selectIds,
@@ -13,7 +13,7 @@ const userOrdersSelectors = {
   selectAll,
   selectTotal,
   selectById,
-  selectOrderById,
+  selectOrderById: selectUserOrderById,
 };
 
 export default userOrdersSelectors;

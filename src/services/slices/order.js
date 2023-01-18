@@ -5,7 +5,7 @@ const { makeOrder } = orderActions;
 
 const initialState = {
   number: null,
-  isLoading: false,
+  status: 'idle',
   error: null,
 };
 
@@ -15,16 +15,16 @@ const order = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(makeOrder.pending, (state) => {
-        state.isLoading = true;
+        state.status = 'loading';
         state.error = null;
       })
       .addCase(makeOrder.rejected, (state, { error }) => {
-        state.isLoading = false;
+        state.status = 'failed';
         state.error = error;
       })
       .addCase(makeOrder.fulfilled, (state, { payload: { order } }) => {
         state.number = order.number;
-        state.isLoading = false;
+        state.status = 'succeeded';
         state.error = null;
       });
   },

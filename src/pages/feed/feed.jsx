@@ -7,8 +7,8 @@ import Order from 'components/order';
 
 function FeedPage() {
   const orders = useSelector(ordersSelectors.selectAll);
-  const total = useSelector(ordersSelectors.total);
-  const totalToday = useSelector(ordersSelectors.totalToday);
+  const total = useSelector(ordersSelectors.selectTotal);
+  const totalToday = useSelector(ordersSelectors.selectTotalToday);
 
   const sortedOrders = useMemo(() => {
     return _.orderBy(orders, 'createdAt', 'desc');

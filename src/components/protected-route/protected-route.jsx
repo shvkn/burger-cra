@@ -6,8 +6,8 @@ import authActions from 'services/actions/auth';
 import authSelectors from 'services/selectors/auth';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
-  const isAuthorized = useSelector(authSelectors.isAuthorized);
-  const isAuthLoading = useSelector(authSelectors.isLoading);
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
+  const isAuthLoading = useSelector(authSelectors.selectIsLoading);
 
   const dispatch = useDispatch();
   useEffect(() => {

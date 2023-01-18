@@ -44,7 +44,7 @@ function BurgerConstructor() {
   const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);
 
-  const isAuthorized = useSelector(authSelectors.isAuthorized);
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
 
   const isOrderValid = useMemo(
     () => !isBunEmpty && !isIngredientsEmpty,
