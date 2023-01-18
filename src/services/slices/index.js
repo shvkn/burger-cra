@@ -6,8 +6,8 @@ import auth from './auth';
 import orders from './orders';
 import userOrders from './user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
-import ordersWsActions from 'services/actions/orders';
-import userOrdersWsActions from 'services/actions/user-orders';
+import * as ordersWsActions from 'services/actions/orders';
+import * as userOrdersWsActions from 'services/actions/user-orders';
 
 export default configureStore({
   reducer: {

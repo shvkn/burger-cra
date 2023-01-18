@@ -1,9 +1,8 @@
 import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
 import { dropAuthTokens, extractToken, setAuthTokens } from 'utils/utils';
-import authActions from 'services/actions/auth';
+import { getUser, login, logout, patchUser, register } from 'services/actions/auth';
 import { AuthStatuses } from 'utils/constants';
 
-const { getUser, login, logout, patchUser, register } = authActions;
 const initialState = {
   user: null,
   status: AuthStatuses.NOT_AUTHORIZED,

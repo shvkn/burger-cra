@@ -29,11 +29,14 @@ const selectIsIngredientsSelected = createSelector(
 
 const selectCountById = (id) => createSelector(selectCounts, (counts) => counts[id]);
 
-const selectPrice = createSelector([selectBunIngredient, selectIngredients], (bun, ingredients) => {
-  const ingredientsPrice = ingredients.reduce((s, ingredient) => s + ingredient?.price, 0);
-  const bunPrice = 2 * (bun?.price ?? 0);
-  return ingredientsPrice + bunPrice;
-});
+const selectTotalPrice = createSelector(
+  [selectBunIngredient, selectIngredients],
+  (bun, ingredients) => {
+    const ingredientsPrice = ingredients.reduce((s, ingredient) => s + ingredient?.price, 0);
+    const bunPrice = 2 * (bun?.price ?? 0);
+    return ingredientsPrice + bunPrice;
+  }
+);
 
 const burgerSelectors = {
   selectBunIngredient,
@@ -43,7 +46,7 @@ const burgerSelectors = {
   selectIngredientsIds,
   selectIsBunSelected,
   selectIsIngredientsSelected,
-  selectPrice,
+  selectTotalPrice,
 };
 
 export default burgerSelectors;

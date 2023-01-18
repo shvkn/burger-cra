@@ -1,7 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import ingredientsActions from 'services/actions/ingredients';
-
-const { fetchIngredients } = ingredientsActions;
+import { fetchIngredients } from 'services/actions/ingredients';
 
 const ingredientsAdapter = createEntityAdapter({
   selectId: ({ _id }) => _id,

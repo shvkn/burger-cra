@@ -23,7 +23,7 @@ import {
   selectTotalPrice,
 } from 'utils/selectors';
 import { useHistory } from 'react-router-dom';
-import orderActions from 'services/actions/order';
+import * as orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import authSelectors from 'services/selectors/auth';
 

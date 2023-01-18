@@ -21,14 +21,14 @@ import IngredientDetails from 'components/ingredient-details';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info/order-info';
 import AppHeader from 'components/app-header';
-import authActions from 'services/actions/auth';
-import ingredientsActions from 'services/actions/ingredients';
+import * as authActions from 'services/actions/auth';
+import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import { getAccessToken } from 'utils/utils';
-import ordersWsActions from 'services/actions/orders';
-import userOrdersWsActions from 'services/actions/user-orders';
+import * as ordersWsActions from 'services/actions/orders';
+import * as userOrdersWsActions from 'services/actions/user-orders';
 
 function App() {
   const location = useLocation();

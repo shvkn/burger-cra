@@ -1,9 +1,9 @@
 import { createAction, nanoid } from '@reduxjs/toolkit';
 
-export const setBun = createAction('BURGER/SET_BUN');
-export const addIngredient = createAction('BURGER/ADD_INGREDIENT', (id) => {
+export const setBun = createAction('burger/set-bun');
+export const addIngredient = createAction('burger/add-ingredient', (id) => {
   return { payload: { id, uid: nanoid() } };
 });
-export const removeIngredient = createAction('BURGER/REMOVE_INGREDIENT');
-export const moveIngredient = createAction('BURGER/MOVE_INGREDIENT');
-export const reset = createAction('BURGER/RESET');
+export const removeIngredient = createAction('burger/remove-ingredient');
+export const moveIngredient = createAction('burger/move-ingredient');
+export const reset = createAction('burger/reset');

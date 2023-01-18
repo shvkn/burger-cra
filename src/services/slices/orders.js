@@ -1,7 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import ordersWsActions from 'services/actions/orders';
-
-const { close, connect, getMessage, open, sendMessage } = ordersWsActions;
+import { close, connect, getMessage, open, sendMessage } from 'services/actions/orders';
 
 const ordersEntityAdapter = createEntityAdapter({
   selectId: ({ _id }) => _id,

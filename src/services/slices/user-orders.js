@@ -1,7 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import userOrdersWsActions from 'services/actions/user-orders';
-
-const { close, connect, getMessage, open, sendMessage } = userOrdersWsActions;
+import { close, connect, getMessage, open, sendMessage } from 'services/actions/user-orders';
 
 const userOrdersEntityAdapter = createEntityAdapter({ selectId: ({ _id }) => _id });
 
@@ -13,13 +11,13 @@ const userOrdersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(connect, (state, action) => {
+      .addCase(connect, (state, _) => {
         state.status = 'loading';
       })
-      .addCase(open, (state, action) => {
+      .addCase(open, (state, _) => {
         state.status = 'succeeded';
       })
-      .addCase(close, (state, action) => {
+      .addCase(close, (state, _) => {
         state.status = 'idle';
       })
       .addCase(getMessage, (state, { payload }) => {
@@ -36,7 +34,7 @@ const userOrdersSlice = createSlice({
           throw new Error(errorMessage);
         }
       })
-      .addCase(sendMessage, (state, action) => {});
+      .addCase(sendMessage, () => {});
   },
 });
 

@@ -9,7 +9,7 @@ import {
 
 import { getOrRefreshAccessToken, getRefreshToken } from 'utils/utils';
 
-const login = createAsyncThunk('auth/login', async (userdata) => {
+export const login = createAsyncThunk('auth/login', async (userdata) => {
   try {
     return await loginRequest(userdata);
   } catch (e) {
@@ -18,7 +18,7 @@ const login = createAsyncThunk('auth/login', async (userdata) => {
   }
 });
 
-const register = createAsyncThunk('auth/register', async (userdata) => {
+export const register = createAsyncThunk('auth/register', async (userdata) => {
   try {
     return registerUserRequest(userdata);
   } catch (e) {
@@ -27,7 +27,7 @@ const register = createAsyncThunk('auth/register', async (userdata) => {
   }
 });
 
-const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     const refreshToken = getRefreshToken();
     return logoutRequest(refreshToken);
@@ -37,7 +37,7 @@ const logout = createAsyncThunk('auth/logout', async () => {
   }
 });
 
-const getUser = createAsyncThunk('auth/get-user', async () => {
+export const getUser = createAsyncThunk('auth/get-user', async () => {
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
@@ -55,7 +55,7 @@ const getUser = createAsyncThunk('auth/get-user', async () => {
   }
 });
 
-const patchUser = createAsyncThunk('auth/patch-user', async (userdata) => {
+export const patchUser = createAsyncThunk('auth/patch-user', async (userdata) => {
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
@@ -72,13 +72,3 @@ const patchUser = createAsyncThunk('auth/patch-user', async (userdata) => {
     throw e;
   }
 });
-
-const authActions = {
-  login,
-  register,
-  logout,
-  getUser,
-  patchUser,
-};
-
-export default authActions;

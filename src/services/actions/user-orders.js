@@ -1,10 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 
-const connect = createAction('userOrders/ws-connect');
-const open = createAction('userOrders/ws-open');
-const close = createAction('userOrders/ws-close');
-const getMessage = createAction('userOrders/ws-getMessage');
-const sendMessage = createAction('userOrders/ws-sendMessage');
+export const connect = createAction('userOrders/websocket/connect');
+export const open = createAction('userOrders/websocket/open');
+export const close = createAction('userOrders/websocket/close');
+export const getMessage = createAction('userOrders/websocket/get-message');
+export const sendMessage = createAction('userOrders/websocket/send-message');
 
 const userOrdersWsActions = {
   close,
