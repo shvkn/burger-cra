@@ -1,28 +1,9 @@
-import { nanoid } from '@reduxjs/toolkit';
-import { initialState } from '../slices/burger';
+import { createAction, nanoid } from '@reduxjs/toolkit';
 
-export const setBun = (state, { payload: id }) => {
-  delete state.counts[state.bun];
-  state.bun = id;
-  state.counts[id] = 2;
-};
-export const addIngredient = {
-  reducer: (state, { payload: { id, uid } }) => {
-    state.ingredients.push({ id, uid });
-    state.counts[id] = state.counts[id] + 1 || 1;
-  },
-  prepare: (id) => {
-    return { payload: { id, uid: nanoid() } };
-  },
-};
-export const removeIngredient = (state, { payload: index }) => {
-  const { id } = state.ingredients[index];
-  state.ingredients.splice(index, 1);
-  state.counts[id] = state.counts[id] - 1;
-  if (state.counts[id] <= 0) delete state.counts[id];
-};
-export const moveIngredient = (state, { payload: { hoverIndex, dragIndex } }) => {
-  const [dragElement] = state.ingredients.splice(dragIndex, 1);
-  state.ingredients.splice(hoverIndex, 0, dragElement);
-};
-export const reset = (state) => (state = { ...initialState });
+export const setBun = createAction('BURGER/SET_BUN');
+export const addIngredient = createAction('BURGER/ADD_INGREDIENT', (id) => {
+  return { payload: { id, uid: nanoid() } };
+});
+export const removeIngredient = createAction('BURGER/REMOVE_INGREDIENT');
+export const moveIngredient = createAction('BURGER/MOVE_INGREDIENT');
+export const reset = createAction('BURGER/RESET');

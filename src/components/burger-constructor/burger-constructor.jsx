@@ -12,7 +12,7 @@ import Modal from 'components/modal/modal';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { IngredientTypes, ItemTypes } from 'utils/constants';
-import { actions as burgerActions } from 'services/slices/burger';
+import * as burgerActions from 'services/actions/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
@@ -84,7 +84,13 @@ function BurgerConstructor() {
     } else {
       const burgerIngredientsIds = burgerIngredients.map(({ id }) => id);
       handleOpenModal();
-      dispatch(orderActions.makeOrder([burgerBunId, ...burgerIngredientsIds]));
+      dispatch(orderActions.makeOrder([burgerBunId, ...burgerIngredientsIds, burgerBunId]))
+        .unwrap()
+        .then((response) => {
+          if (response.success) {
+            dispatch(burgerActions.reset());
+          }
+        });
     }
   };
   const handleMove = (hoverIndex, dragIndex) => {
