@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { getRefreshToken } from './utils';
 import ingredientsSelectors from '../services/selectors/ingredients';
 export const selectOrderSlice = (state) => state.order;
 
@@ -27,10 +26,3 @@ export const selectIsBurgerIngredientsEmpty = createSelector(
   selectBurgerIngredients,
   (ingredients) => ingredients.length === 0
 );
-
-export const selectUser = (state) => state.auth.user;
-export const selectAuth = (state) => state.auth;
-export const selectIsUserAuthorized = createSelector(selectAuth, (auth) => {
-  const refreshToken = getRefreshToken();
-  return auth.user !== null;
-});

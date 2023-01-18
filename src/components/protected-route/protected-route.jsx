@@ -7,12 +7,16 @@ import authSelectors from 'services/selectors/auth';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const isAuthorized = useSelector(authSelectors.isAuthorized);
+  const isAuthLoading = useSelector(authSelectors.isLoading);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(authActions.getUser());
   }, [dispatch]);
 
-  return (
+  return isAuthLoading ? (
+    <p>Loading...</p>
+  ) : (
     <Route
       {...rest}
       render={({ location }) => {

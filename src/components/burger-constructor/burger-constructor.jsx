@@ -18,7 +18,6 @@ import {
   selectBurgerIngredients,
   selectIsBurgerBunEmpty,
   selectIsBurgerIngredientsEmpty,
-  selectIsUserAuthorized,
   selectOrderNumber,
   selectOrderSlice,
   selectTotalPrice,
@@ -26,6 +25,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
+import authSelectors from 'services/selectors/auth';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
@@ -44,7 +44,7 @@ function BurgerConstructor() {
   const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);
 
-  const isAuthorized = useSelector(selectIsUserAuthorized);
+  const isAuthorized = useSelector(authSelectors.isAuthorized);
 
   const isOrderValid = useMemo(
     () => !isBunEmpty && !isIngredientsEmpty,

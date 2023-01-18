@@ -5,8 +5,9 @@ import {
   logoutRequest,
   patchUserRequest,
   registerUserRequest,
-} from '../../utils/auth-api';
-import { getOrRefreshAccessToken, getRefreshToken } from '../../utils/utils';
+} from 'utils/auth-api';
+
+import { getOrRefreshAccessToken, getRefreshToken } from 'utils/utils';
 
 const login = createAsyncThunk('auth/login', async (userdata) => {
   try {

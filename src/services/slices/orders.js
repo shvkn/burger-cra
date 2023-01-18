@@ -15,13 +15,13 @@ const ordersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(connect, (state, action) => {
+      .addCase(connect, (state) => {
         state.status = 'loading';
       })
-      .addCase(open, (state, action) => {
+      .addCase(open, (state) => {
         state.status = 'succeeded';
       })
-      .addCase(close, (state, action) => {
+      .addCase(close, (state) => {
         state.status = 'idle';
       })
       .addCase(getMessage, (state, { payload }) => {
@@ -38,7 +38,7 @@ const ordersSlice = createSlice({
           throw new Error(errorMessage);
         }
       })
-      .addCase(sendMessage, (state, action) => {});
+      .addCase(sendMessage, () => {});
   },
 });
 
