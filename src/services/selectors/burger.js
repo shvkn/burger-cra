@@ -30,9 +30,12 @@ const selectIsIngredientsSelected = createSelector(
 const selectCountById = (id) => createSelector(selectCounts, (counts) => counts[id]);
 
 const selectTotalPrice = createSelector(
-  [selectBunIngredient, selectIngredients],
-  (bun, ingredients) => {
-    const ingredientsPrice = ingredients.reduce((s, ingredient) => s + ingredient?.price, 0);
+  [selectBunIngredient, selectIngredients, selectCounts],
+  (bun, ingredients, counts) => {
+    const ingredientsPrice = ingredients.reduce(
+      (s, ingredient) => s + ingredient?.price * counts[ingredient?._id] ?? 0,
+      0
+    );
     const bunPrice = 2 * (bun?.price ?? 0);
     return ingredientsPrice + bunPrice;
   }
