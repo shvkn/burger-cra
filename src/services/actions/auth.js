@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { close as closeUserOrdersWebsocket } from 'services/actions/user-orders';
 import {
   getUserRequest,
   loginRequest,
@@ -27,9 +28,10 @@ export const register = createAsyncThunk('auth/register', async (userdata) => {
   }
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
   try {
     const refreshToken = getRefreshToken();
+    dispatch(closeUserOrdersWebsocket());
     return logoutRequest(refreshToken);
   } catch (e) {
     console.log(e);
@@ -37,10 +39,11 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   }
 });
 
-export const getUser = createAsyncThunk('auth/get-user', async () => {
+export const getUser = createAsyncThunk('auth/get-user', async (_, { dispatch }) => {
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
+      dispatch(closeUserOrdersWebsocket());
       return { success: false, message: 'You should be authorized' };
     }
     const response = await getUserRequest(accessToken);
@@ -55,10 +58,11 @@ export const getUser = createAsyncThunk('auth/get-user', async () => {
   }
 });
 
-export const patchUser = createAsyncThunk('auth/patch-user', async (userdata) => {
+export const patchUser = createAsyncThunk('auth/patch-user', async (userdata, { dispatch }) => {
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
+      dispatch(closeUserOrdersWebsocket());
       return { success: false, message: 'You should be authorized' };
     }
     const response = await patchUserRequest(userdata, accessToken);
