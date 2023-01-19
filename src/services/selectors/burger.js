@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import ingredientsSelectors from 'services/selectors/ingredients';
 
-const selectBunId = (state) => state.bun;
-const selectIngredientsIds = (state) => state.ingredients;
-const selectCounts = (state) => state.counts;
+const selectBunId = (state) => state.burger.bun;
+const selectIngredientsIds = (state) => state.burger.ingredients;
+const selectCounts = (state) => state.burger.counts;
 const selectIngredientsEntities = (state) => ingredientsSelectors.selectEntities(state);
 
 const selectBunIngredient = createSelector(

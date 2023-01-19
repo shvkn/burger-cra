@@ -3,9 +3,7 @@ import { AuthStatuses } from 'utils/constants';
 
 const selectAuth = (state) => state.auth;
 
-const selectUser = createSelector(selectAuth, (auth) => {
-  return auth.user;
-});
+const selectUser = (state) => state.auth.user;
 
 const selectIsAuthorized = createSelector(selectAuth, (auth) => {
   return auth.status === AuthStatuses.AUTHORIZED;
