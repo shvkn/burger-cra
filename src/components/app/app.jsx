@@ -44,6 +44,7 @@ function App() {
     dispatch(ingredientsActions.fetchIngredients());
     dispatch(authActions.getUser());
     dispatch(ordersWsActions.connect());
+    dispatch(userOrdersWsActions.connect());
     const accessToken = getAccessToken();
     if (accessToken) {
       dispatch(userOrdersWsActions.connect({ accessToken }));
