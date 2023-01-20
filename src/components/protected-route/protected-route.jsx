@@ -15,24 +15,20 @@ function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   }, [dispatch]);
 
   return isAuthLoading ? (
+    // TODO Loading Screen
     <p>Loading...</p>
   ) : (
     <Route
       {...rest}
       render={({ location }) => {
-        if (isAuthorized) {
-          return nonAuthOnly ? (
-            <Redirect to={location.state?.from ?? '/'} />
-          ) : (
-            children ?? React.createElement(component)
-          );
-        } else {
-          return nonAuthOnly ? (
-            children ?? React.createElement(component)
-          ) : (
-            <Redirect to={{ pathname: '/login', state: { from: location } }} />
-          );
+        console.log({ nonAuthOnly, isAuthorized });
+        if ((nonAuthOnly && !isAuthorized) || (!nonAuthOnly && isAuthorized)) {
+          return children ?? React.createElement(component);
         }
+        if (!nonAuthOnly && !isAuthorized) {
+          return <Redirect to={'/login'} />;
+        }
+        return <Redirect to={location.state?.from ?? '/'} />;
       }}
     />
   );
