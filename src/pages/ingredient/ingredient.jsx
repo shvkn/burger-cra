@@ -1,18 +1,21 @@
 import React from 'react';
 import IngredientDetails from 'components/ingredient-details';
 import { ingredientPropTypes } from 'utils/prop-types';
-import Details from 'layout/details';
+import DetailsLayout from 'components/details-layout';
+import styles from './ingredient.module.css';
 
 function IngredientPage({ ingredient }) {
   return (
-    <Details>
-      <Details.Header>
-        <p className={'text text_type_main-large'}>Детали ингредиента</p>
-      </Details.Header>
-      <Details.Content>
-        <IngredientDetails ingredient={ingredient} />
-      </Details.Content>
-    </Details>
+    <main className={styles.layout}>
+      <DetailsLayout>
+        <DetailsLayout.Header>
+          <p className={'text text_type_main-large'}>Детали ингредиента</p>
+        </DetailsLayout.Header>
+        <DetailsLayout.Content>
+          <IngredientDetails ingredient={ingredient} />
+        </DetailsLayout.Content>
+      </DetailsLayout>
+    </main>
   );
 }
 

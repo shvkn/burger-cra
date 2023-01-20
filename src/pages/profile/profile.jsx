@@ -67,7 +67,7 @@ function ProfilePage() {
   };
 
   return (
-    <div className={styles.container}>
+    <main className={styles.layout}>
       <div className={styles.sidebar}>
         <ul className={styles.links}>
           <li className={'pt-4 pb-4'}>
@@ -97,7 +97,7 @@ function ProfilePage() {
           </Switch>
         </p>
       </div>
-      <div className={`ml-15`}>
+      <div className={`ml-15 ${styles.content}`}>
         <Switch>
           <Route exact path={path}>
             <form ref={formRef}>
@@ -152,7 +152,7 @@ function ProfilePage() {
           </Route>
         </Switch>
       </div>
-    </div>
+    </main>
   );
 }
 

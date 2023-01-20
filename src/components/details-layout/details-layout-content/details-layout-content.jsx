@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function DetailsContent({ children }) {
+function DetailsLayoutContent({ children }) {
   return <>{children}</>;
 }
 
-DetailsContent.propTypes = {
+DetailsLayoutContent.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default DetailsContent;
+export default DetailsLayoutContent;

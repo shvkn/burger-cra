@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styles from '../page.module.css';
+import styles from './forgot-password.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
 import { getResetCodeRequest } from 'utils/auth-api';
@@ -35,7 +35,7 @@ function ForgotPasswordPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <main className={`${styles.layout}`}>
       <form className={`mb-20`} ref={formRef}>
         <h1 className={'text text_type_main-medium'}>Восстановление пароля</h1>
         <EmailInput
@@ -50,12 +50,12 @@ function ForgotPasswordPage() {
         </Button>
       </form>
       <p className={'text text_type_main-default text_color_inactive'}>
-        Вспомнили пароль?{' '}
-        <Link to='/login' className={`${styles.link} text_color_accent`}>
+        Вспомнили пароль?
+        <Link to='/login' className={`ml-2 ${styles.link} text_color_accent`}>
           Войти
         </Link>
       </p>
-    </div>
+    </main>
   );
 }
 

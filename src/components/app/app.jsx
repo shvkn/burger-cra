@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import 'style/common.css';
-import styles from './app.module.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import {
   ConstructorPage,
@@ -20,7 +19,6 @@ import ProtectedRoute from 'components/protected-route';
 import IngredientDetails from 'components/ingredient-details';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info/order-info';
-import AppHeader from 'components/app-header';
 import * as authActions from 'services/actions/auth';
 import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
@@ -29,6 +27,7 @@ import userOrdersSelectors from 'services/selectors/user-orders';
 import { getAccessToken } from 'utils/utils';
 import * as ordersWsActions from 'services/actions/orders';
 import * as userOrdersWsActions from 'services/actions/user-orders';
+import AppLayout from '../app-layout/app-layout';
 
 function App() {
   const location = useLocation();
@@ -74,56 +73,53 @@ function App() {
   }, [ingredients, matchIngredientId]);
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <main className={`${styles.main}`}>
-        <Switch location={background ?? location}>
-          <Route exact path='/' component={ConstructorPage} />
-          <ProtectedRoute nonAuthOnly path='/login' component={LoginPage} />
-          <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
-          <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
-          <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
-          {/*<ProtectedRoute path='/profile/orders/:id'>*/}
-          {/*  {order && <OrderPage order={order} />}*/}
-          {/*</ProtectedRoute>*/}
-          <ProtectedRoute path='/profile' component={ProfilePage} />
-          <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
-          <Route path='/feed' component={FeedPage} />
-          <Route exact path='/ingredient/:id'>
-            {ingredient && <IngredientPage ingredient={ingredient} />}
+    <AppLayout>
+      <Switch location={background ?? location}>
+        <Route exact path='/' component={ConstructorPage} />
+        <ProtectedRoute nonAuthOnly path='/login' component={LoginPage} />
+        <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
+        <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
+        <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
+        {/*<ProtectedRoute path='/profile/orders/:id'>*/}
+        {/*  {order && <OrderPage order={order} />}*/}
+        {/*</ProtectedRoute>*/}
+        <ProtectedRoute path='/profile' component={ProfilePage} />
+        <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
+        <Route path='/feed' component={FeedPage} />
+        <Route exact path='/ingredient/:id'>
+          {ingredient && <IngredientPage ingredient={ingredient} />}
+        </Route>
+        <Route path='*' component={NotFoundedPage} />
+      </Switch>
+      {background && (
+        <Switch>
+          <Route path='/ingredient/:id'>
+            {ingredient && (
+              <Modal handleClose={handleClose}>
+                <Modal.Header>
+                  <p className={'text text_type_main-large'}>Детали ингредиента</p>
+                </Modal.Header>
+                <Modal.Content>
+                  <IngredientDetails ingredient={ingredient} />
+                </Modal.Content>
+              </Modal>
+            )}
           </Route>
-          <Route path='*' component={NotFoundedPage} />
+          <Route path='/(profile/orders|feed)/:id'>
+            {order && (
+              <Modal handleClose={handleClose}>
+                <Modal.Header>
+                  <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
+                </Modal.Header>
+                <Modal.Content>
+                  <OrderInfo order={order} />
+                </Modal.Content>
+              </Modal>
+            )}
+          </Route>
         </Switch>
-        {background && (
-          <Switch>
-            <Route path='/ingredient/:id'>
-              {ingredient && (
-                <Modal handleClose={handleClose}>
-                  <Modal.Header>
-                    <p className={'text text_type_main-large'}>Детали ингредиента</p>
-                  </Modal.Header>
-                  <Modal.Content>
-                    <IngredientDetails ingredient={ingredient} />
-                  </Modal.Content>
-                </Modal>
-              )}
-            </Route>
-            <Route path='/(profile/orders|feed)/:id'>
-              {order && (
-                <Modal handleClose={handleClose}>
-                  <Modal.Header>
-                    <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
-                  </Modal.Header>
-                  <Modal.Content>
-                    <OrderInfo order={order} />
-                  </Modal.Content>
-                </Modal>
-              )}
-            </Route>
-          </Switch>
-        )}
-      </main>
-    </div>
+      )}
+    </AppLayout>
   );
 }
 

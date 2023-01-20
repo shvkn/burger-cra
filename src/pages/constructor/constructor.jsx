@@ -12,7 +12,7 @@ function ConstructorPage() {
   const isIngredientsFailed = useSelector(ingredientsSelectors.selectIsFailed);
   const isIngredientsLoading = useSelector(ingredientsSelectors.selectIsLoading);
   return (
-    <>
+    <main className={styles.layout}>
       {(isIngredientsLoading || isIngredientsFailed) && (
         <p className={`text text_type_main-large text_color_inactive ${styles.message}`}>
           {isIngredientsLoading
@@ -32,7 +32,7 @@ function ConstructorPage() {
           </DndProvider>
         </>
       )}
-    </>
+    </main>
   );
 }
 

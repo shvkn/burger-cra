@@ -25,7 +25,7 @@ function FeedPage() {
   );
 
   return (
-    <div className={styles.layout}>
+    <main className={styles.layout}>
       <h2 className={`mt-10 mb-5 text text_type_main-medium ${styles.title}`}>Лента заказов</h2>
       <ul className={`${styles.ordersFeed} scroll`}>
         {sortedOrders.map((order) => (
@@ -64,7 +64,7 @@ function FeedPage() {
         <h3 className={`mt-15 text text_type_main-default`}>Выполнено за сегодня:</h3>
         <p className={`text text_type_digits-large ${styles.textShadow}`}>{totalToday}</p>
       </div>
-    </div>
+    </main>
   );
 }
 

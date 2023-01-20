@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styles from '../page.module.css';
+import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { resetPasswordRequest } from 'utils/auth-api';
@@ -40,7 +40,7 @@ function ResetPasswordPage() {
   }
 
   return (
-    <div className={`mt-30 ${styles.container}`}>
+    <main className={`mt-30 ${styles.layout}`}>
       <form className={`mb-20`} ref={formRef}>
         <h1 className={'text text_type_main-medium'}>Восстановление пароля</h1>
         <PasswordInput
@@ -62,12 +62,12 @@ function ResetPasswordPage() {
         </Button>
       </form>
       <p className={'text text_type_main-default text_color_inactive'}>
-        Вспомнили пароль?{' '}
-        <Link to='/login' className={`${styles.link} text_color_accent`}>
+        Вспомнили пароль?
+        <Link to='/login' className={`ml-2 ${styles.link} text_color_accent`}>
           Войти
         </Link>
       </p>
-    </div>
+    </main>
   );
 }
 

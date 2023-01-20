@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styles from '../page.module.css';
+import styles from './registration.module.css';
 import {
   Button,
   EmailInput,
@@ -34,7 +34,7 @@ function RegistrationPage() {
   }, [handleRegister]);
 
   return (
-    <div className={`${styles.container}`}>
+    <main className={`${styles.layout}`}>
       <form className={`mb-20`} ref={formRef}>
         <h1 className={'text text_type_main-medium'}>Регистрация</h1>
         <Input
@@ -63,12 +63,12 @@ function RegistrationPage() {
         </Button>
       </form>
       <p className={'text text_type_main-default text_color_inactive'}>
-        Уже зарегистрированы?{' '}
-        <Link to='/login' className={`${styles.link} text_color_accent`}>
+        Уже зарегистрированы?
+        <Link to='/login' className={`ml-2 ${styles.link} text_color_accent`}>
           Войти
         </Link>
       </p>
-    </div>
+    </main>
   );
 }
 

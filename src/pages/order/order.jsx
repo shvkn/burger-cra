@@ -1,18 +1,21 @@
 import React from 'react';
-import Details from 'layout/details/details';
+import DetailsLayout from 'components/details-layout/details-layout';
 import OrderInfo from 'components/order-info/order-info';
 import { orderPropTypes } from 'utils/prop-types';
+import styles from './order.module.css';
 
 function OrderPage({ order }) {
   return (
-    <Details>
-      <Details.Header>
-        <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
-      </Details.Header>
-      <Details.Content>
-        <OrderInfo order={order} />
-      </Details.Content>
-    </Details>
+    <main className={styles.layout}>
+      <DetailsLayout>
+        <DetailsLayout.Header>
+          <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
+        </DetailsLayout.Header>
+        <DetailsLayout.Content>
+          <OrderInfo order={order} />
+        </DetailsLayout.Content>
+      </DetailsLayout>
+    </main>
   );
 }
 

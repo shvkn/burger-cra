@@ -1,16 +1,23 @@
-.links {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.container {
+.layout {
   display: flex;
   margin-top: 120px;
+  height: 100%;
 }
 
 .sidebar {
-  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.orders {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
 }
 
 .buttons {
@@ -29,9 +36,3 @@
   text-decoration: none;
 }
 
-.orders {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  height: 100%;
-}

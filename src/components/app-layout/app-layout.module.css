@@ -1,14 +1,10 @@
-@import-normalize;
-
-.app {
+.layout {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100vh;
 }
 
-.main {
-  display: flex;
-  align-items: stretch;
+.mainContainer {
   margin: 0 auto;
   overflow: hidden;
   width: 1240px;

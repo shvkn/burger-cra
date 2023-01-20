@@ -4,7 +4,7 @@ import {
   PasswordInput,
   EmailInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from '../page.module.css';
+import styles from './login.module.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as authActions from 'services/actions/auth';
@@ -32,7 +32,7 @@ function LoginPage() {
   }, [handleLogin]);
 
   return (
-    <div className={`${styles.container}`}>
+    <main className={`${styles.layout}`}>
       <form className={`mb-20`} ref={formRef}>
         <h1 className={'text text_type_main-medium'}>Вход</h1>
         <EmailInput
@@ -43,7 +43,7 @@ function LoginPage() {
           placeholder={'E-mail'}
         />
         <PasswordInput
-          extraClass={'mt-6 mb-6'}
+          extraClass={'mb-6'}
           name={'password'}
           value={form.password}
           onChange={onChange}
@@ -56,22 +56,22 @@ function LoginPage() {
       <ul className={styles.links}>
         <li className={'mb-4'}>
           <p className={'text text_type_main-default text_color_inactive'}>
-            Вы новый пользователь?{' '}
-            <Link to='/register' className={`${styles.link} text_color_accent`}>
+            Вы новый пользователь?
+            <Link to='/register' className={`ml-2 ${styles.link} text_color_accent`}>
               Зарегистрироваться
             </Link>
           </p>
         </li>
         <li>
           <p className={'text text_type_main-default text_color_inactive'}>
-            Забыли пароль?{' '}
-            <Link to='/forgot-password' className={`${styles.link} text_color_accent`}>
+            Забыли пароль?
+            <Link to='/forgot-password' className={`ml-2 ${styles.link} text_color_accent`}>
               Восстановить пароль
             </Link>
           </p>
         </li>
       </ul>
-    </div>
+    </main>
   );
 }
 
