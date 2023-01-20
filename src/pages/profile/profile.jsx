@@ -61,14 +61,16 @@ function ProfilePage() {
   };
 
   const handleLogout = (e) => {
-    dispatch(authActions.logout()).then(() => {
-      history.replace({ pathname: '/' });
-    });
+    dispatch(authActions.logout())
+      .unwrap()
+      .then(() => {
+        history.replace({ pathname: '/' });
+      });
   };
 
   return (
     <main className={styles.layout}>
-      <div className={styles.sidebar}>
+      <div className={`mt-30 ${styles.sidebar}`}>
         <ul className={styles.links}>
           <li className={'pt-4 pb-4'}>
             <NavLink exact to={url} className={linkCN}>
@@ -97,10 +99,10 @@ function ProfilePage() {
           </Switch>
         </p>
       </div>
-      <div className={`ml-15 ${styles.content}`}>
+      <div className={`ml-15 mt-10 ${styles.content}`}>
         <Switch>
           <Route exact path={path}>
-            <form ref={formRef}>
+            <form className={'mt-20'} ref={formRef}>
               <Input
                 value={form.name}
                 name={'name'}
@@ -140,7 +142,7 @@ function ProfilePage() {
             </form>
           </Route>
           <Route exact path={`${path}/orders`}>
-            <ul className={`${styles.orders} scroll`}>
+            <ul className={`${styles.ordersList} scroll`}>
               {sortedOrders.map((order) => {
                 return (
                   <li key={order._id} className={'mb-4 mr-2'}>

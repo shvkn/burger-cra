@@ -1,6 +1,6 @@
 .layout {
   display: flex;
-  margin-top: 120px;
+  /*margin-top: 120px;*/
   height: 100%;
 }
 
@@ -13,7 +13,7 @@
   flex-grow: 1;
 }
 
-.orders {
+.ordersList {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -34,5 +34,9 @@
 
 .link {
   text-decoration: none;
+}
+
+.ordersList::-webkit-scrollbar-track {
+  margin-bottom: calc(var(--offset-base-size) * 16);
 }
 

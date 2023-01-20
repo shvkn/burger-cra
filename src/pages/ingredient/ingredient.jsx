@@ -6,7 +6,7 @@ import styles from './ingredient.module.css';
 
 function IngredientPage({ ingredient }) {
   return (
-    <main className={styles.layout}>
+    <main className={`mt-30 ${styles.layout}`}>
       <DetailsLayout>
         <DetailsLayout.Header>
           <p className={'text text_type_main-large'}>Детали ингредиента</p>

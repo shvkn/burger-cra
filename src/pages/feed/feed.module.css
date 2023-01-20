@@ -1,32 +1,32 @@
 .layout {
-  display: grid;
-  grid-template-areas:
-    "title title"
-    "feed dashboard";
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr;
+  display: flex;
   height: 100%;
 }
 
-.title {
-  grid-area: title;
+.feed {
+  display: flex;
+  flex-direction: column;
 }
 
-.dashboard {
-  grid-area: dashboard;
-}
-
-.ordersFeed {
-  grid-area: feed;
-  max-width: 608px;
-  max-height: 100%;
+.ordersList {
+  flex-grow: 1;
+  width: 608px;
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.ordersFeed::-webkit-scrollbar-track {
+.ordersList::-webkit-scrollbar-track {
   margin-bottom: calc(var(--offset-base-size) * 15);
+}
+
+.dashboard {
+  flex-grow: 1;
+}
+
+.dashboardOrdersList {
+  display: flex;
+  height: 370px;
 }
 
 .ordersNumbers {
@@ -47,12 +47,12 @@
   margin-left: 0;
 }
 
-.dashboardOrderList {
-  display: flex;
-}
-
 .textShadow {
   text-shadow: 0 0 16px rgb(51 51 255 / 0.25),
   0 0 8px rgb(51 51 255 / 0.25),
   0 4px 32px rgb(51 51 255 / 0.5);
+}
+
+.message {
+  margin: auto;
 }

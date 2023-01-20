@@ -6,7 +6,7 @@ import styles from './order.module.css';
 
 function OrderPage({ order }) {
   return (
-    <main className={styles.layout}>
+    <main className={`mt-30 ${styles.layout}`}>
       <DetailsLayout>
         <DetailsLayout.Header>
           <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>

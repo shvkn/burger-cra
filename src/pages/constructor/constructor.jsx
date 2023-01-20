@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from 'components/burger-ingredients';
 import BurgerConstructor from 'components/burger-constructor';
 import ingredientsSelectors from 'services/selectors/ingredients';
+import LoadingCurtain from '../../components/loading-curtain/loading-curtain';
 
 function ConstructorPage() {
   const isIngredientsSucceeded = useSelector(ingredientsSelectors.selectIsSucceeded);
@@ -13,13 +14,10 @@ function ConstructorPage() {
   const isIngredientsLoading = useSelector(ingredientsSelectors.selectIsLoading);
   return (
     <main className={styles.layout}>
-      {(isIngredientsLoading || isIngredientsFailed) && (
+      {isIngredientsLoading && <LoadingCurtain />}
+      {isIngredientsFailed && (
         <p className={`text text_type_main-large text_color_inactive ${styles.message}`}>
-          {isIngredientsLoading
-            ? 'Загрузка данных'
-            : isIngredientsFailed
-            ? 'Ошибка загрузки данных'
-            : ''}
+          Ошибка загрузки данных
         </p>
       )}
       {isIngredientsSucceeded && (

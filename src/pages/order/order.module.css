@@ -1,3 +1,4 @@
 .layout {
-  margin: 120px auto 0;
+  display: flex;
+  justify-content: center;
 }
