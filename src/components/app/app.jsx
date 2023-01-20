@@ -24,10 +24,11 @@ import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { getAccessToken } from 'utils/utils';
+import { getAccessToken, getRefreshToken } from 'utils/utils';
 import * as ordersWsActions from 'services/actions/orders';
 import * as userOrdersWsActions from 'services/actions/user-orders';
 import AppLayout from '../app-layout/app-layout';
+import authSelectors from '../../services/selectors/auth';
 
 function App() {
   const location = useLocation();
@@ -39,16 +40,28 @@ function App() {
   const userOrders = useSelector(userOrdersSelectors.selectEntities);
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
 
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
+  const isAuthLoading = useSelector(authSelectors.selectIsLoading);
+
   useEffect(() => {
     dispatch(ingredientsActions.fetchIngredients());
-    dispatch(authActions.getUser());
     dispatch(ordersWsActions.connect());
-    dispatch(userOrdersWsActions.connect());
-    const accessToken = getAccessToken();
-    if (accessToken) {
-      dispatch(userOrdersWsActions.connect({ accessToken }));
-    }
   }, [dispatch]);
+
+  useEffect(() => {
+    const accessToken = getAccessToken();
+    const refreshToken = getRefreshToken();
+    if (!isAuthorized && !isAuthLoading && (accessToken || refreshToken)) {
+      dispatch(authActions.getUser())
+        .unwrap()
+        .then(() => {
+          const accessToken = getAccessToken();
+          if (accessToken) {
+            dispatch(userOrdersWsActions.connect({ accessToken }));
+          }
+        });
+    }
+  }, [dispatch, isAuthorized, isAuthLoading]);
 
   const handleClose = (e) => {
     history.goBack();
@@ -80,21 +93,29 @@ function App() {
         <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
         <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
         <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
-        {/*<ProtectedRoute path='/profile/orders/:id'>*/}
-        {/*  {order && <OrderPage order={order} />}*/}
-        {/*</ProtectedRoute>*/}
-        <ProtectedRoute path='/profile' component={ProfilePage} />
-        <Route path='/feed/:id'>{order && <OrderPage order={order} />}</Route>
+        {order && (
+          <Route path='/feed/:id'>
+            <OrderPage order={order} />
+          </Route>
+        )}
         <Route path='/feed' component={FeedPage} />
-        <Route exact path='/ingredient/:id'>
-          {ingredient && <IngredientPage ingredient={ingredient} />}
-        </Route>
+        {order && (
+          <ProtectedRoute exact path='/profile/orders/:id'>
+            {<OrderPage order={order} />}
+          </ProtectedRoute>
+        )}
+        <ProtectedRoute path='/profile' component={ProfilePage} />
+        {ingredient && (
+          <Route path='/ingredient/:id'>
+            <IngredientPage ingredient={ingredient} />
+          </Route>
+        )}
         <Route path='*' component={NotFoundedPage} />
       </Switch>
       {background && (
         <Switch>
-          <Route path='/ingredient/:id'>
-            {ingredient && (
+          {ingredient && (
+            <Route path='/ingredient/:id'>
               <Modal handleClose={handleClose}>
                 <Modal.Header>
                   <p className={'text text_type_main-large'}>Детали ингредиента</p>
@@ -103,10 +124,10 @@ function App() {
                   <IngredientDetails ingredient={ingredient} />
                 </Modal.Content>
               </Modal>
-            )}
-          </Route>
-          <Route path='/(profile/orders|feed)/:id'>
-            {order && (
+            </Route>
+          )}
+          {order && (
+            <Route path='/(profile/orders|feed)/:id'>
               <Modal handleClose={handleClose}>
                 <Modal.Header>
                   <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
@@ -115,8 +136,8 @@ function App() {
                   <OrderInfo order={order} />
                 </Modal.Content>
               </Modal>
-            )}
-          </Route>
+            </Route>
+          )}
         </Switch>
       )}
     </AppLayout>
