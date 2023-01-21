@@ -40,3 +40,6 @@
   margin-bottom: calc(var(--offset-base-size) * 16);
 }
 
+.form {
+  width: min-content;
+}

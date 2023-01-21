@@ -21,14 +21,17 @@ const linkCN = (isActive) => {
 };
 
 function ProfilePage() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const user = useSelector(authSelectors.selectUser);
-  const history = useHistory();
-  const { url, path } = useRouteMatch();
-  const isFormChanged = user?.name !== form.name || user?.email !== form.email;
   const dispatch = useDispatch();
   const formRef = useRef();
+  const history = useHistory();
+  const { url, path } = useRouteMatch();
+
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const user = useSelector(authSelectors.selectUser);
   const userOrders = useSelector(userOrdersSelectors.selectAll);
+
+  const isFormChanged = user?.name !== form.name || user?.email !== form.email;
+
   const sortedOrders = useMemo(() => {
     return _.orderBy(userOrders, 'createdAt', 'desc');
   }, [userOrders]);
@@ -37,7 +40,7 @@ function ProfilePage() {
     setForm({ name: user.name, email: user.email, password: '' });
   }, [user]);
 
-  const updateUser = useCallback(
+  const handlePatchUser = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(authActions.patchUser(form));
@@ -47,9 +50,9 @@ function ProfilePage() {
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', updateUser);
-    return () => formRefValue?.removeEventListener('submit', updateUser);
-  }, [updateUser]);
+    formRefValue?.addEventListener('submit', handlePatchUser);
+    return () => formRefValue?.removeEventListener('submit', handlePatchUser);
+  }, [handlePatchUser]);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -63,7 +66,7 @@ function ProfilePage() {
   const handleLogout = (e) => {
     dispatch(authActions.logout())
       .unwrap()
-      .then(() => {
+      .finally(() => {
         history.replace({ pathname: '/' });
       });
   };
@@ -102,7 +105,7 @@ function ProfilePage() {
       <div className={`ml-15 mt-10 ${styles.content}`}>
         <Switch>
           <Route exact path={path}>
-            <form className={'mt-20'} ref={formRef}>
+            <form className={`mt-20 ${styles.form}`} ref={formRef}>
               <Input
                 value={form.name}
                 name={'name'}
