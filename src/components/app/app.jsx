@@ -24,10 +24,10 @@ import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { getAccessToken } from 'utils/utils';
 import * as ordersWSActions from 'services/actions/orders';
 import * as userOrdersWSActions from 'services/actions/user-orders';
 import AppLayout from '../app-layout/app-layout';
+import authSelectors from '../../services/selectors/auth';
 
 function App() {
   const location = useLocation();
@@ -38,19 +38,21 @@ function App() {
   const feedOrders = useSelector(ordersSelectors.selectEntities);
   const userOrders = useSelector(userOrdersSelectors.selectEntities);
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
-
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
   useEffect(() => {
     dispatch(ingredientsActions.fetch());
     dispatch(ordersWSActions.connect());
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(authActions.getUser())
       .unwrap()
       .then(() => {
-        const accessToken = getAccessToken();
-        if (accessToken) {
-          dispatch(userOrdersWSActions.connect({ accessToken }));
+        if (isAuthorized) {
+          dispatch(userOrdersWSActions.connect());
         }
       });
-  }, [dispatch]);
+  }, [dispatch, isAuthorized]);
 
   const handleClose = () => {
     history.goBack();

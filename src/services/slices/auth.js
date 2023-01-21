@@ -8,9 +8,9 @@ const initialState = {
   error: null,
 };
 
-const isFulfilledAction = isFulfilled(login, register, logout, getUser, patchUser);
-const isPendingAction = isPending(login, register, logout, getUser, patchUser);
-const isRejectedAction = isRejected(login, register, logout, getUser, patchUser);
+const isFulfilledAction = isFulfilled(login, register, getUser, patchUser);
+const isPendingAction = isPending(login, register, getUser, patchUser);
+const isRejectedAction = isRejected(login, register, getUser, patchUser);
 
 const hasMessage = (action) => !!action.payload?.message;
 const hasSuccessFalse = (action) => action.payload?.success === false;

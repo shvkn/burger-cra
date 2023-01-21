@@ -49,7 +49,7 @@ function LoginPage() {
           onChange={onChange}
           placeholder={'Пароль'}
         />
-        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={handleLogin}>
+        <Button htmlType={'submit'} type={'primary'} size={'large'}>
           Войти
         </Button>
       </form>
