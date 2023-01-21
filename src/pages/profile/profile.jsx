@@ -31,6 +31,7 @@ function ProfilePage() {
   const userOrders = useSelector(userOrdersSelectors.selectAll);
 
   const isFormChanged = user?.name !== form.name || user?.email !== form.email;
+  const isUserOrdersEmpty = useSelector(userOrdersSelectors.selectIsEmpty);
 
   const sortedOrders = useMemo(() => {
     return _.orderBy(userOrders, 'createdAt', 'desc');
@@ -63,7 +64,7 @@ function ProfilePage() {
     setForm({ name: user.name, email: user.email, password: '' });
   };
 
-  const handleLogout = (e) => {
+  const handleLogout = () => {
     dispatch(authActions.logout())
       .unwrap()
       .finally(() => {
@@ -145,15 +146,21 @@ function ProfilePage() {
             </form>
           </Route>
           <Route exact path={`${path}/orders`}>
-            <ul className={`${styles.ordersList} scroll`}>
-              {sortedOrders.map((order) => {
-                return (
-                  <li key={order._id} className={'mb-4 mr-2'}>
-                    <Order order={order} />
-                  </li>
-                );
-              })}
-            </ul>
+            {isUserOrdersEmpty ? (
+              <p className={'mt-30 text text_type_main-default text_color_inactive'}>
+                Здесь пока пусто
+              </p>
+            ) : (
+              <ul className={`${styles.ordersList} scroll`}>
+                {sortedOrders.map((order) => {
+                  return (
+                    <li key={order._id} className={'mb-4 mr-2'}>
+                      <Order order={order} />
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </Route>
         </Switch>
       </div>

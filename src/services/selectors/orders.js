@@ -16,8 +16,8 @@ const selectOrderById = (id) => (state) => selectById(state, id);
 
 const selectIsLoading = createSelector(selectOrders, (orders) => orders.status === 'connecting');
 const selectIsEmpty = createSelector(selectCount, (count) => count === 0);
-const selectTotal = createSelector(selectOrders, (orders) => orders.total);
-const selectTotalToday = createSelector(selectOrders, (orders) => orders.totalToday);
+const selectTotal = (state) => state.orders.total;
+const selectTotalToday = (state) => state.orders.totalToday;
 
 const selectIngredients = (id) =>
   createSelector(
