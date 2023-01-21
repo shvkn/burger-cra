@@ -10,9 +10,8 @@ function FeedPage() {
   const orders = useSelector(ordersSelectors.selectAll);
   const total = useSelector(ordersSelectors.selectTotal);
   const totalToday = useSelector(ordersSelectors.selectTotalToday);
-  const isOrdersOpened = useSelector(ordersSelectors.selectIsOpened);
-  const isOrdersClosed = useSelector(ordersSelectors.selectIsClosed);
-  const isOrdersConnecting = useSelector(ordersSelectors.selectIsConnecting);
+  const isOrdersLoading = useSelector(ordersSelectors.selectIsLoading);
+  const isOrdersEmpty = useSelector(ordersSelectors.selectIsEmpty);
 
   const sortedOrders = useMemo(() => {
     return _.orderBy(orders, 'createdAt', 'desc');
@@ -30,23 +29,25 @@ function FeedPage() {
 
   return (
     <main className={styles.layout}>
-      {isOrdersConnecting && <LoadingCurtain />}
-      {isOrdersClosed && (
-        <p className={`text text_type_main-large text_color_inactive ${styles.message}`}>
-          Ошибка загрузки данных
-        </p>
-      )}
-      {isOrdersOpened && (
+      {isOrdersLoading ? (
+        <LoadingCurtain />
+      ) : (
         <>
           <div className={styles.feed}>
             <h2 className={`mt-10 mb-5 text text_type_main-medium`}>Лента заказов</h2>
-            <ul className={`${styles.ordersList} scroll`}>
-              {sortedOrders.map((order) => (
-                <li key={order._id} className={'mb-4 mr-2'}>
-                  <Order order={order} hideStatus />
-                </li>
-              ))}
-            </ul>
+            {isOrdersEmpty ? (
+              <p className={`text text_type_main-medium text_color_inactive ${styles.message}`}>
+                Здесь пока пусто
+              </p>
+            ) : (
+              <ul className={`${styles.ordersList} scroll`}>
+                {sortedOrders.map((order) => (
+                  <li key={order._id} className={'mb-4 mr-2'}>
+                    <Order order={order} hideStatus />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className={`ml-9 mt-25 ${styles.dashboard}`}>
             <div className={styles.dashboardOrdersList}>

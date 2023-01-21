@@ -4,19 +4,19 @@ import ingredientsSelectors from 'services/selectors/ingredients';
 
 const selectOrders = (state) => state.orders;
 
-const { selectIds, selectEntities, selectAll, selectById } =
-  ordersEntityAdapter.getSelectors(selectOrders);
+const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectById,
+  selectTotal: selectCount,
+} = ordersEntityAdapter.getSelectors(selectOrders);
 
 const selectOrderById = (id) => (state) => selectById(state, id);
 
-const selectIsOpened = createSelector(selectOrders, (orders) => orders.status === 'opened');
-
-const selectIsClosed = createSelector(selectOrders, (orders) => orders.status === 'closed');
-
-const selectIsConnecting = createSelector(selectOrders, (orders) => orders.status === 'connecting');
-
+const selectIsLoading = createSelector(selectOrders, (orders) => orders.status === 'connecting');
+const selectIsEmpty = createSelector(selectCount, (count) => count === 0);
 const selectTotal = createSelector(selectOrders, (orders) => orders.total);
-
 const selectTotalToday = createSelector(selectOrders, (orders) => orders.totalToday);
 
 const selectIngredients = (id) =>
@@ -45,9 +45,8 @@ const ordersSelectors = {
   selectEntities,
   selectIds,
   selectIngredients,
-  selectIsClosed,
-  selectIsConnecting,
-  selectIsOpened,
+  selectIsLoading,
+  selectIsEmpty,
   selectOrderById,
   selectTotal,
   selectTotalPrice,

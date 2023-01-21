@@ -6,11 +6,11 @@
 .feed {
   display: flex;
   flex-direction: column;
+  width: 608px;
 }
 
 .ordersList {
   flex-grow: 1;
-  width: 608px;
   padding: 0;
   margin: 0;
   list-style: none;
