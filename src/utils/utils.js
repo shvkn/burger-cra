@@ -70,10 +70,21 @@ export const dropAuthTokens = () => {
   dropRefreshToken();
 };
 
+export const extractToken = (token) => {
+  try {
+    return token.split('Bearer ')[1];
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const getOrRefreshAccessToken = async (forceRefresh = false) => {
   try {
+    if (forceRefresh) {
+      dropAccessToken();
+    }
     const accessToken = getAccessToken();
-    if (!accessToken || forceRefresh) {
+    if (!accessToken) {
       await refreshTokens();
       return getAccessToken();
     }
@@ -83,38 +94,24 @@ export const getOrRefreshAccessToken = async (forceRefresh = false) => {
   }
 };
 
-export const extractToken = (token) => {
-  try {
-    return token.split('Bearer ')[1];
-  } catch (e) {
-    return undefined;
-  }
-};
-
-export const refreshTokens = async () => {
+export const refreshTokens = () => {
   try {
     const refreshToken = getRefreshToken();
-    if (!refreshToken) {
+    if (refreshToken === undefined) {
       return { success: false, message: 'You should be authorized' };
     }
-    const {
-      success,
-      message,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    } = await refreshTokenRequest(refreshToken);
-    if (success) {
-      const tokens = {
-        success,
-        accessToken: extractToken(newAccessToken),
-        refreshToken: newRefreshToken,
-      };
-      setAuthTokens(tokens);
-      return tokens;
-    } else {
-      return { success, message };
-    }
+    return refreshTokenRequest(refreshToken).then(processAuthResponse);
   } catch (e) {
     throw e;
   }
+};
+
+export const processAuthResponse = (response) => {
+  const { success, accessToken, refreshToken } = response;
+  if (success && !!accessToken && !!refreshToken) {
+    setAuthTokens({ accessToken: extractToken(accessToken), refreshToken });
+  } else {
+    dropAuthTokens();
+  }
+  return response;
 };

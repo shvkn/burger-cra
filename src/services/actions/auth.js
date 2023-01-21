@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { close as closeUserOrdersWebsocket } from 'services/actions/user-orders';
+import * as userOrdersWebsocketActions from 'services/actions/user-orders';
 import {
   getUserRequest,
   loginRequest,
@@ -8,11 +8,16 @@ import {
   registerUserRequest,
 } from 'utils/auth-api';
 
-import { getOrRefreshAccessToken, getRefreshToken } from 'utils/utils';
+import {
+  dropAuthTokens,
+  getOrRefreshAccessToken,
+  getRefreshToken,
+  processAuthResponse,
+} from 'utils/utils';
 
 export const login = createAsyncThunk('auth/login', async (userdata) => {
   try {
-    return await loginRequest(userdata);
+    return loginRequest(userdata).then(processAuthResponse);
   } catch (e) {
     console.log(e);
     throw e;
@@ -21,7 +26,7 @@ export const login = createAsyncThunk('auth/login', async (userdata) => {
 
 export const register = createAsyncThunk('auth/register', async (userdata) => {
   try {
-    return registerUserRequest(userdata);
+    return registerUserRequest(userdata).then(processAuthResponse);
   } catch (e) {
     console.log(e);
     throw e;
@@ -31,7 +36,8 @@ export const register = createAsyncThunk('auth/register', async (userdata) => {
 export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
   try {
     const refreshToken = getRefreshToken();
-    dispatch(closeUserOrdersWebsocket());
+    dispatch(userOrdersWebsocketActions.close());
+    dropAuthTokens();
     return logoutRequest(refreshToken);
   } catch (e) {
     console.log(e);
@@ -43,7 +49,7 @@ export const getUser = createAsyncThunk('auth/get-user', async (_, { dispatch })
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
-      dispatch(closeUserOrdersWebsocket());
+      dispatch(userOrdersWebsocketActions.close());
       return { success: false, message: 'You should be authorized' };
     }
     const response = await getUserRequest(accessToken);
@@ -62,7 +68,7 @@ export const patchUser = createAsyncThunk('auth/patch-user', async (userdata, { 
   try {
     const accessToken = await getOrRefreshAccessToken();
     if (!accessToken) {
-      dispatch(closeUserOrdersWebsocket());
+      dispatch(userOrdersWebsocketActions.close());
       return { success: false, message: 'You should be authorized' };
     }
     const response = await patchUserRequest(userdata, accessToken);

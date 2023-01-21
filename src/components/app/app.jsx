@@ -24,11 +24,10 @@ import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { getAccessToken, getRefreshToken } from 'utils/utils';
-import * as ordersWsActions from 'services/actions/orders';
-import * as userOrdersWsActions from 'services/actions/user-orders';
+import { getAccessToken } from 'utils/utils';
+import * as ordersWSActions from 'services/actions/orders';
+import * as userOrdersWSActions from 'services/actions/user-orders';
 import AppLayout from '../app-layout/app-layout';
-import authSelectors from '../../services/selectors/auth';
 
 function App() {
   const location = useLocation();
@@ -40,30 +39,20 @@ function App() {
   const userOrders = useSelector(userOrdersSelectors.selectEntities);
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
 
-  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
-  const isAuthLoading = useSelector(authSelectors.selectIsLoading);
-
   useEffect(() => {
     dispatch(ingredientsActions.fetchIngredients());
-    dispatch(ordersWsActions.connect());
+    dispatch(ordersWSActions.connect());
+    dispatch(authActions.getUser())
+      .unwrap()
+      .then(() => {
+        const accessToken = getAccessToken();
+        if (accessToken) {
+          dispatch(userOrdersWSActions.connect({ accessToken }));
+        }
+      });
   }, [dispatch]);
 
-  useEffect(() => {
-    const accessToken = getAccessToken();
-    const refreshToken = getRefreshToken();
-    if (!isAuthorized && !isAuthLoading && (accessToken || refreshToken)) {
-      dispatch(authActions.getUser())
-        .unwrap()
-        .then(() => {
-          const accessToken = getAccessToken();
-          if (accessToken) {
-            dispatch(userOrdersWsActions.connect({ accessToken }));
-          }
-        });
-    }
-  }, [dispatch, isAuthorized, isAuthLoading]);
-
-  const handleClose = (e) => {
+  const handleClose = () => {
     history.goBack();
   };
 

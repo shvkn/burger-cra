@@ -19,8 +19,3 @@ export const OrderStatuses = {
   CREATED: 'created',
   PENDING: 'pending',
 };
-export const AuthStatuses = {
-  AUTHORIZED: 'authorized',
-  NOT_AUTHORIZED: 'not-authorized',
-  LOADING: 'loading',
-};
