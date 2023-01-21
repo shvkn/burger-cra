@@ -40,7 +40,7 @@ function App() {
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
 
   useEffect(() => {
-    dispatch(ingredientsActions.fetchIngredients());
+    dispatch(ingredientsActions.fetch());
     dispatch(ordersWSActions.connect());
     dispatch(authActions.getUser())
       .unwrap()

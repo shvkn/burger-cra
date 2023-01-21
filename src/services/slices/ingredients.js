@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { fetchIngredients } from 'services/actions/ingredients';
+import { fetch } from 'services/actions/ingredients';
 
 const ingredientsAdapter = createEntityAdapter({
   selectId: ({ _id }) => _id,
@@ -12,18 +12,18 @@ const ingredients = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIngredients.pending, (state) => {
+      .addCase(fetch.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchIngredients.rejected, (state, { error }) => {
+      .addCase(fetch.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = error;
+        state.error = action.error;
       })
-      .addCase(fetchIngredients.fulfilled, (state, { payload: { data } }) => {
+      .addCase(fetch.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.error = null;
-        ingredientsAdapter.setAll(state, data);
+        ingredientsAdapter.setAll(state, action.payload.data);
       });
   },
 });
