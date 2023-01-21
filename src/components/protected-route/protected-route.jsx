@@ -9,12 +9,13 @@ function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
   const isAuthLoading = useSelector(authSelectors.selectIsLoading);
 
-  return isAuthLoading ? (
-    <LoadingCurtain />
-  ) : (
+  return (
     <Route
       {...rest}
       render={({ location }) => {
+        if (isAuthLoading && !isAuthorized) {
+          return <LoadingCurtain />;
+        }
         if ((nonAuthOnly && !isAuthorized) || (!nonAuthOnly && isAuthorized)) {
           return children ?? React.createElement(component);
         }
