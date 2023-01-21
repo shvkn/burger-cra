@@ -9,15 +9,18 @@ const WebSocketMiddleware = (wsUrl, wsActions) => {
     }
     if (socket) {
       socket.onopen = (event) => {
-        store.dispatch(wsActions.open(event.type));
+        store.dispatch(wsActions.onOpen(event.type));
       };
       socket.onclose = (event) => {
-        store.dispatch(wsActions.close(event.type));
+        store.dispatch(wsActions.onClose(event.type));
       };
       socket.onmessage = (event) => {
         const { data } = event;
-        store.dispatch(wsActions.getMessage(JSON.parse(data)));
+        store.dispatch(wsActions.onGetMessage(JSON.parse(data)));
       };
+      if (wsActions.close.match(action)) {
+        socket.close();
+      }
       if (wsActions.sendMessage.match(action)) {
         socket.send(JSON.stringify(payload));
       }

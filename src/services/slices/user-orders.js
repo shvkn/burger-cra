@@ -1,9 +1,9 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { close, connect, getMessage, open, sendMessage } from 'services/actions/user-orders';
+import { connect, onGetMessage, onClose, onOpen, sendMessage } from 'services/actions/user-orders';
 
 const userOrdersEntityAdapter = createEntityAdapter({ selectId: ({ _id }) => _id });
 
-const initialState = userOrdersEntityAdapter.getInitialState({ status: 'idle', error: null });
+const initialState = userOrdersEntityAdapter.getInitialState({ status: 'closed', error: null });
 
 const userOrdersSlice = createSlice({
   name: 'user-orders',
@@ -12,26 +12,21 @@ const userOrdersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(connect, (state, _) => {
-        state.status = 'loading';
+        state.status = 'connecting';
       })
-      .addCase(open, (state, _) => {
-        state.status = 'succeeded';
+      .addCase(onOpen, (state, _) => {
+        state.status = 'opened';
       })
-      .addCase(close, (state, _) => {
-        state.status = 'idle';
-      })
-      .addCase(getMessage, (state, { payload }) => {
-        const { success, orders, total, totalToday } = payload;
+      .addCase(onClose, (state, _) => initialState)
+      .addCase(onGetMessage, (state, action) => {
+        const { success, orders, total, totalToday } = action.payload;
         if (success) {
-          state.status = 'succeeded';
           userOrdersEntityAdapter.setMany(state, orders);
           state.total = total;
           state.totalToday = totalToday;
+          state.error = null;
         } else {
-          const errorMessage = 'Ошибка получения ленты заказов пользователя';
-          state.status = 'failed';
-          state.error = errorMessage;
-          throw new Error(errorMessage);
+          state.error = 'Ошибка получения ленты заказов пользователя';
         }
       })
       .addCase(sendMessage, () => {});

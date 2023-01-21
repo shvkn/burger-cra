@@ -6,8 +6,9 @@ import auth from './auth';
 import orders from './orders';
 import userOrders from './user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
-import * as ordersWsActions from 'services/actions/orders';
-import * as userOrdersWsActions from 'services/actions/user-orders';
+import * as ordersWSActions from 'services/actions/orders';
+import * as userOrdersWSActions from 'services/actions/user-orders';
+import { NORMA_WS_API } from '../../utils/constants';
 
 export default configureStore({
   reducer: {
@@ -20,7 +21,7 @@ export default configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
-      WebSocketMiddleware('wss://norma.nomoreparties.space/orders/all', ordersWsActions),
-      WebSocketMiddleware('wss://norma.nomoreparties.space/orders', userOrdersWsActions)
+      WebSocketMiddleware(`${NORMA_WS_API}/orders/all`, ordersWSActions),
+      WebSocketMiddleware(`${NORMA_WS_API}/orders`, userOrdersWSActions)
     ),
 });

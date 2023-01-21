@@ -9,11 +9,11 @@ const { selectIds, selectEntities, selectAll, selectById } =
 
 const selectOrderById = (id) => (state) => selectById(state, id);
 
-const selectIsSucceeded = createSelector(selectOrders, (orders) => orders.status === 'succeeded');
+const selectIsOpened = createSelector(selectOrders, (orders) => orders.status === 'opened');
 
-const selectIsFailed = createSelector(selectOrders, (orders) => orders.status === 'failed');
+const selectIsClosed = createSelector(selectOrders, (orders) => orders.status === 'closed');
 
-const selectIsLoading = createSelector(selectOrders, (orders) => orders.status === 'loading');
+const selectIsConnecting = createSelector(selectOrders, (orders) => orders.status === 'connecting');
 
 const selectTotal = createSelector(selectOrders, (orders) => orders.total);
 
@@ -45,9 +45,9 @@ const ordersSelectors = {
   selectEntities,
   selectIds,
   selectIngredients,
-  selectIsFailed,
-  selectIsLoading,
-  selectIsSucceeded,
+  selectIsClosed,
+  selectIsConnecting,
+  selectIsOpened,
   selectOrderById,
   selectTotal,
   selectTotalPrice,
