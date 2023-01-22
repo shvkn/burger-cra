@@ -66,6 +66,7 @@ export const setAuthTokens = ({ accessToken, refreshToken }) => {
 };
 
 export const dropAuthTokens = () => {
+  console.log('drop');
   dropAccessToken();
   dropRefreshToken();
 };

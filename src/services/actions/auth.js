@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as userOrdersWebsocketActions from 'services/actions/user-orders';
 import {
+  getResetCodeRequest,
   getUserRequest,
   loginRequest,
   logoutRequest,
   patchUserRequest,
   registerUserRequest,
+  resetPasswordRequest,
 } from 'utils/auth-api';
 
 import {
@@ -36,9 +38,27 @@ export const register = createAsyncThunk('auth/register', async (userdata) => {
 export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
   try {
     const refreshToken = getRefreshToken();
-    dispatch(userOrdersWebsocketActions.close());
     dropAuthTokens();
+    dispatch(userOrdersWebsocketActions.close());
     return logoutRequest(refreshToken);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+});
+
+export const resetPassword = createAsyncThunk('auth/reset-password', (payload) => {
+  try {
+    return resetPasswordRequest(payload);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+});
+
+export const getResetCode = createAsyncThunk('auth/get-reset-code', (payload) => {
+  try {
+    return getResetCodeRequest(payload);
   } catch (e) {
     console.log(e);
     throw e;

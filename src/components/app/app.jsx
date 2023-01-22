@@ -83,7 +83,7 @@ function App() {
         <ProtectedRoute nonAuthOnly path='/login' component={LoginPage} />
         <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
         <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
-        <ProtectedRoute nonAuthOnly path='/reset-password' components={ResetPasswordPage} />
+        <ProtectedRoute nonAuthOnly path='/reset-password' component={ResetPasswordPage} />
         {order && (
           <Route path='/feed/:id'>
             <OrderPage order={order} />

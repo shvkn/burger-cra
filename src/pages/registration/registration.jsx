@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './registration.module.css';
 import {
   Button,
@@ -7,19 +7,26 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'services/actions/auth';
+import authSelectors from '../../services/selectors/auth';
 
 function RegistrationPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
   const dispatch = useDispatch();
   const formRef = useRef();
 
+  const error = useSelector(authSelectors.selectError);
+
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = useCallback(
+  const isUserExist = useMemo(() => {
+    return error === 'User already exists';
+  }, [error]);
+
+  const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(authActions.register(form));
@@ -29,9 +36,9 @@ function RegistrationPage() {
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleRegister);
-    return () => formRefValue?.removeEventListener('submit', handleRegister);
-  }, [handleRegister]);
+    formRefValue?.addEventListener('submit', handleSubmit);
+    return () => formRefValue?.removeEventListener('submit', handleSubmit);
+  }, [handleSubmit]);
 
   return (
     <main className={`${styles.layout}`}>
@@ -50,6 +57,8 @@ function RegistrationPage() {
           value={form.email}
           onChange={onChange}
           placeholder={'E-mail'}
+          error={isUserExist}
+          errorText={'Пользователь с таким e-mail уже существует'}
         />
         <PasswordInput
           extraClass={'mt-6 mb-6'}
@@ -58,7 +67,7 @@ function RegistrationPage() {
           onChange={onChange}
           placeholder={'Пароль'}
         />
-        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={handleRegister}>
+        <Button htmlType={'submit'} type={'primary'} size={'large'}>
           Зарегистрироваться
         </Button>
       </form>

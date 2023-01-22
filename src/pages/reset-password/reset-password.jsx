@@ -1,39 +1,45 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { resetPasswordRequest } from 'utils/auth-api';
+import { useDispatch, useSelector } from 'react-redux';
+import authSelectors from 'services/selectors/auth';
+import * as authActions from 'services/actions/auth';
 
 function ResetPasswordPage() {
   const [form, setValue] = useState({ password: '', token: '' });
   const history = useHistory();
   const formRef = useRef();
+  const dispatch = useDispatch();
+  const error = useSelector(authSelectors.selectError);
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const resetPassword = useCallback(
+  const isIncorrectToken = useMemo(() => {
+    return error === 'Incorrect reset token';
+  }, [error]);
+
+  const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      resetPasswordRequest(form).then(({ success, message }) => {
-        if (success) {
+      const resetPassword = () => dispatch(authActions.resetPassword(form)).unwrap();
+      const goNext = (response) => {
+        if (response.success) {
           history.replace({ pathname: '/login' });
-        } else {
-          if (message === 'Incorrect reset token') {
-            alert('Введен неверный код');
-          }
         }
-      });
+      };
+      resetPassword().then(goNext);
     },
-    [form, history]
+    [dispatch, history, form]
   );
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', resetPassword);
-    return () => formRefValue?.removeEventListener('submit', resetPassword);
-  }, [resetPassword]);
+    formRefValue?.addEventListener('submit', handleSubmit);
+    return () => formRefValue?.removeEventListener('submit', handleSubmit);
+  }, [handleSubmit]);
 
   if (history.location.state?.from?.pathname !== '/forgot-password') {
     return <Redirect to='/' />;
@@ -56,8 +62,10 @@ function ResetPasswordPage() {
           value={form.token}
           onChange={onChange}
           placeholder={'Введите код из письма'}
+          error={isIncorrectToken}
+          errorText={'Введен неверный код'}
         />
-        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={resetPassword}>
+        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={handleSubmit}>
           Сохранить
         </Button>
       </form>

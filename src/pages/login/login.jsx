@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Button,
   PasswordInput,
@@ -6,18 +6,25 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'services/actions/auth';
+import authSelectors from '../../services/selectors/auth';
 
 function LoginPage() {
   const [form, setValue] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
   const formRef = useRef();
+  const error = useSelector(authSelectors.selectError);
+
+  const isInvalidCredentials = useMemo(() => {
+    return error === 'email or password are incorrect';
+  }, [error]);
+
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = useCallback(
+  const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
       dispatch(authActions.login(form));
@@ -27,9 +34,9 @@ function LoginPage() {
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleLogin);
-    return () => formRefValue?.removeEventListener('submit', handleLogin);
-  }, [handleLogin]);
+    formRefValue?.addEventListener('submit', handleSubmit);
+    return () => formRefValue?.removeEventListener('submit', handleSubmit);
+  }, [handleSubmit]);
 
   return (
     <main className={`${styles.layout}`}>
@@ -48,6 +55,8 @@ function LoginPage() {
           value={form.password}
           onChange={onChange}
           placeholder={'Пароль'}
+          error={isInvalidCredentials}
+          errorText={'Неверный логин или пароль'}
         />
         <Button htmlType={'submit'} type={'primary'} size={'large'}>
           Войти

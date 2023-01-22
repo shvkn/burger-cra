@@ -12,10 +12,13 @@ const selectIsLoading = createSelector(selectAuth, (auth) => {
   return auth.status === 'loading';
 });
 
+const selectError = (state) => state.auth.error;
+
 const authSelectors = {
   selectIsAuthorized,
   selectIsLoading,
   selectUser,
+  selectError,
 };
 
 export default authSelectors;

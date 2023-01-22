@@ -1,5 +1,5 @@
 import { createSlice, isAllOf, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
-import { login, register, logout, getUser, patchUser } from 'services/actions/auth';
+import { login, register, logout, getUser, patchUser, resetPassword } from 'services/actions/auth';
 
 const initialState = {
   user: null,
@@ -8,12 +8,12 @@ const initialState = {
   error: null,
 };
 
-const isFulfilledAction = isFulfilled(login, register, getUser, patchUser);
-const isPendingAction = isPending(login, register, getUser, patchUser);
-const isRejectedAction = isRejected(login, register, getUser, patchUser);
+const isPendingAction = isPending(login, register, logout, getUser, patchUser, resetPassword);
+const isFulfilledAction = isFulfilled(login, register, logout, getUser, patchUser, resetPassword);
+const isRejectedAction = isRejected(login, register, logout, getUser, patchUser, resetPassword);
 
 const hasMessage = (action) => !!action.payload?.message;
-const hasSuccessFalse = (action) => action.payload?.success === false;
+const hasError = (action) => action.payload?.success === false;
 const hasUser = (action) => !!action.payload?.user;
 
 const authSlice = createSlice({
@@ -22,26 +22,29 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(logout.pending, () => initialState)
       .addMatcher(isFulfilledAction, (state) => {
         state.status = 'succeeded';
       })
       .addMatcher(isPendingAction, (state) => {
-        state.status = 'loading';
         state.error = null;
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.status = 'failed';
         state.error = action.error;
       })
-      .addMatcher(isAllOf(isFulfilledAction, hasSuccessFalse, hasMessage), (state, action) => {
+      .addMatcher(isAllOf(isFulfilledAction, hasError, hasMessage), (state, action) => {
         state.error = action.payload.message;
+        // TODO Подумать!
         state.isAuthorized = false;
       })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {
         state.user = action.payload.user;
         state.isAuthorized = true;
-      })
-      .addMatcher(isPending(logout), () => initialState);
+      });
   },
 });
 
