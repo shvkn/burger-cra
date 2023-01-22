@@ -19,15 +19,12 @@ import ProtectedRoute from 'components/protected-route';
 import IngredientDetails from 'components/ingredient-details';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info/order-info';
-import * as authActions from 'services/actions/auth';
 import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import * as ordersWSActions from 'services/actions/orders';
-import * as userOrdersWSActions from 'services/actions/user-orders';
 import AppLayout from '../app-layout/app-layout';
-import authSelectors from '../../services/selectors/auth';
 
 function App() {
   const location = useLocation();
@@ -38,21 +35,11 @@ function App() {
   const feedOrders = useSelector(ordersSelectors.selectEntities);
   const userOrders = useSelector(userOrdersSelectors.selectEntities);
   const ingredients = useSelector(ingredientsSelectors.selectEntities);
-  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
+
   useEffect(() => {
     dispatch(ingredientsActions.fetch());
     dispatch(ordersWSActions.connect());
   }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(authActions.getUser())
-      .unwrap()
-      .then(() => {
-        if (isAuthorized) {
-          dispatch(userOrdersWSActions.connect());
-        }
-      });
-  }, [dispatch, isAuthorized]);
 
   const handleClose = () => {
     history.goBack();

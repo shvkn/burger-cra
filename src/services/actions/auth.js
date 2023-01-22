@@ -38,9 +38,10 @@ export const register = createAsyncThunk('auth/register', async (userdata) => {
 export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
   try {
     const refreshToken = getRefreshToken();
-    dropAuthTokens();
-    dispatch(userOrdersWebsocketActions.close());
-    return logoutRequest(refreshToken);
+    return logoutRequest(refreshToken).finally(() => {
+      dispatch(userOrdersWebsocketActions.close());
+      dropAuthTokens();
+    });
   } catch (e) {
     console.log(e);
     throw e;

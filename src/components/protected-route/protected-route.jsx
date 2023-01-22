@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import authSelectors from 'services/selectors/auth';
 import LoadingCurtain from '../loading-curtain/loading-curtain';
+import * as authActions from '../../services/actions/auth';
+import * as userOrdersWSActions from '../../services/actions/user-orders';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
   const isAuthLoading = useSelector(authSelectors.selectIsLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(authActions.getUser())
+      .unwrap()
+      .then(() => {
+        if (isAuthorized) {
+          dispatch(userOrdersWSActions.connect());
+        }
+      });
+  }, [dispatch, isAuthorized]);
 
   return (
     <Route
