@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '../spinner/spinner';
+import Spinner from 'components/spinner/spinner';
 import styles from './loading-curtain.module.css';
 
 function LoadingCurtain() {

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ordersSelectors from 'services/selectors/orders';
 import _ from 'lodash';
 import Order from 'components/order';
-import LoadingCurtain from '../../components/loading-curtain/loading-curtain';
+import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 
 function FeedPage() {
   const orders = useSelector(ordersSelectors.selectAll);

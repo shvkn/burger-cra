@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './app-layout.module.css';
-import AppHeader from '../app-header';
+import AppHeader from 'components/app-header';
 import PropTypes from 'prop-types';
 
 function AppLayout({ children }) {

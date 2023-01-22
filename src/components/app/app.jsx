@@ -24,7 +24,7 @@ import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import * as ordersWSActions from 'services/actions/orders';
-import AppLayout from '../app-layout/app-layout';
+import AppLayout from 'components/app-layout/app-layout';
 
 function App() {
   const location = useLocation();

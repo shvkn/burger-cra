@@ -9,7 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'services/actions/auth';
-import authSelectors from '../../services/selectors/auth';
+import authSelectors from 'services/selectors/auth';
 
 function RegistrationPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });

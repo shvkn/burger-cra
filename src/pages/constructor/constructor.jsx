@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from 'components/burger-ingredients';
 import BurgerConstructor from 'components/burger-constructor';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import LoadingCurtain from '../../components/loading-curtain/loading-curtain';
+import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 
 function ConstructorPage() {
   const isIngredientsSucceeded = useSelector(ingredientsSelectors.selectIsSucceeded);
