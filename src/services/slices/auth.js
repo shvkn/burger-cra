@@ -38,7 +38,6 @@ const authSlice = createSlice({
       })
       .addMatcher(isAllOf(isFulfilledAction, hasError, hasMessage), (state, action) => {
         state.error = action.payload.message;
-        // TODO Подумать!
         state.isAuthorized = false;
       })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {

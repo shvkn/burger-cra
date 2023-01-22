@@ -65,8 +65,12 @@ export const setAuthTokens = ({ accessToken, refreshToken }) => {
   setRefreshToken(refreshToken);
 };
 
+export const getAuthTokens = () => ({
+  accessToken: getAccessToken(),
+  refreshToken: getRefreshToken(),
+});
+
 export const dropAuthTokens = () => {
-  console.log('drop');
   dropAccessToken();
   dropRefreshToken();
 };
@@ -78,35 +82,6 @@ export const extractToken = (token) => {
     return undefined;
   }
 };
-
-export const getOrRefreshAccessToken = async (forceRefresh = false) => {
-  try {
-    if (forceRefresh) {
-      dropAccessToken();
-    }
-    const accessToken = getAccessToken();
-    if (!accessToken) {
-      await refreshTokens();
-      return getAccessToken();
-    }
-    return accessToken;
-  } catch (e) {
-    throw e;
-  }
-};
-
-export const refreshTokens = () => {
-  try {
-    const refreshToken = getRefreshToken();
-    if (refreshToken === undefined) {
-      return { success: false, message: 'You should be authorized' };
-    }
-    return refreshTokenRequest(refreshToken).then(processAuthResponse);
-  } catch (e) {
-    throw e;
-  }
-};
-
 export const processAuthResponse = (response) => {
   const { success, accessToken, refreshToken } = response;
   if (success && !!accessToken && !!refreshToken) {
@@ -115,4 +90,38 @@ export const processAuthResponse = (response) => {
     dropAuthTokens();
   }
   return response;
+};
+
+export const getOrRefreshAuthTokens = async ({ forceRefresh = false } = {}) => {
+  try {
+    const refreshTokens = (refreshToken) => {
+      return refreshTokenRequest(refreshToken).then(processAuthResponse);
+    };
+    const { accessToken, refreshToken } = getAuthTokens();
+    if (!accessToken || forceRefresh) {
+      return !!refreshToken ? refreshTokens(refreshToken).then(() => getAuthTokens()) : {};
+    }
+    return { accessToken, refreshToken };
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
+export const processAuthorizedRequest = async (request, ...payload) => {
+  try {
+    const { accessToken } = await getOrRefreshAuthTokens();
+    if (!accessToken) {
+      return { success: false, message: 'You should be authorized' };
+    }
+    const response = await request(accessToken, ...payload);
+    if (response.success) {
+      return response;
+    }
+    const { accessToken: newAccessToken } = await getOrRefreshAuthTokens({ forceRefresh: true });
+    return request(newAccessToken, ...payload);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
 };

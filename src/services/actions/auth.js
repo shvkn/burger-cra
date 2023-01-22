@@ -12,8 +12,8 @@ import {
 
 import {
   dropAuthTokens,
-  getOrRefreshAccessToken,
   getRefreshToken,
+  processAuthorizedRequest,
   processAuthResponse,
 } from 'utils/utils';
 
@@ -65,38 +65,18 @@ export const getResetCode = createAsyncThunk('auth/get-reset-code', (payload) =>
   }
 });
 
-export const getUser = createAsyncThunk('auth/get-user', async (_, { dispatch }) => {
+export const getUser = createAsyncThunk('auth/get-user', async () => {
   try {
-    const accessToken = await getOrRefreshAccessToken();
-    if (!accessToken) {
-      dispatch(userOrdersWebsocketActions.close());
-      return { success: false, message: 'You should be authorized' };
-    }
-    const response = await getUserRequest(accessToken);
-    if (response.success) {
-      return response;
-    }
-    const newAccessToken = await getOrRefreshAccessToken(true);
-    return getUserRequest(newAccessToken);
+    return processAuthorizedRequest(getUserRequest);
   } catch (e) {
     console.log(e);
     throw e;
   }
 });
 
-export const patchUser = createAsyncThunk('auth/patch-user', async (userdata, { dispatch }) => {
+export const patchUser = createAsyncThunk('auth/patch-user', async (userdata) => {
   try {
-    const accessToken = await getOrRefreshAccessToken();
-    if (!accessToken) {
-      dispatch(userOrdersWebsocketActions.close());
-      return { success: false, message: 'You should be authorized' };
-    }
-    const response = await patchUserRequest(userdata, accessToken);
-    if (response.success) {
-      return response;
-    }
-    const newAccessToken = await getOrRefreshAccessToken(true);
-    return patchUserRequest(userdata, newAccessToken);
+    return processAuthorizedRequest(patchUserRequest, userdata);
   } catch (e) {
     console.log(e);
     throw e;

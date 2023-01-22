@@ -55,7 +55,7 @@ export const getUserRequest = async (accessToken) =>
     accessToken,
   });
 
-export const patchUserRequest = async (payload, accessToken) =>
+export const patchUserRequest = async (accessToken, payload) =>
   request({
     url: `${NORMA_API}/auth/user`,
     method: 'PATCH',
