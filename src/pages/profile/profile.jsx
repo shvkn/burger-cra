@@ -1,18 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import styles from './profile.module.css';
-import { NavLink, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
-import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import * as authActions from 'services/actions/auth';
-import userOrdersSelectors from 'services/selectors/user-orders';
-import Order from 'components/order/order';
-import _ from 'lodash';
-import authSelectors from 'services/selectors/auth';
+import { NavLink, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import UserOrderModal from 'components/user-order-modal/user-order-modal';
+import UserOrders from 'components/user-orders/user-orders';
+import UserForm from 'components/user-form/user-form';
+import LogoutPage from 'pages/logout';
 
 const linkCN = (isActive) => {
   return `${styles.link} text text_type_main-medium ${
@@ -20,150 +12,78 @@ const linkCN = (isActive) => {
   }`;
 };
 
+const routes = [
+  {
+    path: '',
+    title: 'Профиль',
+    exact: true,
+    sidebar: 'В этом разделе вы можете изменить свои персональные данные',
+    children: <UserForm />,
+  },
+  {
+    path: '/orders',
+    title: 'Лента заказов',
+    exact: false,
+    sidebar: 'В этом разделе вы можете просмотреть свою историю заказов',
+    children: <UserOrders />,
+  },
+  {
+    path: '/logout',
+    title: 'Выход',
+    children: <LogoutPage />,
+  },
+];
+
 function ProfilePage() {
-  const dispatch = useDispatch();
-  const formRef = useRef();
-  const history = useHistory();
   const { url, path } = useRouteMatch();
 
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const user = useSelector(authSelectors.selectUser);
-  const userOrders = useSelector(userOrdersSelectors.selectAll);
-
-  const isFormChanged = user?.name !== form.name || user?.email !== form.email;
-  const isUserOrdersEmpty = useSelector(userOrdersSelectors.selectIsEmpty);
-
-  const sortedOrders = useMemo(() => {
-    return _.orderBy(userOrders, 'createdAt', 'desc');
-  }, [userOrders]);
-
-  useEffect(() => {
-    setForm({ name: user.name, email: user.email, password: '' });
-  }, [user]);
-
-  const handlePatchUser = useCallback(
-    (e) => {
-      e.preventDefault();
-      dispatch(authActions.patchUser(form));
-    },
-    [dispatch, form]
-  );
-
-  useEffect(() => {
-    const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handlePatchUser);
-    return () => formRefValue?.removeEventListener('submit', handlePatchUser);
-  }, [handlePatchUser]);
-
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const resetChanges = (e) => {
-    e.preventDefault();
-    setForm({ name: user.name, email: user.email, password: '' });
-  };
-
-  const handleLogout = () => {
-    dispatch(authActions.logout())
-      .unwrap()
-      .finally(() => {
-        history.replace({ pathname: '/' });
-      });
-  };
+  const location = useLocation();
+  const background = location.state?.background;
 
   return (
     <main className={styles.layout}>
-      <div className={`mt-30 ${styles.sidebar}`}>
-        <ul className={styles.links}>
-          <li className={'pt-4 pb-4'}>
-            <NavLink exact to={url} className={linkCN}>
-              Профиль
-            </NavLink>
-          </li>
-          <li className={'pt-4 pb-4'}>
-            <NavLink exact to={`${url}/orders`} className={linkCN}>
-              Заказы
-            </NavLink>
-          </li>
-          <li className={'pt-4 pb-4'}>
-            <NavLink exact to={`${url}/logout`} className={linkCN} onClick={handleLogout}>
-              Выход
-            </NavLink>
-          </li>
-        </ul>
-        <p className={`mt-20 text text_type_main-default text_color_inactive`}>
+      {background && (
+        <Route path={`${path}/orders/:id`}>
+          <UserOrderModal />
+        </Route>
+      )}
+      <>
+        <div className={`mt-30 ${styles.sidebar}`}>
+          <ul className={styles.links}>
+            {routes.map((route, idx) => {
+              return (
+                <li key={idx} className={'pt-4 pb-4'}>
+                  <NavLink exact={route.exact} to={`${url}${route.path}`} className={linkCN}>
+                    {route.title}
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
           <Switch>
-            <Route exact path={path}>
-              В этом разделе вы можете изменить свои персональные данные
-            </Route>
-            <Route path={`${path}/orders`}>
-              В этом разделе вы можете просмотреть свою историю заказов
-            </Route>
+            {routes.map((route, idx) => {
+              return route.sidebar ? (
+                <Route key={`${idx}_`} exact={route.exact} path={`${url}${route.path}`}>
+                  <p className={`mt-20 text text_type_main-default text_color_inactive`}>
+                    {route.sidebar}
+                  </p>
+                </Route>
+              ) : null;
+            })}
           </Switch>
-        </p>
-      </div>
-      <div className={`ml-15 mt-10 ${styles.content}`}>
-        <Switch>
-          <Route exact path={path}>
-            <form className={`mt-20 ${styles.form}`} ref={formRef}>
-              <Input
-                value={form.name}
-                name={'name'}
-                placeholder={'Имя'}
-                onChange={onChange}
-                icon={'EditIcon'}
-              />
-              <EmailInput
-                value={form.email}
-                name={'email'}
-                placeholder={'E-mail'}
-                onChange={onChange}
-                icon={'EditIcon'}
-                extraClass={'mt-6'}
-              />
-              <PasswordInput
-                value={form.password}
-                name={'password'}
-                placeholder={'Пароль'}
-                onChange={onChange}
-                icon={'EditIcon'}
-                extraClass={'mt-6'}
-              />
-              {isFormChanged && (
-                <div className={`mt-6 ${styles.buttons}`}>
-                  <Button
-                    htmlType={'reset'}
-                    type={'secondary'}
-                    onClick={resetChanges}
-                    extraClass={'ml-4'}
-                  >
-                    Отменить
-                  </Button>
-                  <Button htmlType={'submit'}>Сохранить</Button>
-                </div>
-              )}
-            </form>
-          </Route>
-          <Route exact path={`${path}/orders`}>
-            {isUserOrdersEmpty ? (
-              <p className={'mt-30 text text_type_main-default text_color_inactive'}>
-                Здесь пока пусто
-              </p>
-            ) : (
-              <ul className={`${styles.ordersList} scroll`}>
-                {sortedOrders.map((order) => {
-                  return (
-                    <li key={order._id} className={'mb-4 mr-2'}>
-                      <Order order={order} />
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </Route>
-        </Switch>
-      </div>
+        </div>
+        <div className={`ml-15 mt-10 ${styles.content}`}>
+          <Switch>
+            {routes.map((route, idx) => {
+              return route.children ? (
+                <Route key={idx} exact={route.exact} path={`${url}${route.path}`}>
+                  {route.children}
+                </Route>
+              ) : null;
+            })}
+          </Switch>
+        </div>
+      </>
     </main>
   );
 }

@@ -18,13 +18,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProtectedRoute from 'components/protected-route';
 import IngredientDetails from 'components/ingredient-details';
 import Modal from 'components/modal';
-import OrderInfo from 'components/order-info/order-info';
 import * as ingredientsActions from 'services/actions/ingredients';
 import ordersSelectors from 'services/selectors/orders';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import * as ordersWSActions from 'services/actions/orders';
 import AppLayout from 'components/app-layout/app-layout';
+import UserOrderPage from 'pages/user-order/user-order';
 
 function App() {
   const location = useLocation();
@@ -62,10 +62,9 @@ function App() {
     const id = matchIngredientId.params.id;
     return ingredients[id];
   }, [ingredients, matchIngredientId]);
-
   return (
     <AppLayout>
-      <Switch location={background ?? location}>
+      <Switch location={location}>
         <Route exact path='/' component={ConstructorPage} />
         <ProtectedRoute nonAuthOnly path='/login' component={LoginPage} />
         <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
@@ -77,11 +76,7 @@ function App() {
           </Route>
         )}
         <Route path='/feed' component={FeedPage} />
-        {order && (
-          <ProtectedRoute exact path='/profile/orders/:id'>
-            {<OrderPage order={order} />}
-          </ProtectedRoute>
-        )}
+        {!background && <ProtectedRoute path='/profile/orders/:id' component={UserOrderPage} />}
         <ProtectedRoute path='/profile' component={ProfilePage} />
         {ingredient && (
           <Route path='/ingredient/:id'>
@@ -104,7 +99,7 @@ function App() {
               </Modal>
             </Route>
           )}
-          {order && (
+          {/*{order && (
             <Route path='/(profile/orders|feed)/:id'>
               <Modal handleClose={handleClose}>
                 <Modal.Header>
@@ -115,7 +110,7 @@ function App() {
                 </Modal.Content>
               </Modal>
             </Route>
-          )}
+          )}*/}
         </Switch>
       )}
     </AppLayout>

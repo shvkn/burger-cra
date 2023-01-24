@@ -16,6 +16,22 @@ const selectIsLoading = createSelector(
   selectUserOrders,
   (userOrders) => userOrders.status === 'connection'
 );
+
+const selectIsWSConnecting = createSelector(
+  selectUserOrders,
+  (userOrders) => userOrders.status === 'connecting'
+);
+
+const selectIsWSClosed = createSelector(
+  selectUserOrders,
+  (userOrders) => userOrders.status === 'closed'
+);
+
+const selectIsWSOpened = createSelector(
+  selectUserOrders,
+  (userOrders) => userOrders.status === 'opened'
+);
+
 const selectIsEmpty = createSelector(selectCount, (count) => count === 0);
 const selectTotal = (state) => state.userOrders.total;
 const selectTotalToday = (state) => state.orders.totalToday;
@@ -27,6 +43,9 @@ const userOrdersSelectors = {
   selectIds,
   selectIsEmpty,
   selectIsLoading,
+  selectIsWSClosed,
+  selectIsWSConnecting,
+  selectIsWSOpened,
   selectTotal,
   selectTotalToday,
 };
