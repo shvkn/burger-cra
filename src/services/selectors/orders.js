@@ -39,14 +39,29 @@ const selectTotalPrice = (id) =>
     }
   );
 
+const selectIsWSConnecting = createSelector(selectOrders, (orders) => {
+  return orders.status === 'connecting';
+});
+
+const selectIsWSOpened = createSelector(selectOrders, (orders) => {
+  return orders.status === 'opened';
+});
+
+const selectIsWSClosed = createSelector(selectOrders, (orders) => {
+  return orders.status === 'closed';
+});
+
 const ordersSelectors = {
   selectAll,
   selectById,
   selectEntities,
   selectIds,
   selectIngredients,
-  selectIsLoading,
   selectIsEmpty,
+  selectIsLoading,
+  selectIsWSClosed,
+  selectIsWSConnecting,
+  selectIsWSOpened,
   selectOrderById,
   selectTotal,
   selectTotalPrice,

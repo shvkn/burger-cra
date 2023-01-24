@@ -8,7 +8,7 @@ const useUserOrders = () => {
   const orders = useSelector(userOrdersSelectors.selectAll);
   const entities = useSelector(userOrdersSelectors.selectEntities);
   const isWSClosed = useSelector(userOrdersSelectors.selectIsWSClosed);
-  const isWSConnecting = useSelector(userOrdersSelectors.selectIsLoading);
+  const isWSConnecting = useSelector(userOrdersSelectors.selectIsWSConnecting);
 
   useEffect(() => {
     if (isWSClosed) {

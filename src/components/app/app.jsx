@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import {
@@ -14,38 +14,23 @@ import {
   RegistrationPage,
   ResetPasswordPage,
 } from 'pages';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import ProtectedRoute from 'components/protected-route';
 import * as ingredientsActions from 'services/actions/ingredients';
-import ordersSelectors from 'services/selectors/orders';
-import userOrdersSelectors from 'services/selectors/user-orders';
-import * as ordersWSActions from 'services/actions/orders';
 import AppLayout from 'components/app-layout/app-layout';
 import UserOrderPage from 'pages/user-order/user-order';
-import IngredientModal from 'components/ingredient-modal/ingredient-modal';
-import UserOrderModal from 'components/user-order-modal/user-order-modal';
+import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
+import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
+import OrderModal from 'components/modals/order-modal/order-modal';
 
 function App() {
   const location = useLocation();
   const background = location.state?.background;
   const dispatch = useDispatch();
 
-  const feedOrders = useSelector(ordersSelectors.selectEntities);
-  const userOrders = useSelector(userOrdersSelectors.selectEntities);
-
   useEffect(() => {
     dispatch(ingredientsActions.fetch());
-    dispatch(ordersWSActions.connect());
   }, [dispatch]);
-
-  const matchOrderId = useRouteMatch({ path: '/(profile/orders|feed)/:id', exact: true });
-  const order = useMemo(() => {
-    if (!matchOrderId) {
-      return null;
-    }
-    const id = matchOrderId.params.id;
-    return feedOrders[id] ?? userOrders[id];
-  }, [matchOrderId, feedOrders, userOrders]);
 
   return (
     <AppLayout>
@@ -58,18 +43,15 @@ function App() {
         <ProtectedRoute path='/profile/orders/:id' component={UserOrderPage} />
         <ProtectedRoute path='/profile' component={ProfilePage} />
         <Route path='/ingredient/:id' component={IngredientPage} />
-        {order && (
-          <Route path='/feed/:id'>
-            <OrderPage order={order} />
-          </Route>
-        )}
+        <Route path='/feed/:id' component={OrderPage} />
         <Route path='/feed' component={FeedPage} />
         <Route path='*' component={NotFoundedPage} />
       </Switch>
       {background && (
         <Switch>
+          <Route path='/profile/orders/:id' component={UserOrderModal} />
           <Route path='/ingredient/:id' component={IngredientModal} />
-          <Route path={'/profile/orders/:id'} component={UserOrderModal} />
+          <Route path='/feed/:id' component={OrderModal} />
         </Switch>
       )}
     </AppLayout>

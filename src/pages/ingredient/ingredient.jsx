@@ -5,6 +5,7 @@ import styles from './ingredient.module.css';
 import { useSelector } from 'react-redux';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import { useParams } from 'react-router-dom';
+import { NotFoundedPage } from 'pages/index';
 
 function IngredientPage() {
   const { id } = useParams();
@@ -21,7 +22,9 @@ function IngredientPage() {
         </DetailsLayout.Content>
       </DetailsLayout>
     </main>
-  ) : null;
+  ) : (
+    <NotFoundedPage />
+  );
 }
 
 export default IngredientPage;

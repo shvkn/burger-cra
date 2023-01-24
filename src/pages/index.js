@@ -8,6 +8,7 @@ import IngredientPage from './ingredient';
 import NotFoundedPage from './not-founded';
 import OrderPage from './order';
 import FeedPage from './feed';
+import UserOrderPage from './user-order';
 
 export {
   ConstructorPage,
@@ -20,4 +21,5 @@ export {
   NotFoundedPage,
   OrderPage,
   FeedPage,
+  UserOrderPage,
 };

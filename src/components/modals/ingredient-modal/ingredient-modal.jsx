@@ -14,7 +14,7 @@ function IngredientModal() {
     history.goBack();
   };
 
-  return (
+  return ingredient ? (
     <Modal handleClose={handleClose}>
       <Modal.Header>
         <p className={'text text_type_main-large'}>Детали ингредиента</p>
@@ -23,7 +23,7 @@ function IngredientModal() {
         <IngredientDetails ingredient={ingredient} />
       </Modal.Content>
     </Modal>
-  );
+  ) : null;
 }
 
 export default IngredientModal;

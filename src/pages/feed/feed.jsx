@@ -5,9 +5,10 @@ import ordersSelectors from 'services/selectors/orders';
 import _ from 'lodash';
 import Order from 'components/order';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
+import useOrders from 'hooks/use-orders';
 
 function FeedPage() {
-  const orders = useSelector(ordersSelectors.selectAll);
+  const [orders] = useOrders();
   const total = useSelector(ordersSelectors.selectTotal);
   const totalToday = useSelector(ordersSelectors.selectTotalToday);
   const isOrdersLoading = useSelector(ordersSelectors.selectIsLoading);
