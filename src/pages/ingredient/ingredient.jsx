@@ -1,11 +1,16 @@
 import React from 'react';
 import IngredientDetails from 'components/ingredient-details';
-import { ingredientPropTypes } from 'utils/prop-types';
 import DetailsLayout from 'components/details-layout';
 import styles from './ingredient.module.css';
+import { useSelector } from 'react-redux';
+import ingredientsSelectors from 'services/selectors/ingredients';
+import { useParams } from 'react-router-dom';
 
-function IngredientPage({ ingredient }) {
-  return (
+function IngredientPage() {
+  const { id } = useParams();
+  const entities = useSelector(ingredientsSelectors.selectEntities);
+  const ingredient = entities[id];
+  return ingredient ? (
     <main className={`mt-30 ${styles.layout}`}>
       <DetailsLayout>
         <DetailsLayout.Header>
@@ -16,11 +21,7 @@ function IngredientPage({ ingredient }) {
         </DetailsLayout.Content>
       </DetailsLayout>
     </main>
-  );
+  ) : null;
 }
-
-IngredientPage.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
-};
 
 export default IngredientPage;
