@@ -7,16 +7,11 @@ import BurgerIngredients from 'components/burger-ingredients';
 import BurgerConstructor from 'components/burger-constructor';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
-import { useLocation } from 'react-router-dom';
 
 function ConstructorPage() {
   const isIngredientsSucceeded = useSelector(ingredientsSelectors.selectIsSucceeded);
   const isIngredientsFailed = useSelector(ingredientsSelectors.selectIsFailed);
   const isIngredientsLoading = useSelector(ingredientsSelectors.selectIsLoading);
-
-  const location = useLocation();
-  const background = location.state?.background;
-  console.log(background);
   return (
     <main className={styles.layout}>
       {isIngredientsLoading && <LoadingCurtain />}

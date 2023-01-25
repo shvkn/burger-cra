@@ -12,7 +12,9 @@ function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(authActions.getUser());
+    if (!isAuthLoading) {
+      dispatch(authActions.getUser());
+    }
   }, [dispatch]);
 
   return (

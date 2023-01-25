@@ -25,7 +25,6 @@ const burger = createSlice({
         state.counts[id] = state.counts[id] + 1 || 1;
       })
       .addCase(setBun, (state, action) => {
-        console.log(action);
         const id = action.payload;
         delete state.counts[state.bun];
         state.bun = id;
