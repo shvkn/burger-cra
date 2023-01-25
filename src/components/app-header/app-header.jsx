@@ -1,42 +1,46 @@
-// TODO Временно отключено из-за якорной ссылки
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import {
-  BurgerIcon,
-  ListIcon,
-  Logo,
-  ProfileIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { BurgerIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useRouteMatch } from 'react-router-dom';
 import styles from './app-header.module.css';
 
+const getLinkCN = (isActive) => {
+  return `pt-4 pl-5 pb-4 pr-5 text text_type_main-default text_color_${
+    isActive ? 'primary' : 'inactive'
+  } ${styles.link}`;
+};
+
 function AppHeader() {
+  const isActiveFeed = useRouteMatch('/feed');
+  const isActiveProfile = useRouteMatch('/profile');
+  const isActiveConstructor = useRouteMatch({ path: '/', exact: true });
+
   return (
     <header className={`p-4 ${styles.header}`}>
       <div className={`${styles.container}`}>
         <nav className={styles.nav}>
           <ul className={styles.items}>
-            <li className={styles.item}>
-              <a href='#' className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-                <BurgerIcon type='primary' />
-                <p className='ml-2 text text_type_main-default'>Конструктор</p>
-              </a>
+            <li>
+              <Link to={'/'} className={`${getLinkCN(isActiveConstructor)}`}>
+                <BurgerIcon type={isActiveConstructor ? 'primary' : 'secondary'} />
+                <span className='ml-2'>Конструктор</span>
+              </Link>
             </li>
-            <li className={`ml-2 ${styles.item}`}>
-              <a href='#' className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-                <ListIcon type='secondary' />
-                <p className='ml-2 text text_type_main-default text_color_inactive'>
-                  Лента заказов
-                </p>
-              </a>
+            <li>
+              <Link to={'/feed'} className={`${getLinkCN(isActiveFeed)}`}>
+                <BurgerIcon type={isActiveFeed ? 'primary' : 'secondary'} />
+                <span className='ml-2'>Лента заказов</span>
+              </Link>
             </li>
           </ul>
         </nav>
-        <Logo />
+        <Link to={'/'}>
+          <Logo />
+        </Link>
         <nav className={`${styles.nav} ${styles.end}`}>
-          <a href='#' className={`pt-4 pl-5 pb-4 pr-5 ${styles.link}`}>
-            <ProfileIcon type='secondary' />
-            <p className='ml-2 text text_type_main-default text_color_inactive'>Личный кабинет</p>
-          </a>
+          <Link to={'/profile'} className={`${getLinkCN(isActiveProfile)}`}>
+            <BurgerIcon type={isActiveProfile ? 'primary' : 'secondary'} />
+            <span className='ml-2'>Личный кабинет</span>
+          </Link>
         </nav>
       </div>
     </header>

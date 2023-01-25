@@ -1,14 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { ingredientsAdapter } from '../services/slices/ingredientsSlice';
-
-export const selectIngredientsSlice = (state) => state.ingredients;
+import ingredientsSelectors from 'services/selectors/ingredients';
 export const selectOrderSlice = (state) => state.order;
-
-const ingredientsActions = ingredientsAdapter.getSelectors(selectIngredientsSlice);
-
-export const selectIngredientsEntities = ingredientsActions.selectEntities;
-export const selectIngredientById = (id) => (state) => ingredientsActions.selectById(state, id);
-export const selectIngredients = ingredientsActions.selectAll;
 
 export const selectBurgerBun = (state) => state.burger.bun;
 export const selectBurgerIngredients = (state) => state.burger.ingredients;
@@ -21,7 +13,7 @@ export const selectIngredientCountById = (id) =>
 export const selectOrderNumber = (state) => selectOrderSlice(state).number;
 
 export const selectTotalPrice = createSelector(
-  [selectBurgerBun, selectBurgerIngredients, selectIngredientsEntities],
+  [selectBurgerBun, selectBurgerIngredients, ingredientsSelectors.selectEntities],
   (bunId, ingredients, ingredientsEntities) =>
     ingredients
       .map(({ id }) => ingredientsEntities[id].price)

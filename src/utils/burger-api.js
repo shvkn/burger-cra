@@ -1,4 +1,4 @@
-import { NORMA_API } from './constants';
+import { NORMA_API } from 'utils/constants';
 
 const processResponse = (res) => {
   if (res.ok) return res.json();
@@ -13,11 +13,11 @@ export const getIngredientsRequest = () => {
   return request(`${NORMA_API}/ingredients`);
 };
 
-export const postOrderRequest = (ingredients) => {
+export const postOrderRequest = (accessToken, ingredients) => {
   const options = {
     method: 'POST',
     headers: {
-      authorization: 'a9c10068-1239-4b61-97d8-9278a4fcdf82',
+      authorization: accessToken,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ingredients }),

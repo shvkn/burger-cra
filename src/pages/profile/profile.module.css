@@ -1,0 +1,45 @@
+.layout {
+  display: flex;
+  /*margin-top: 120px;*/
+  height: 100%;
+}
+
+.sidebar {
+  min-width: 320px;
+  max-width: 320px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.ordersList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.links {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.ordersList::-webkit-scrollbar-track {
+  margin-bottom: calc(var(--offset-base-size) * 16);
+}
+
+.form {
+  width: min-content;
+}

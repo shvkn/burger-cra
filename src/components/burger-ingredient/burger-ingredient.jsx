@@ -1,22 +1,31 @@
-import styles from '../burger-ingredient/burger-ingredient.module.css';
+import styles from './burger-ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import { ingredientPropTypes } from '../../utils/prop-types';
-import PropTypes from 'prop-types';
+import { ingredientPropTypes } from 'utils/prop-types';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '../../utils/constants';
+import { ItemTypes } from 'utils/constants';
 import { useSelector } from 'react-redux';
-import { selectIngredientCountById } from '../../utils/selectors';
+import { selectIngredientCountById } from 'utils/selectors';
+import { Link, useLocation } from 'react-router-dom';
 
-function BurgerIngredient({ ingredient, handleClick }) {
+function BurgerIngredient({ ingredient }) {
   const id = ingredient._id;
   const count = useSelector(selectIngredientCountById(id));
+  const location = useLocation();
   const [, dragRef] = useDrag({
     type: ItemTypes.BURGER_INGREDIENT,
     item: { id },
   });
+
   return (
-    <article className={styles.ingredient} onClick={() => handleClick(ingredient)} ref={dragRef}>
+    <Link
+      to={{
+        pathname: `/ingredient/${id}`,
+        state: { background: location },
+      }}
+      className={styles.ingredient}
+      ref={dragRef}
+    >
       {count > 0 && <Counter count={count} size='default' />}
       <img
         className={`ml-4 mr-4 mb-2 ${styles.ingredientImage}`}
@@ -28,13 +37,12 @@ function BurgerIngredient({ ingredient, handleClick }) {
         <CurrencyIcon type='primary' />
       </div>
       <h3 className='mt-2 text text_type_main-default'>{ingredient.name}</h3>
-    </article>
+    </Link>
   );
 }
 
 BurgerIngredient.propTypes = {
   ingredient: ingredientPropTypes.isRequired,
-  handleClick: PropTypes.func.isRequired,
 };
 
 export default React.memo(BurgerIngredient);

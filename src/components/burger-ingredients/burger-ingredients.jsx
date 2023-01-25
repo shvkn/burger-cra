@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useSelector } from 'react-redux';
-import { IngredientTypes } from '../../utils/constants';
-import IngredientsCategory from '../ingredients-category/ingredients-category';
-import { selectIngredients } from '../../utils/selectors';
+import { IngredientTypes } from 'utils/constants';
+import IngredientsCategory from 'components/ingredients-category';
+import ingredientsSelectors from 'services/selectors/ingredients';
 
 const typeBun = IngredientTypes.BUN;
 const typeSauce = IngredientTypes.SAUCE;
@@ -14,7 +12,7 @@ const typeMain = IngredientTypes.MAIN;
 
 function BurgerIngredients() {
   const [activeTab, setActiveTab] = useState(typeBun);
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useSelector(ingredientsSelectors.selectAll);
 
   const ingredientsTypeBun = useMemo(
     () => ingredients.filter(({ type }) => type === typeBun),
@@ -28,8 +26,6 @@ function BurgerIngredients() {
     () => ingredients.filter(({ type }) => type === typeMain),
     [ingredients]
   );
-
-  const [currentIngredient, setCurrentIngredient] = useState(null);
 
   const categoriesRootRef = useRef();
   const categoriesRefs = {
@@ -57,28 +53,15 @@ function BurgerIngredients() {
     };
     const observer = createTabObserver();
     Object.values(categoriesRefs).forEach((ref) => observer.observe(ref.current));
-  }, [categoriesRefs]);
+  }, [categoriesRefs, activeTab]);
 
   const handleTabClick = (type) => {
     setActiveTab(type);
     categoriesRefs[type].current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleOpenModal = useCallback((ingredient) => {
-    setCurrentIngredient(ingredient);
-  }, []);
-
-  const handleCloseModal = () => {
-    setCurrentIngredient(null);
-  };
-
   return (
     <section className={styles.burgerIngredients}>
-      {currentIngredient && (
-        <Modal handleClose={handleCloseModal} title='Детали ингредиента'>
-          <IngredientDetails ingredient={currentIngredient} />
-        </Modal>
-      )}
       <h1 className='mt-10 mb-5 heading text text_type_main-large'>Соберите бургер</h1>
       <div className='mb-10'>
         <ul className={`${styles.tabs}`}>
@@ -103,25 +86,13 @@ function BurgerIngredients() {
       </div>
       <ul className={`${styles.categories} scroll`} ref={categoriesRootRef}>
         <li key={typeBun} ref={categoriesRefs[typeBun]} data-tab={typeBun}>
-          <IngredientsCategory
-            onIngredientClick={handleOpenModal}
-            title={'Булки'}
-            items={ingredientsTypeBun}
-          />
+          <IngredientsCategory title={'Булки'} items={ingredientsTypeBun} />
         </li>
         <li key={typeSauce} ref={categoriesRefs[typeSauce]} data-tab={typeSauce}>
-          <IngredientsCategory
-            onIngredientClick={handleOpenModal}
-            title={'Соусы'}
-            items={ingredientsTypeSauce}
-          />
+          <IngredientsCategory title={'Соусы'} items={ingredientsTypeSauce} />
         </li>
         <li key={typeMain} ref={categoriesRefs[typeMain]} data-tab={typeMain}>
-          <IngredientsCategory
-            onIngredientClick={handleOpenModal}
-            title={'Начинки'}
-            items={ingredientsTypeMain}
-          />
+          <IngredientsCategory title={'Начинки'} items={ingredientsTypeMain} />
         </li>
       </ul>
     </section>

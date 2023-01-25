@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { ingredientPropTypes } from '../../utils/prop-types';
+import { ingredientPropTypes } from 'utils/prop-types';
 
 function IngredientDetails({ ingredient }) {
   return (
-    <>
+    <article className={styles.container}>
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
       <p className={`mt-4 mb-8 text text_type_main-medium ${styles.name}`}>{ingredient.name}</p>
       <ul className={`mb-15 text text_type_main-default text_color_inactive ${styles.facts}`}>
@@ -23,7 +23,7 @@ function IngredientDetails({ ingredient }) {
           <span className='mt-2 text text_type_digits-default'>{ingredient.carbohydrates}</span>
         </li>
       </ul>
-    </>
+    </article>
   );
 }
 

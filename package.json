@@ -13,12 +13,14 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.5",
+    "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
+    "react-router-dom": "^5.3.3",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.2",
@@ -32,69 +34,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "jsxSingleQuote": true,
-    "printWidth": 100
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:import/typescript",
-      "plugin:prettier/recommended"
-    ],
-    "plugins": [
-      "react"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "jsxSingleQuote": true,
-          "endOfLine": "auto"
-        }
-      ],
-      "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/rules-of-hooks": "error",
-      "react/jsx-filename-extension": [
-        1,
-        {
-          "extensions": [
-            ".js",
-            ".jsx",
-            ".ts",
-            ".tsx"
-          ]
-        }
-      ],
-      "react/jsx-indent-props": [
-        2,
-        2
-      ],
-      "react/jsx-indent": [
-        2,
-        2
-      ],
-      "react/jsx-one-expression-per-line": [
-        0
-      ],
-      "react/prefer-stateless-function": [
-        1
-      ],
-      "react/static-property-placement": [
-        1,
-        "property assignment"
-      ]
-    }
   },
   "browserslist": {
     "production": [

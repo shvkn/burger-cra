@@ -1,0 +1,63 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "prettier/prettier": ["error", {
+      "endOfLine": "auto"
+    }],
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreUrls": true
+      }
+    ],
+    "no-confusing-arrow": [
+      "error",
+      {
+        "allowParens": false
+      }
+    ],
+    "no-unexpected-multiline": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/jsx-indent-props": [
+      2,
+      2
+    ],
+    "react/jsx-one-expression-per-line": [
+      0
+    ],
+    "react/prefer-stateless-function": [
+      1
+    ],
+    "react/static-property-placement": [
+      1,
+      "property assignment"
+    ]
+  }
+}

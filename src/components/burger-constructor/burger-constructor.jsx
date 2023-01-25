@@ -1,47 +1,50 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import styles from './burger-constructor.module.css';
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
-import { makeOrder } from '../../services/slices/orderSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useDrop } from 'react-dnd';
-import SortableElement from '../sortable-element/sortable-element';
-import { IngredientTypes, ItemTypes } from '../../utils/constants';
-
-import { actions as burgerActions } from '../../services/slices/burgerSlice';
+import Modal from 'components/modal/modal';
+import OrderDetails from 'components/order-details';
+import SortableElement from 'components/sortable-element';
+import { IngredientTypes, ItemTypes } from 'utils/constants';
+import * as burgerActions from 'services/actions/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
-  selectIngredientById,
-  selectIngredientsEntities,
   selectIsBurgerBunEmpty,
   selectIsBurgerIngredientsEmpty,
   selectOrderNumber,
   selectOrderSlice,
   selectTotalPrice,
-} from '../../utils/selectors';
+} from 'utils/selectors';
+import { useHistory } from 'react-router-dom';
+import * as orderActions from 'services/actions/order';
+import ingredientsSelectors from 'services/selectors/ingredients';
+import authSelectors from 'services/selectors/auth';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-
-  const order = useSelector(selectOrderSlice);
+  const history = useHistory();
+  const orderSlice = useSelector(selectOrderSlice);
+  const order = history.state?.order ?? orderSlice;
   const orderNumber = useSelector(selectOrderNumber);
-  const ingredientsEntities = useSelector(selectIngredientsEntities);
+  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
   const burgerIngredients = useSelector(selectBurgerIngredients);
   const totalPrice = useSelector(selectTotalPrice);
 
   const burgerBunId = useSelector(selectBurgerBun);
-  const burgerBun = useSelector(selectIngredientById(burgerBunId));
+  const burgerBun = useSelector(ingredientsSelectors.selectById(burgerBunId));
 
   const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);
+
+  const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
 
   const isOrderValid = useMemo(
     () => !isBunEmpty && !isIngredientsEmpty,
@@ -73,11 +76,23 @@ function BurgerConstructor() {
   const handleRemove = (index) => dispatch(burgerActions.removeIngredient(index));
 
   const handleMakeOrder = () => {
-    const burgerIngredientsIds = burgerIngredients.map(({ id }) => id);
-    handleOpenModal();
-    dispatch(makeOrder([burgerBunId, ...burgerIngredientsIds]));
+    if (!isAuthorized) {
+      history.push({
+        pathname: '/login',
+        state: { from: history.location },
+      });
+    } else {
+      const burgerIngredientsIds = burgerIngredients.map(({ id }) => id);
+      handleOpenModal();
+      dispatch(orderActions.makeOrder([burgerBunId, ...burgerIngredientsIds, burgerBunId]))
+        .unwrap()
+        .then((response) => {
+          if (response.success) {
+            dispatch(burgerActions.reset());
+          }
+        });
+    }
   };
-
   const handleMove = (hoverIndex, dragIndex) => {
     dispatch(burgerActions.moveIngredient({ hoverIndex, dragIndex }));
   };
@@ -86,15 +101,18 @@ function BurgerConstructor() {
     <div className={`${styles.burgerConstructor}`} ref={dropTarget}>
       {showModal && (
         <Modal handleClose={handleCloseModal}>
-          {order.isLoading && (
-            <p className='mt-8 mb-30 text text_type_main-default'>Оформляем ваш заказ</p>
-          )}
-          {order.error && (
-            <p className='mt-8 mb-30 text text_type_main-default'>
-              Произошла ошибка и мы не смогли принять ваш заказ. Пожалуйста, повторите позже.
-            </p>
-          )}
-          {!order.isLoading && !order.error && <OrderDetails number={orderNumber} />}
+          <Modal.Header />
+          <Modal.Content>
+            {order.isLoading && (
+              <p className='mt-8 mb-30 text text_type_main-default'>Оформляем ваш заказ</p>
+            )}
+            {order.error && (
+              <p className='mt-8 mb-30 text text_type_main-default'>
+                Произошла ошибка и мы не смогли принять ваш заказ. Пожалуйста, повторите позже.
+              </p>
+            )}
+            {!order.isLoading && !order.error && <OrderDetails number={orderNumber} />}
+          </Modal.Content>
         </Modal>
       )}
       <div className={`ml-4 ${styles.container}`}>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { ItemTypes } from '../../utils/constants';
+import { ItemTypes } from 'utils/constants';
 import { useDrag, useDrop } from 'react-dnd';
 
 function SortableElement({ children, index, handleMove }) {

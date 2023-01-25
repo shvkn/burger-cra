@@ -1,49 +1,60 @@
 import React, { useEffect } from 'react';
-import '../../style/common.css';
-import styles from './app.module.css';
-import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
+import {
+  ConstructorPage,
+  FeedPage,
+  ForgotPasswordPage,
+  IngredientPage,
+  LoginPage,
+  NotFoundedPage,
+  OrderPage,
+  ProfilePage,
+  RegistrationPage,
+  ResetPasswordPage,
+} from 'pages';
+import { useDispatch } from 'react-redux';
+import ProtectedRoute from 'components/protected-route';
+import * as ingredientsActions from 'services/actions/ingredients';
+import AppLayout from 'components/app-layout/app-layout';
+import UserOrderPage from 'pages/user-order/user-order';
+import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
+import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
+import OrderModal from 'components/modals/order-modal/order-modal';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { selectIngredientsSlice } from '../../utils/selectors';
 function App() {
-  const ingredients = useSelector(selectIngredientsSlice);
+  const location = useLocation();
+  const background = location.state?.background;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(ingredientsActions.fetch());
   }, [dispatch]);
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <main className={`${styles.main}`}>
-        {(ingredients.isLoading || ingredients.error) && (
-          <p className={`text text_type_main-large text_color_inactive ${styles.message}`}>
-            {ingredients.isLoading
-              ? 'Загрузка данных'
-              : ingredients.error
-              ? 'Ошибка загрузки данных'
-              : ''}
-          </p>
-        )}
-        {!ingredients.isLoading && !ingredients.error && (
-          <>
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <div className='ml-10 pt-25'>
-                <BurgerConstructor />
-              </div>
-            </DndProvider>
-          </>
-        )}
-      </main>
-    </div>
+    <AppLayout>
+      <Switch location={background ?? location}>
+        <Route exact path='/' component={ConstructorPage} />
+        <ProtectedRoute nonAuthOnly path='/login' component={LoginPage} />
+        <ProtectedRoute nonAuthOnly path='/register' component={RegistrationPage} />
+        <ProtectedRoute nonAuthOnly path='/forgot-password' component={ForgotPasswordPage} />
+        <ProtectedRoute nonAuthOnly path='/reset-password' component={ResetPasswordPage} />
+        <ProtectedRoute path='/profile/orders/:id' component={UserOrderPage} />
+        <ProtectedRoute path='/profile' component={ProfilePage} />
+        <Route path='/ingredient/:id' component={IngredientPage} />
+        <Route path='/feed/:id' component={OrderPage} />
+        <Route path='/feed' component={FeedPage} />
+        <Route path='*' component={NotFoundedPage} />
+      </Switch>
+      {background && (
+        <Switch>
+          <Route path='/profile/orders/:id' component={UserOrderModal} />
+          <Route path='/ingredient/:id' component={IngredientModal} />
+          <Route path='/feed/:id' component={OrderModal} />
+        </Switch>
+      )}
+    </AppLayout>
   );
 }
 

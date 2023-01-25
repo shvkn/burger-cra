@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
-import ModalOverlay from '../modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from 'components/modal/modal-overlay';
+import ModalContent from 'components/modal/modal-content';
+import ModalHeader from 'components/modal/modal-header';
 
 const MODAL_ROOT = document.getElementById('react-modals');
 
-function Modal({ children, handleClose, title = '' }) {
+function Modal({ children, handleClose }) {
   useEffect(() => {
     const handleCloseByEsc = (e) => {
       if (e.key === 'Escape') handleClose();
@@ -16,28 +17,27 @@ function Modal({ children, handleClose, title = '' }) {
     return () => document.removeEventListener('keydown', handleCloseByEsc);
   }, [handleClose]);
 
-  const modal = (
+  return ReactDOM.createPortal(
     <>
       <div className={`${styles.modal}`}>
-        <div className={`ml-10 mt-10 mr-10 ${styles.panel}`}>
-          <p className={`text text_type_main-large`}>{title}</p>
-          <button className={styles.close}>
-            <CloseIcon type='primary' onClick={handleClose} />
-          </button>
-        </div>
-        <div className={`${styles.content}`}>{children}</div>
+        {React.Children.map(children, (child) => {
+          return child.type.name === Modal.Header.name
+            ? React.cloneElement(child, { handleClose })
+            : child;
+        })}
       </div>
-      <ModalOverlay handleClick={handleClose} />
-    </>
+      <ModalOverlay onClick={handleClose} />
+    </>,
+    MODAL_ROOT
   );
-
-  return ReactDOM.createPortal(modal, MODAL_ROOT);
 }
 
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
   handleClose: PropTypes.func.isRequired,
-  title: PropTypes.string,
 };
+
+Modal.Header = ModalHeader;
+Modal.Content = ModalContent;
 
 export default Modal;
