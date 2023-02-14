@@ -16,7 +16,6 @@ import * as burgerActions from 'services/actions/burger';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
-  selectIsBurgerBunEmpty,
   selectIsBurgerIngredientsEmpty,
   selectOrderNumber,
   selectOrderSlice,
@@ -41,14 +40,14 @@ function BurgerConstructor() {
   const burgerBunId = useSelector(selectBurgerBun);
   const burgerBun = useSelector(ingredientsSelectors.selectById(burgerBunId));
 
-  const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
+  // const isBunEmpty = useSelector(selectIsBurgerBunEmpty);
   const isIngredientsEmpty = useSelector(selectIsBurgerIngredientsEmpty);
 
   const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
 
   const isOrderValid = useMemo(
-    () => !isBunEmpty && !isIngredientsEmpty,
-    [isBunEmpty, isIngredientsEmpty]
+    () => burgerBun && !isIngredientsEmpty,
+    [burgerBun, isIngredientsEmpty]
   );
 
   const burgerBunName = burgerBun?.name;
@@ -116,7 +115,7 @@ function BurgerConstructor() {
         </Modal>
       )}
       <div className={`ml-4 ${styles.container}`}>
-        {!isBunEmpty && (
+        {burgerBun && (
           <div className={`ml-8 ${styles.bun}`}>
             <ConstructorElement
               text={`${burgerBunName} (верх)`}
@@ -131,7 +130,7 @@ function BurgerConstructor() {
           <div className={styles.message}>
             <p className={`mt-8 text text_type_main-medium text_color_inactive`}>
               {isIngredientsEmpty
-                ? isBunEmpty
+                ? burgerBun
                   ? 'Пожалуйста, перетащите булку и ингредиенты'
                   : 'Добавьте ингредиенты'
                 : 'Добавьте булку'}
@@ -160,7 +159,7 @@ function BurgerConstructor() {
             })}
           </ul>
         )}
-        {!isBunEmpty && (
+        {burgerBun && (
           <div className={`ml-8 ${styles.bun}`}>
             <ConstructorElement
               text={`${burgerBunName} (низ)`}

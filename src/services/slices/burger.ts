@@ -6,9 +6,19 @@ import {
   reset,
   setBun,
 } from 'services/actions/burger';
+import { TIngredientId } from 'services/types/data';
 
-const initialState = {
-  bun: null,
+type TInitialState = {
+  bun: string;
+  ingredients: Array<{
+    id: TIngredientId;
+    uid: string;
+  }>;
+  counts: { [name: string]: number };
+};
+
+const initialState: TInitialState = {
+  bun: '',
   ingredients: [],
   counts: {},
 };
@@ -35,7 +45,7 @@ const burger = createSlice({
         const { id } = state.ingredients[index];
         state.ingredients.splice(index, 1);
         state.counts[id] = state.counts[id] - 1;
-        if (state.counts[id] <= 0) delete state.counts[id];
+        if (state.counts[id] < 1) delete state.counts[id];
       })
       .addCase(moveIngredient, (state, action) => {
         const { hoverIndex, dragIndex } = action.payload;
