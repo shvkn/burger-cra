@@ -19,20 +19,20 @@ export type TWebSocketSate = {
   error: {} | null;
 };
 
-export type TResponseBody<T> = {
+export type TResponseBaseBody = {
   success: boolean;
   message?: string;
-} & T;
-
-export type TIngredientsResponse = {
-  data: ReadonlyArray<TIngredient>;
 };
 
-export type TOrdersResponse = {
+export type TIngredientsResponseBody = {
+  data: ReadonlyArray<TIngredient>;
+} & TResponseBaseBody;
+
+export type TOrdersResponseBody = {
   orders: ReadonlyArray<TOrder>;
   total: number;
   totalToday: number;
-};
+} & TResponseBaseBody;
 
 export type TOrdersState = {
   total: number;
