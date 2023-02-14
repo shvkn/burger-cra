@@ -7,7 +7,7 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<TRootState> = useSelector;
 
-export type TInitialState = {
+export type TThunkState = {
   status: 'idle' | 'loading' | 'failed' | 'succeeded';
   error: {} | null;
 };

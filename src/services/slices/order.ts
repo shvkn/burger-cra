@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { makeOrder } from 'services/actions/order';
-import { TInitialState } from 'services/types';
+import { TThunkState } from 'services/types';
 
-const initialState: TInitialState & {
+const initialState: TThunkState & {
   number: number | null;
 } = {
   number: null,

@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
 import { TIngredient } from 'services/types/data';
-import { TInitialState } from 'services/types';
+import { TThunkState } from 'services/types';
 
 const ingredientsAdapter = createEntityAdapter<TIngredient>({
   selectId: ({ _id }) => _id,
@@ -9,7 +9,7 @@ const ingredientsAdapter = createEntityAdapter<TIngredient>({
 
 const ingredients = createSlice({
   name: 'ingredients',
-  initialState: ingredientsAdapter.getInitialState<TInitialState>({
+  initialState: ingredientsAdapter.getInitialState<TThunkState>({
     status: 'idle',
     error: null,
   }),
