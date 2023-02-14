@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import ingredients from 'services/slices/ingredients';
 import burger from 'services/slices/burger';
-import order from './order';
+import order from 'services/slices/order';
 import auth from './auth';
 import orders from './orders';
 import userOrders from './user-orders';

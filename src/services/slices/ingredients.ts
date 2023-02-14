@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
 import { TIngredient } from 'services/types/data';
+import { TInitialState } from 'services/types';
 
 const ingredientsAdapter = createEntityAdapter<TIngredient>({
   selectId: ({ _id }) => _id,
@@ -8,10 +9,7 @@ const ingredientsAdapter = createEntityAdapter<TIngredient>({
 
 const ingredients = createSlice({
   name: 'ingredients',
-  initialState: ingredientsAdapter.getInitialState<{
-    status: 'idle' | 'loading' | 'failed' | 'succeeded';
-    error: {} | null;
-  }>({
+  initialState: ingredientsAdapter.getInitialState<TInitialState>({
     status: 'idle',
     error: null,
   }),
