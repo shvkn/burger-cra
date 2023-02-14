@@ -14,7 +14,6 @@ import {
   RegistrationPage,
   ResetPasswordPage,
 } from 'pages';
-import { useDispatch } from 'react-redux';
 import ProtectedRoute from 'components/protected-route';
 import * as ingredientsActions from 'services/actions/ingredients';
 import AppLayout from 'components/app-layout/app-layout';
@@ -22,11 +21,12 @@ import UserOrderPage from 'pages/user-order/user-order';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
+import { useAppDispatch } from 'services/types';
 
 function App() {
   const location = useLocation();
   const background = location.state?.background;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(ingredientsActions.fetch());
