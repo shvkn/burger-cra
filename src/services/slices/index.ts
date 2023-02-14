@@ -3,11 +3,11 @@ import ingredients from 'services/slices/ingredients';
 import burger from 'services/slices/burger';
 import order from 'services/slices/order';
 import auth from './auth';
-import orders from './orders';
+import orders from 'services/slices/orders';
 import userOrders from './user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
-import * as ordersWSActions from 'services/actions/orders';
-import * as userOrdersWSActions from 'services/actions/user-orders';
+import ordersWSActions from 'services/actions/orders';
+import userOrdersWSActions from 'services/actions/user-orders';
 import { NORMA_WS_API } from 'utils/constants';
 
 export default configureStore({

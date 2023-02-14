@@ -1,6 +1,7 @@
-import store from '../slices';
+import store from 'services/slices';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { TIngredient } from 'services/types/data';
+import { TIngredient, TOrder } from 'services/types/data';
+import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit';
 
 export type TRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -12,6 +13,12 @@ export type TThunkState = {
   error: {} | null;
 };
 
+export type TWebSocketSate = {
+  status: 'closed' | 'opened' | 'connecting';
+  isConnected: boolean;
+  error: {} | null;
+};
+
 export type TResponseBody<T> = {
   success: boolean;
   message?: string;
@@ -19,4 +26,24 @@ export type TResponseBody<T> = {
 
 export type TIngredientsResponse = {
   data: ReadonlyArray<TIngredient>;
+};
+
+export type TOrdersResponse = {
+  orders: ReadonlyArray<TOrder>;
+  total: number;
+  totalToday: number;
+};
+
+export type TOrdersState = {
+  total: number;
+  totalToday: number;
+};
+
+export type TWebSocketActions = {
+  onOpen: ActionCreatorWithOptionalPayload<any>;
+  onGetMessage: ActionCreatorWithOptionalPayload<any>;
+  onClose: ActionCreatorWithOptionalPayload<any>;
+  close: ActionCreatorWithOptionalPayload<any>;
+  connect: ActionCreatorWithOptionalPayload<any>;
+  sendMessage: ActionCreatorWithOptionalPayload<any>;
 };

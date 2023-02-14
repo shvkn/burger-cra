@@ -1,5 +1,8 @@
-const WebSocketMiddleware = (wsUrl, wsActions) => {
-  let socket = null;
+import { TWebSocketActions } from 'services/types';
+import { Middleware } from 'redux';
+
+const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middleware => {
+  let socket: WebSocket | null = null;
   return (store) => (next) => (action) => {
     const { payload } = action;
     if (wsActions.connect.match(action)) {
@@ -8,13 +11,13 @@ const WebSocketMiddleware = (wsUrl, wsActions) => {
       socket = new WebSocket(url);
     }
     if (socket) {
-      socket.onopen = (event) => {
+      socket.onopen = (event: Event) => {
         store.dispatch(wsActions.onOpen(event.type));
       };
-      socket.onclose = (event) => {
+      socket.onclose = (event: CloseEvent) => {
         store.dispatch(wsActions.onClose(event.type));
       };
-      socket.onmessage = (event) => {
+      socket.onmessage = (event: MessageEvent) => {
         const { data } = event;
         store.dispatch(wsActions.onGetMessage(JSON.parse(data)));
       };

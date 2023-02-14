@@ -13,3 +13,11 @@ export type TIngredient = {
   image_mobile: string;
   image_large: string;
 };
+export type TOrder = {
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  ingredients: ReadonlyArray<TIngredientId>;
+};

@@ -1,14 +1,18 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { onClose, connect, onGetMessage, onOpen, sendMessage } from 'services/actions/orders';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'services/actions/orders';
+import { TOrder } from 'services/types/data';
+import { TOrdersResponse, TOrdersState, TResponseBody, TWebSocketSate } from 'services/types';
 
-const ordersEntityAdapter = createEntityAdapter({
+const ordersEntityAdapter = createEntityAdapter<TOrder>({
   selectId: ({ _id }) => _id,
 });
 
-const initialState = ordersEntityAdapter.getInitialState({
+const initialState = ordersEntityAdapter.getInitialState<TWebSocketSate & TOrdersState>({
   status: 'closed',
   error: null,
   isConnected: false,
+  total: 0,
+  totalToday: 0,
 });
 
 const ordersSlice = createSlice({
@@ -24,7 +28,7 @@ const ordersSlice = createSlice({
         state.status = 'opened';
       })
       .addCase(onClose, () => initialState)
-      .addCase(onGetMessage, (state, action) => {
+      .addCase(onGetMessage, (state, action: PayloadAction<TResponseBody<TOrdersResponse>>) => {
         const { success, orders, total, totalToday } = action.payload;
         if (success) {
           ordersEntityAdapter.setMany(state, orders);
