@@ -1,15 +1,21 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
+import { TIngredient } from 'services/types/data';
 
-const ingredientsAdapter = createEntityAdapter({
+const ingredientsAdapter = createEntityAdapter<TIngredient>({
   selectId: ({ _id }) => _id,
 });
 
-const initialState = ingredientsAdapter.getInitialState({ status: 'idle', error: null });
-
 const ingredients = createSlice({
   name: 'ingredients',
-  initialState,
+  initialState: ingredientsAdapter.getInitialState<{
+    status: 'idle' | 'loading' | 'failed' | 'succeeded';
+    error: {} | null;
+  }>({
+    status: 'idle',
+    error: null,
+  }),
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetch.pending, (state) => {
@@ -18,7 +24,9 @@ const ingredients = createSlice({
       })
       .addCase(fetch.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error;
+        if (action.error) {
+          state.error = action.error;
+        }
       })
       .addCase(fetch.fulfilled, (state, action) => {
         state.status = 'succeeded';
