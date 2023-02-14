@@ -11,14 +11,14 @@ const ingredients = createSlice({
   name: 'ingredients',
   initialState: ingredientsAdapter.getInitialState<TThunkState>({
     status: 'idle',
-    error: null,
+    error: {},
   }),
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetch.pending, (state) => {
         state.status = 'loading';
-        state.error = null;
+        state.error = {};
       })
       .addCase(fetch.rejected, (state, action) => {
         state.status = 'failed';
@@ -27,9 +27,14 @@ const ingredients = createSlice({
         }
       })
       .addCase(fetch.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.error = null;
-        ingredientsAdapter.setAll(state, action.payload.data);
+        const { success, data, message } = action.payload;
+        if (success) {
+          state.status = 'succeeded';
+          state.error = {};
+          ingredientsAdapter.setAll(state, data);
+        } else {
+          state.error = { message };
+        }
       });
   },
 });

@@ -7,7 +7,7 @@ const initialState: TThunkState & {
 } = {
   number: null,
   status: 'idle',
-  error: null,
+  error: {},
 };
 
 const order = createSlice({
@@ -18,7 +18,7 @@ const order = createSlice({
     builder
       .addCase(makeOrder.pending, (state) => {
         state.status = 'loading';
-        state.error = null;
+        state.error = {};
       })
       .addCase(makeOrder.rejected, (state, action) => {
         const error = action.error;
@@ -26,10 +26,14 @@ const order = createSlice({
         state.error = error;
       })
       .addCase(makeOrder.fulfilled, (state, action) => {
-        const order = action.payload.order;
-        state.number = order.number;
-        state.status = 'succeeded';
-        state.error = null;
+        const { order, success, message } = action.payload;
+        if (success) {
+          state.number = order.number;
+          state.status = 'succeeded';
+          state.error = {};
+        } else {
+          state.error = { message };
+        }
       });
   },
 });

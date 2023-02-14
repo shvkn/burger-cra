@@ -9,7 +9,7 @@ const ordersEntityAdapter = createEntityAdapter<TOrder>({
 
 const initialState = ordersEntityAdapter.getInitialState<TWebSocketSate & TOrdersState>({
   status: 'closed',
-  error: null,
+  error: {},
   isConnected: false,
   total: 0,
   totalToday: 0,
@@ -34,9 +34,9 @@ const ordersSlice = createSlice({
           ordersEntityAdapter.setMany(state, orders);
           state.total = total;
           state.totalToday = totalToday;
-          state.error = null;
+          state.error = {};
         } else {
-          state.error = 'Ошибка получения ленты заказов';
+          state.error = { message: 'Ошибка получения ленты заказов' };
         }
       })
       .addCase(sendMessage, () => {});
