@@ -53,3 +53,23 @@ export type TWebSocketActions = {
   connect: ActionCreatorWithOptionalPayload<any>;
   sendMessage: ActionCreatorWithOptionalPayload<any>;
 };
+export type TRegisterUserData = {
+  name: string;
+  email: string;
+  password: string;
+};
+export type TLoginCredentials = {
+  email: string;
+  password: string;
+};
+export type TPatchUserData = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+export type TResetCodeParams = {
+  code: string;
+};
+export type TResetPasswordParams = {
+  email: string;
+};
