@@ -1,5 +1,5 @@
 import { NORMA_API } from 'utils/constants';
-import { TIngredientsResponseBody, TOrdersResponseBody } from 'services/types';
+import { TIngredientsResponseBody, TOrderResponseBody } from 'services/types';
 import { TIngredientId } from 'services/types/data';
 // TODO Вынести в utils.ts
 const processResponse = async <T>(response: Response): Promise<T> => {
@@ -19,7 +19,7 @@ export const postOrderRequest = (
   accessToken: string,
   ingredients: ReadonlyArray<TIngredientId>
 ) => {
-  return request<TOrdersResponseBody>(`${NORMA_API}/orders`, {
+  return request<TOrderResponseBody>(`${NORMA_API}/orders`, {
     method: 'POST',
     headers: {
       authorization: accessToken,

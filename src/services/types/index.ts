@@ -36,6 +36,10 @@ export type TOrdersResponseBody = {
   totalToday: number;
 } & TBaseResponseBody;
 
+export type TOrderResponseBody = {
+  order: TOrder;
+} & TBaseResponseBody;
+
 export type TOrdersState = {
   total: number;
   totalToday: number;
