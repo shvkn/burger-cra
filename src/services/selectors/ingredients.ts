@@ -1,7 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { ingredientsAdapter } from 'services/slices/ingredients';
+import { TRootState } from 'services/types';
+import { TIngredientId } from 'services/types/data';
 
-const selectIngredients = (state) => state.ingredients;
+const selectIngredients = (state: TRootState) => state.ingredients;
 
 const {
   selectIds,
@@ -11,7 +13,7 @@ const {
   selectById: _selectById,
 } = ingredientsAdapter.getSelectors(selectIngredients);
 
-const selectById = (id) => (state) => _selectById(state, id);
+const selectById = (id: TIngredientId) => (state: TRootState) => _selectById(state, id);
 
 const selectIsSucceeded = createSelector(
   selectIngredients,
