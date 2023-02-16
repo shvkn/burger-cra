@@ -5,8 +5,8 @@ import { ingredientPropTypes } from 'utils/prop-types';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from 'utils/constants';
 import { useSelector } from 'react-redux';
-import { selectIngredientCountById } from 'utils/selectors';
 import { Link, useLocation } from 'react-router-dom';
+import { selectIngredientCountById } from 'services/selectors/burger';
 
 function BurgerIngredient({ ingredient }) {
   const id = ingredient._id;

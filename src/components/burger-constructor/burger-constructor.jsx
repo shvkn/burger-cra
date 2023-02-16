@@ -13,6 +13,10 @@ import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { IngredientTypes, ItemTypes } from 'utils/constants';
 import * as burgerActions from 'services/actions/burger';
+import { useHistory } from 'react-router-dom';
+import * as orderActions from 'services/actions/order';
+import ingredientsSelectors from 'services/selectors/ingredients';
+import authSelectors from 'services/selectors/auth';
 import {
   selectBurgerBun,
   selectBurgerIngredients,
@@ -20,11 +24,7 @@ import {
   selectOrderNumber,
   selectOrderSlice,
   selectTotalPrice,
-} from 'utils/selectors';
-import { useHistory } from 'react-router-dom';
-import * as orderActions from 'services/actions/order';
-import ingredientsSelectors from 'services/selectors/ingredients';
-import authSelectors from 'services/selectors/auth';
+} from 'services/selectors/burger';
 
 function BurgerConstructor() {
   const [showModal, setShowModal] = useState(false);

@@ -8,7 +8,7 @@ import {
 } from 'services/actions/burger';
 import { TIngredientId } from 'services/types/data';
 
-type TInitialState = {
+export type TBurgerSliceState = {
   bun: string;
   ingredients: Array<{
     id: TIngredientId;
@@ -17,7 +17,7 @@ type TInitialState = {
   counts: { [name: string]: number };
 };
 
-const initialState: TInitialState = {
+const initialState: TBurgerSliceState = {
   bun: '',
   ingredients: [],
   counts: {},
