@@ -7,13 +7,9 @@ import {
   TUserResponseBody,
 } from 'services/types';
 
-export const registerUserRequest = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<TAuthResponseBody> => {
+export const registerUserRequest = async (name: string, email: string, password: string) => {
   try {
-    return request(`${NORMA_API}/auth/register`, {
+    return request<TAuthResponseBody>(`${NORMA_API}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -25,9 +21,9 @@ export const registerUserRequest = async (
   }
 };
 
-export const loginRequest = async (email: string, password: string): Promise<TAuthResponseBody> => {
+export const loginRequest = async (email: string, password: string) => {
   try {
-    return request(`${NORMA_API}/auth/login`, {
+    return request<TAuthResponseBody>(`${NORMA_API}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,9 +35,22 @@ export const loginRequest = async (email: string, password: string): Promise<TAu
   }
 };
 
-export const logoutRequest = async (refreshToken: string): Promise<TBaseResponseBody> => {
+export const logoutRequest = async (refreshToken: string) => {
   try {
-    return request(`${NORMA_API}/auth/logout`, {
+    return request<TBaseResponseBody>(`${NORMA_API}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: refreshToken }),
+    });
+  } catch (e) {
+    throw e;
+  }
+};
+export const refreshTokenRequest = async (refreshToken: string) => {
+  try {
+    return request<TAuthResponseBody>(`${NORMA_API}/auth/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,23 +62,9 @@ export const logoutRequest = async (refreshToken: string): Promise<TBaseResponse
   }
 };
 
-export const refreshTokenRequest = async (refreshToken: string): Promise<TAuthResponseBody> => {
+export const getUserRequest = async (accessToken: string) => {
   try {
-    return request(`${NORMA_API}/auth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: refreshToken }),
-    });
-  } catch (e) {
-    throw e;
-  }
-};
-
-export const getUserRequest = async (accessToken: string): Promise<TUserResponseBody> => {
-  try {
-    return request(`${NORMA_API}/auth/user`, {
+    return request<TUserResponseBody>(`${NORMA_API}/auth/user`, {
       method: 'GET',
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -81,12 +76,9 @@ export const getUserRequest = async (accessToken: string): Promise<TUserResponse
   }
 };
 
-export const patchUserRequest = async (
-  accessToken: string,
-  data: TPatchUserData
-): Promise<TUserResponseBody> => {
+export const patchUserRequest = async (accessToken: string, data: TPatchUserData) => {
   try {
-    return request(`${NORMA_API}/auth/user`, {
+    return request<TUserResponseBody>(`${NORMA_API}/auth/user`, {
       method: 'PATCH',
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -98,10 +90,9 @@ export const patchUserRequest = async (
     throw e;
   }
 };
-
-export const getResetCodeRequest = async (email: string): Promise<TBaseResponseBody> => {
+export const getResetCodeRequest = async (email: string) => {
   try {
-    return request(`${NORMA_API}/password-reset`, {
+    return request<TBaseResponseBody>(`${NORMA_API}/password-reset`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -113,12 +104,9 @@ export const getResetCodeRequest = async (email: string): Promise<TBaseResponseB
   }
 };
 
-export const resetPasswordRequest = async (
-  token: string,
-  password: string
-): Promise<TBaseResponseBody> => {
+export const resetPasswordRequest = async (token: string, password: string) => {
   try {
-    return request(`${NORMA_API}/password-reset/reset`, {
+    return request<TBaseResponseBody>(`${NORMA_API}/password-reset/reset`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

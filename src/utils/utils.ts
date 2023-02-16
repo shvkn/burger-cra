@@ -1,7 +1,7 @@
-import { refreshTokenRequest } from 'utils/auth-api';
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { TAuthResponseBody } from 'services/types';
+import { TAuthResponseBody, TBaseResponseBody } from 'services/types';
+import { refreshTokenRequest } from 'utils/auth-api';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -43,10 +43,10 @@ export const dropAccessToken = () => {
   deleteToken('accessToken');
 };
 
-export const getAuthTokens = (): TAuthTokens => ({
+/*export const getAuthTokens = (): TAuthTokens => ({
   accessToken: getAccessToken(),
   refreshToken: getRefreshToken(),
-});
+});*/
 
 export const dropAuthTokens = (): void => {
   dropAccessToken();
@@ -75,7 +75,7 @@ export const processAuthResponse = (response: TAuthResponseBody) => {
   return Promise.resolve(response);
 };
 
-export const getOrRefreshAuthTokens = async ({ forceRefresh = false } = {}) => {
+/*export const getOrRefreshAuthTokens = async ({ forceRefresh = false } = {}) => {
   try {
     const refreshTokens = (refreshToken: string) => {
       return refreshTokenRequest(refreshToken).then(processAuthResponse);
@@ -89,7 +89,7 @@ export const getOrRefreshAuthTokens = async ({ forceRefresh = false } = {}) => {
     console.log(e);
     throw e;
   }
-};
+};*/
 
 export const processAuthorizedRequest = async (request: any, ...args: any[]) => {
   try {
@@ -128,3 +128,30 @@ const processResponse = async (response: Response) => {
 export const request = (input: RequestInfo | URL, init: RequestInit) => {
   return fetch(input, init).then(processResponse);
 };*/
+export const callRequestWithAccessToken = async <
+  T extends TBaseResponseBody,
+  U extends (accessToken: string, ...args: any[]) => Promise<T>
+>(
+  request: U,
+  ...params: U extends (first: any, ...args: infer R) => any ? R : never
+) => {
+  const accessToken = getAccessToken();
+  if (!!accessToken) {
+    const response = await request.call(null, accessToken, ...params);
+    if (response.success) {
+      return response;
+    }
+  }
+  const refreshToken = getRefreshToken();
+  if (!!refreshToken) {
+    const response = await refreshTokenRequest(refreshToken);
+    if (response.success) {
+      await processAuthResponse(response);
+      const newAccessToken = getAccessToken();
+      if (!!newAccessToken) {
+        return request.call(null, newAccessToken, ...params);
+      }
+    }
+    return response;
+  }
+};

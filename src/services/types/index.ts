@@ -65,7 +65,7 @@ export type TUser = {
   email: string;
 };
 
-export type TUserResponseBody = TBaseResponseBody & TUser;
+export type TUserResponseBody = TUser & TBaseResponseBody;
 
 export type TPatchUserData = {
   password?: string;
@@ -76,3 +76,20 @@ export type TAuthResponseBody = {
   refreshToken: string;
   user?: TUser;
 } & TBaseResponseBody;
+
+export type TLoginParams = {
+  email: string;
+  password: string;
+};
+export type TRegisterParams = {
+  name: string;
+  email: string;
+  password: string;
+};
+export type TResetPasswordParams = {
+  token: string;
+  password: string;
+};
+export type TGetResetCodeParams = {
+  email: string;
+};
