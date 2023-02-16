@@ -19,7 +19,7 @@ export const setToken = (
   setCookie(name, value, options);
 };
 export const getRefreshToken = () => getToken('refreshToken');
-export const getAccessToken = () => getToken('refreshToken');
+export const getAccessToken = () => getToken('accessToken');
 
 export const deleteToken = (name: keyof TAuthTokens): void => {
   deleteCookie(name);
@@ -31,7 +31,7 @@ export const setRefreshToken = (value: string): void => {
 
 export const setAccessToken = (value: string) => {
   const expires = new Date();
-  expires.setTime(20 * 60 * 1000);
+  expires.setTime(expires.getTime() + 20 * 60 * 1000);
   setToken('accessToken', value, { expires });
 };
 
@@ -111,8 +111,9 @@ export const processAuthorizedRequest = async (request: any, ...args: any[]) => 
 };
 
 const processResponse = async <T>(response: Response): Promise<T> => {
-  if (response.ok) return response.json();
-  throw new Error(`Ошибка: ${response.status}`);
+  return response.json();
+  // if (response.ok) return response.json();
+  // throw new Error(`Ошибка: ${response.status}`);
 };
 
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
