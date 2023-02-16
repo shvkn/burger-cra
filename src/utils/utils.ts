@@ -1,7 +1,7 @@
 import { refreshTokenRequest } from 'utils/auth-api';
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { TBaseResponseBody } from 'services/types';
+import { TAuthResponseBody } from 'services/types';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -60,14 +60,6 @@ export const extractToken = (authHeader: string): string | undefined => {
     return undefined;
   }
 };
-export type TAuthResponseBody = {
-  accessToken: string;
-  refreshToken: string;
-  user?: {
-    name: string;
-    email: string;
-  };
-} & TBaseResponseBody;
 
 export const processAuthResponse = (response: TAuthResponseBody) => {
   const { success, accessToken, refreshToken } = response;
@@ -126,3 +118,12 @@ const processResponse = async <T>(response: Response): Promise<T> => {
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
   return fetch(input, init).then(processResponse<T>);
 };
+/*
+const processResponse = async (response: Response) => {
+  if (response.ok) return response.json();
+  throw new Error(`Ошибка: ${response.status}`);
+};
+
+export const request = (input: RequestInfo | URL, init: RequestInit) => {
+  return fetch(input, init).then(processResponse);
+};*/

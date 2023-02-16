@@ -17,18 +17,18 @@ import {
   processAuthResponse,
 } from 'utils/utils';
 
-export const login = createAsyncThunk('auth/login', async (userdata) => {
+export const login = createAsyncThunk('auth/login', async ({ email, password }) => {
   try {
-    return loginRequest(userdata).then(processAuthResponse);
+    return loginRequest(email, password).then(processAuthResponse);
   } catch (e) {
     console.log(e);
     throw e;
   }
 });
 
-export const register = createAsyncThunk('auth/register', async (userdata) => {
+export const register = createAsyncThunk('auth/register', async ({ name, email, password }) => {
   try {
-    return registerUserRequest(userdata).then(processAuthResponse);
+    return registerUserRequest(name, email, password).then(processAuthResponse);
   } catch (e) {
     console.log(e);
     throw e;
@@ -48,18 +48,18 @@ export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) =>
   }
 });
 
-export const resetPassword = createAsyncThunk('auth/reset-password', (payload) => {
+export const resetPassword = createAsyncThunk('auth/reset-password', ({ token, password }) => {
   try {
-    return resetPasswordRequest(payload);
+    return resetPasswordRequest(token, password);
   } catch (e) {
     console.log(e);
     throw e;
   }
 });
 
-export const getResetCode = createAsyncThunk('auth/get-reset-code', (payload) => {
+export const getResetCode = createAsyncThunk('auth/get-reset-code', (email) => {
   try {
-    return getResetCodeRequest(payload);
+    return getResetCodeRequest(email);
   } catch (e) {
     console.log(e);
     throw e;

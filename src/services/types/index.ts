@@ -53,23 +53,20 @@ export type TWebSocketActions = {
   connect: ActionCreatorWithOptionalPayload<any>;
   sendMessage: ActionCreatorWithOptionalPayload<any>;
 };
-export type TRegisterUserData = {
+
+export type TUser = {
   name: string;
   email: string;
-  password: string;
 };
-export type TLoginCredentials = {
-  email: string;
-  password: string;
-};
+
+export type TUserResponseBody = TBaseResponseBody & TUser;
+
 export type TPatchUserData = {
-  name?: string;
-  email?: string;
   password?: string;
-};
-export type TResetCodeParams = {
-  code: string;
-};
-export type TResetPasswordParams = {
-  email: string;
-};
+} & { [k in keyof TUser]?: TUser[k] };
+
+export type TAuthResponseBody = {
+  accessToken: string;
+  refreshToken: string;
+  user?: TUser;
+} & TBaseResponseBody;
