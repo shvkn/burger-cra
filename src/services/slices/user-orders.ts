@@ -1,9 +1,17 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { connect, onGetMessage, onClose, onOpen, sendMessage } from 'services/actions/user-orders';
+import { TOrder } from 'services/types/data';
+import { TOrdersState, TWebSocketSate } from 'services/types';
 
-const userOrdersEntityAdapter = createEntityAdapter({ selectId: ({ _id }) => _id });
+const userOrdersEntityAdapter = createEntityAdapter<TOrder>({ selectId: ({ _id }) => _id });
 
-const initialState = userOrdersEntityAdapter.getInitialState({ status: 'closed', error: null });
+const initialState = userOrdersEntityAdapter.getInitialState<TWebSocketSate & TOrdersState>({
+  status: 'closed',
+  error: {},
+  isConnected: false,
+  total: 0,
+  totalToday: 0,
+});
 
 const userOrdersSlice = createSlice({
   name: 'user-orders',
@@ -19,14 +27,14 @@ const userOrdersSlice = createSlice({
       })
       .addCase(onClose, (state, _) => initialState)
       .addCase(onGetMessage, (state, action) => {
-        const { success, orders, total, totalToday } = action.payload;
+        const { success, orders, total, totalToday, message } = action.payload;
         if (success) {
           userOrdersEntityAdapter.setMany(state, orders);
           state.total = total;
           state.totalToday = totalToday;
-          state.error = null;
+          state.error = {};
         } else {
-          state.error = 'Ошибка получения ленты заказов пользователя';
+          state.error.message = message;
         }
       })
       .addCase(sendMessage, () => {});

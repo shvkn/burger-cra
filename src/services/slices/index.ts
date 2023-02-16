@@ -4,7 +4,7 @@ import burger from 'services/slices/burger';
 import order from 'services/slices/order';
 import auth from './auth';
 import orders from 'services/slices/orders';
-import userOrders from './user-orders';
+import userOrders from 'services/slices/user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
 import ordersWSActions from 'services/actions/orders';
 import userOrdersWSActions from 'services/actions/user-orders';

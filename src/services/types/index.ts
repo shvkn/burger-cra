@@ -45,6 +45,12 @@ export type TOrdersState = {
   totalToday: number;
 };
 
+export type TOrderWsMessage = {
+  readonly orders: ReadonlyArray<TOrder>;
+  readonly total: number;
+  readonly totalToday: number;
+} & TBaseResponseBody;
+
 export type TWebSocketActions = {
   onOpen: ActionCreatorWithOptionalPayload<any>;
   onGetMessage: ActionCreatorWithOptionalPayload<any>;
