@@ -155,3 +155,7 @@ export const callRequestWithAccessToken = async <
     return response;
   }
 };
+
+export const hasAuthTokens = (): boolean => {
+  return !!getAccessToken() || !!getRefreshToken();
+};

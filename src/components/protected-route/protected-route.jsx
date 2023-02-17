@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import authSelectors from 'services/selectors/auth';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import * as authActions from 'services/actions/auth';
+import { hasAuthTokens } from 'utils/utils';
 
 function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const isAuthorized = useSelector(authSelectors.selectIsAuthorized);
@@ -12,7 +13,7 @@ function ProtectedRoute({ children, component, nonAuthOnly = false, ...rest }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isAuthLoading) {
+    if (!isAuthLoading && hasAuthTokens()) {
       dispatch(authActions.getUser());
     }
   }, [dispatch]);
