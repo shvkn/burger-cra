@@ -90,3 +90,11 @@ export const hasError = (
 export const hasOrders = (a: PA<TOrderWsMessage>): a is PA<Required<TOrderWsMessage>> => {
   return !!a.payload?.orders;
 };
+export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
+  return arr.reduce<Record<string, T[]>>((prev, curr) => {
+    const groupKey = fn(curr);
+    const group = prev[groupKey] || [];
+    group.push(curr);
+    return { ...prev, [groupKey]: group };
+  }, {});
+};
