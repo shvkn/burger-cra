@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import * as ordersActions from 'services/actions/orders';
 import ordersSelectors from 'services/selectors/orders';
+import { useAppDispatch, useAppSelector } from 'services/types';
 
 const useOrders = () => {
-  const dispatch = useDispatch();
-  const orders = useSelector(ordersSelectors.selectAll);
-  const entities = useSelector(ordersSelectors.selectEntities);
-  const isWSClosed = useSelector(ordersSelectors.selectIsWSClosed);
-  const isWSConnecting = useSelector(ordersSelectors.selectIsWSConnecting);
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector(ordersSelectors.selectAll);
+  const entities = useAppSelector(ordersSelectors.selectEntities);
+  const isWSClosed = useAppSelector(ordersSelectors.selectIsWSClosed);
+  const isWSConnecting = useAppSelector(ordersSelectors.selectIsWSConnecting);
 
   useEffect(() => {
     if (isWSClosed) {

@@ -5,6 +5,7 @@ import { ActionCreatorWithOptionalPayload, SerializedError } from '@reduxjs/tool
 
 export type TRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+// TODO Перенести
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<TRootState> = useSelector;
 
