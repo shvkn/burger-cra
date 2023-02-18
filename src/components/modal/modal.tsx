@@ -1,16 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import styles from './modal.module.css';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+
 import ModalOverlay from 'components/modal/modal-overlay';
 import ModalContent from 'components/modal/modal-content';
 import ModalHeader from 'components/modal/modal-header';
 
-const MODAL_ROOT = document.getElementById('react-modals');
+type TModalExtensions = {
+  Header: typeof ModalHeader;
+  Content: typeof ModalContent;
+};
 
-function Modal({ children, handleClose }) {
+type TModal = {
+  children: ReactNode;
+  handleClose: () => void;
+};
+
+const MODAL_ROOT = document.getElementById('react-modals') as HTMLElement;
+
+const Modal: FC<TModal> & TModalExtensions = ({ children, handleClose }) => {
   useEffect(() => {
-    const handleCloseByEsc = (e) => {
+    const handleCloseByEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', handleCloseByEsc);
@@ -19,22 +29,11 @@ function Modal({ children, handleClose }) {
 
   return ReactDOM.createPortal(
     <>
-      <div className={`${styles.modal}`}>
-        {React.Children.map(children, (child) => {
-          return child.type.name === Modal.Header.name
-            ? React.cloneElement(child, { handleClose })
-            : child;
-        })}
-      </div>
+      <div className={`${styles.modal}`}>{children}</div>
       <ModalOverlay onClick={handleClose} />
     </>,
     MODAL_ROOT
   );
-}
-
-Modal.propTypes = {
-  children: PropTypes.node.isRequired,
-  handleClose: PropTypes.func.isRequired,
 };
 
 Modal.Header = ModalHeader;

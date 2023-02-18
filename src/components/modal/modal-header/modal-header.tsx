@@ -1,9 +1,13 @@
 import styles from './modal-header.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, ReactNode } from 'react';
 
-function ModalHeader({ children, handleClose }) {
+export type TModalHeader = {
+  children: ReactNode;
+  handleClose: () => void;
+};
+
+const ModalHeader: FC<TModalHeader> = ({ children, handleClose }) => {
   return children ? (
     <div className={`ml-10 mt-10 mr-10 ${styles.container}`}>
       <div>{children}</div>
@@ -16,11 +20,6 @@ function ModalHeader({ children, handleClose }) {
       <CloseIcon type='primary' onClick={handleClose} />
     </button>
   );
-}
-
-ModalHeader.propTypes = {
-  children: PropTypes.node,
-  handleClose: PropTypes.func,
 };
 
 export default ModalHeader;
