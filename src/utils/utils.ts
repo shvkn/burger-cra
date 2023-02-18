@@ -1,7 +1,8 @@
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { TAuthResponseBody, TBaseResponseBody } from 'services/types';
-import { refreshTokenRequest } from 'utils/auth-api';
+import { TKeySuccessFalse } from 'services/types';
+import { PayloadAction as PA } from '@reduxjs/toolkit';
+import { TAuthResponseBody, TBaseResponseBody } from 'services/types/response';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -128,13 +129,14 @@ const processResponse = async (response: Response) => {
 export const request = (input: RequestInfo | URL, init: RequestInit) => {
   return fetch(input, init).then(processResponse);
 };*/
-export const callRequestWithAccessToken = async <
-  T extends TBaseResponseBody,
-  U extends (accessToken: string, ...args: any[]) => Promise<T>
+
+/*export const callRequestWithAccessToken = async <
+  P extends Awaited<TOrderResponseBody | TAuthResponseBody>,
+  T
 >(
-  request: U,
-  ...params: U extends (first: any, ...args: infer R) => any ? R : never
-) => {
+  request: T extends (f: string, ...args: any[]) => Promise<P> ? T : never,
+  ...params: T extends (f: string, ...args: infer R) => Promise<P> ? R : never
+): Promise<P> => {
   const accessToken = getAccessToken();
   if (!!accessToken) {
     const response = await request.call(null, accessToken, ...params);
@@ -142,7 +144,7 @@ export const callRequestWithAccessToken = async <
       return response;
     }
   }
-  const refreshToken = getRefreshToken();
+  const refreshToken = getRefreshToken() ?? '';
   if (!!refreshToken) {
     const response = await refreshTokenRequest(refreshToken);
     if (response.success) {
@@ -154,8 +156,18 @@ export const callRequestWithAccessToken = async <
     }
     return response;
   }
-};
+  const responseBody: TBaseResponseBody = {
+    success: false,
+    message: 'Refresh token is missed',
+  };
+  return responseBody;
+};*/
 
 export const hasAuthTokens = (): boolean => {
   return !!getAccessToken() || !!getRefreshToken();
+};
+export const hasError = (
+  a: PA<TBaseResponseBody>
+): a is PA<TBaseResponseBody & TKeySuccessFalse> => {
+  return !a.payload?.success;
 };

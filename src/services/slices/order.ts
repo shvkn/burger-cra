@@ -1,11 +1,8 @@
 import { createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { makeOrder } from 'services/actions/order';
-import {
-  TBaseResponseBody,
-  TKeySuccessFalse,
-  TOrderResponseBody,
-  TThunkState,
-} from 'services/types';
+import { hasError } from 'utils/utils';
+import { TThunkState } from 'services/types/state';
+import { TOrderResponseBody } from 'services/types/response';
 
 const initialState: TThunkState & {
   number: number | null;
@@ -17,10 +14,6 @@ const initialState: TThunkState & {
 
 const hasOrder = (a: PA<TOrderResponseBody>): a is PA<Required<TOrderResponseBody>> => {
   return !!a.payload?.order;
-};
-
-const hasError = (a: PA<TBaseResponseBody>): a is PA<TBaseResponseBody & TKeySuccessFalse> => {
-  return !a.payload?.success;
 };
 
 const order = createSlice({
