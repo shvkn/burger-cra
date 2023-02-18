@@ -6,16 +6,12 @@ import {
   loginRequest,
   logoutRequest,
   patchUserRequest,
+  refreshTokenRequest,
   registerUserRequest,
   resetPasswordRequest,
 } from 'utils/auth-api';
 
-import {
-  callRequestWithAccessToken,
-  dropAuthTokens,
-  getRefreshToken,
-  processAuthResponse,
-} from 'utils/utils';
+import { dropAuthTokens, getAccessToken, getRefreshToken, processAuthResponse } from 'utils/utils';
 import {
   TGetResetCodeParams,
   TLoginParams,
@@ -23,6 +19,7 @@ import {
   TRegisterParams,
   TResetPasswordParams,
 } from 'services/types';
+import { TBaseResponseBody } from 'services/types/response';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }: TLoginParams) => {
   try {
@@ -82,18 +79,66 @@ export const getResetCode = createAsyncThunk(
     }
   }
 );
-
+// TODO Вынести в абстракцию
 export const getUser = createAsyncThunk('auth/get-user', async () => {
   try {
-    return callRequestWithAccessToken(getUserRequest);
+    // return callRequestWithAccessToken(getUserRequest);
+    const accessToken = getAccessToken();
+    if (!!accessToken) {
+      const response = await getUserRequest(accessToken);
+      if (response.success) {
+        return response;
+      }
+    }
+    const refreshToken = getRefreshToken() ?? '';
+    if (!!refreshToken) {
+      const response = await refreshTokenRequest(refreshToken);
+      if (response.success) {
+        await processAuthResponse(response);
+        const newAccessToken = getAccessToken();
+        if (!!newAccessToken) {
+          return getUserRequest(newAccessToken);
+        }
+      }
+      return response;
+    }
+    const responseBody: TBaseResponseBody = {
+      success: false,
+      message: 'Refresh token is missed',
+    };
+    return responseBody;
   } catch (e) {
     throw e;
   }
 });
-
+// TODO Вынести в абстракцию
 export const patchUser = createAsyncThunk('auth/patch-user', async (data: TPatchUserData) => {
   try {
-    return callRequestWithAccessToken(patchUserRequest, data);
+    const accessToken = getAccessToken();
+    if (!!accessToken) {
+      const response = await patchUserRequest(accessToken, data);
+      if (response.success) {
+        return response;
+      }
+    }
+    const refreshToken = getRefreshToken() ?? '';
+    if (!!refreshToken) {
+      const response = await refreshTokenRequest(refreshToken);
+      if (response.success) {
+        await processAuthResponse(response);
+        const newAccessToken = getAccessToken();
+        if (!!newAccessToken) {
+          return patchUserRequest(newAccessToken, data);
+        }
+      }
+      return response;
+    }
+    const responseBody: TBaseResponseBody = {
+      success: false,
+      message: 'Refresh token is missed',
+    };
+    return responseBody;
+    // return callRequestWithAccessToken(patchUserRequest, data);
   } catch (e) {
     throw e;
   }
