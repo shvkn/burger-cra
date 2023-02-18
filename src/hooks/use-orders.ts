@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import * as ordersActions from 'services/actions/orders';
 import ordersSelectors from 'services/selectors/orders';
-import { useAppDispatch, useAppSelector } from 'services/types';
+import { useAppDispatch, useAppSelector } from 'services/slices';
 
 const useOrders = () => {
   const dispatch = useAppDispatch();

@@ -9,6 +9,8 @@ import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
 import ordersWSActions from 'services/actions/orders';
 import userOrdersWSActions from 'services/actions/user-orders';
 import { NORMA_WS_API } from 'utils/constants';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, TRootState } from 'services/types';
 
 export default configureStore({
   reducer: {
@@ -25,3 +27,6 @@ export default configureStore({
       WebSocketMiddleware(`${NORMA_WS_API}/orders`, userOrdersWSActions)
     ),
 });
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<TRootState> = useSelector;

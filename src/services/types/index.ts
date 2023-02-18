@@ -1,13 +1,9 @@
 import store from 'services/slices';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { TUser } from 'services/types/data';
 import { ActionCreatorWithOptionalPayload, SerializedError } from '@reduxjs/toolkit';
 
 export type TRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-// TODO Перенести
-export const useAppDispatch: () => AppDispatch = useDispatch;
-export const useAppSelector: TypedUseSelectorHook<TRootState> = useSelector;
 
 export type TError = SerializedError;
 

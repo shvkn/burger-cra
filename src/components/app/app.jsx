@@ -21,7 +21,7 @@ import UserOrderPage from 'pages/user-order/user-order';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
-import { useAppDispatch } from 'services/types';
+import { useAppDispatch } from 'services/slices';
 
 function App() {
   const location = useLocation();
