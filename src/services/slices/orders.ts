@@ -1,14 +1,14 @@
 import { createEntityAdapter, createSlice, isAllOf } from '@reduxjs/toolkit';
 import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'services/actions/orders';
 import { TOrder } from 'services/types/data';
-import { TOrdersState, TWebSocketSate } from 'services/types/state';
+import { TOrdersSlice, TWebSocketSate } from 'services/types/state';
 import { hasError, hasOrders } from 'utils/utils';
 
 const ordersEntityAdapter = createEntityAdapter<TOrder>({
   selectId: ({ _id }) => _id,
 });
 
-const initialState = ordersEntityAdapter.getInitialState<TWebSocketSate & TOrdersState>({
+const initialState = ordersEntityAdapter.getInitialState<TWebSocketSate & TOrdersSlice>({
   status: 'closed',
   error: {},
   isConnected: false,

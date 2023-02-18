@@ -2,10 +2,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import { TRootState } from 'services/types';
 import { TIngredient, TIngredientId } from 'services/types/data';
-import { TBurgerSliceState } from 'services/slices/burger';
+import { TBurgerSlice } from 'services/types/state';
 
 const selectIngredientsEntities = (state: TRootState) => ingredientsSelectors.selectEntities(state);
-const selectBurgerSlice = (state: TRootState): TBurgerSliceState => state.burger;
+const selectBurgerSlice = (state: TRootState): TBurgerSlice => state.burger;
 const selectIngredientsIds = (state: TRootState) => selectBurgerSlice(state).ingredients;
 const selectCounts = (state: TRootState) => selectBurgerSlice(state).counts;
 const selectBunId = (state: TRootState) => selectBurgerSlice(state).bun;

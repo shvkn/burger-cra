@@ -1,4 +1,5 @@
 import { TError } from 'services/types/index';
+import { TIngredientId } from 'services/types/data';
 
 export type TThunkState = {
   status: 'idle' | 'loading' | 'failed' | 'succeeded';
@@ -9,18 +10,25 @@ export type TWebSocketSate = {
   isConnected: boolean;
   error: TError;
 };
-export type TOrdersState = {
+export type TOrdersSlice = {
   total: number;
   totalToday: number;
 };
-export type TAuthState = {
+
+export type TUserOrdersSlice = TOrdersSlice;
+
+export type TAuthSlice = {
   user: {};
   isAuthorized: boolean;
 } & TThunkState;
 
-export type TEntityAdapterState = {
-  ids: [];
-  entities: {};
-};
+export type TIngredientsSlice = TThunkState;
 
-export type TIngredientsState = TThunkState & TEntityAdapterState;
+export type TBurgerSlice = {
+  bun: string;
+  ingredients: Array<{
+    id: TIngredientId;
+    uid: string;
+  }>;
+  counts: { [name: string]: number };
+};

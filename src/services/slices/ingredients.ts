@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
 import { TIngredient } from 'services/types/data';
-import { TIngredientsState } from 'services/types/state';
+import { TIngredientsSlice } from 'services/types/state';
 import { TIngredientsResponseBody } from 'services/types/response';
 import { hasError } from 'utils/utils';
 
@@ -14,11 +14,9 @@ const hasData = (a: PA<TIngredientsResponseBody>): a is PA<Required<TIngredients
   return !!data && Array.isArray(data);
 };
 
-const initialState = ingredientsAdapter.getInitialState<TIngredientsState>({
+const initialState = ingredientsAdapter.getInitialState<TIngredientsSlice>({
   status: 'idle',
   error: {},
-  ids: [],
-  entities: {},
 });
 
 const ingredients = createSlice({

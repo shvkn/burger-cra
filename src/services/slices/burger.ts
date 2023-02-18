@@ -6,18 +6,9 @@ import {
   reset,
   setBun,
 } from 'services/actions/burger';
-import { TIngredientId } from 'services/types/data';
+import { TBurgerSlice } from 'services/types/state';
 
-export type TBurgerSliceState = {
-  bun: string;
-  ingredients: Array<{
-    id: TIngredientId;
-    uid: string;
-  }>;
-  counts: { [name: string]: number };
-};
-
-const initialState: TBurgerSliceState = {
+const initialState: TBurgerSlice = {
   bun: '',
   ingredients: [],
   counts: {},
