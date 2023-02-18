@@ -37,7 +37,7 @@ export type TOrdersResponseBody = {
 } & TBaseResponseBody;
 
 export type TOrderResponseBody = {
-  order: TOrder;
+  order?: TOrder;
 } & TBaseResponseBody;
 
 export type TOrdersState = {
@@ -72,9 +72,8 @@ export type TPatchUserData = {
 } & { [k in keyof TUser]?: TUser[k] };
 
 export type TAuthResponseBody = {
-  accessToken: string;
-  refreshToken: string;
-  user?: TUser;
+  accessToken?: string;
+  refreshToken?: string;
 } & TBaseResponseBody;
 
 export type TLoginParams = {
@@ -92,4 +91,7 @@ export type TResetPasswordParams = {
 };
 export type TGetResetCodeParams = {
   email: string;
+};
+export type TKeySuccessFalse = {
+  success: false;
 };

@@ -1,6 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { makeOrder } from 'services/actions/order';
-import { TThunkState } from 'services/types';
+import {
+  TBaseResponseBody,
+  TKeySuccessFalse,
+  TOrderResponseBody,
+  TThunkState,
+} from 'services/types';
 
 const initialState: TThunkState & {
   number: number | null;
@@ -8,6 +13,14 @@ const initialState: TThunkState & {
   number: null,
   status: 'idle',
   error: {},
+};
+
+const hasOrder = (a: PA<TOrderResponseBody>): a is PA<Required<TOrderResponseBody>> => {
+  return !!a.payload?.order;
+};
+
+const hasError = (a: PA<TBaseResponseBody>): a is PA<TBaseResponseBody & TKeySuccessFalse> => {
+  return !a.payload?.success;
 };
 
 const order = createSlice({
@@ -25,15 +38,15 @@ const order = createSlice({
         state.status = 'failed';
         state.error = error;
       })
-      .addCase(makeOrder.fulfilled, (state, action) => {
-        const { order, success, message } = action.payload;
-        if (success) {
-          state.number = order.number;
-          state.status = 'succeeded';
-          state.error = {};
-        } else {
-          state.error = { message };
-        }
+      .addMatcher(isAllOf(makeOrder.fulfilled, hasError), (state, action) => {
+        state.error.message = action.payload.message;
+        state.status = 'failed';
+      })
+      .addMatcher(isAllOf(makeOrder.fulfilled, hasOrder), (state, action) => {
+        const order = action.payload.order;
+        state.number = order.number;
+        state.status = 'succeeded';
+        state.error = {};
       });
   },
 });
