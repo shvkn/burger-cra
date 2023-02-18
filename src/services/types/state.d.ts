@@ -17,3 +17,10 @@ export type TAuthState = {
   user: {};
   isAuthorized: boolean;
 } & TThunkState;
+
+export type TEntityAdapterState = {
+  ids: [];
+  entities: {};
+};
+
+export type TIngredientsState = TThunkState & TEntityAdapterState;

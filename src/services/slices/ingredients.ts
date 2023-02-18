@@ -1,18 +1,29 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
 import { TIngredient } from 'services/types/data';
-import { TThunkState } from 'services/types';
+import { TIngredientsState } from 'services/types/state';
+import { TIngredientsResponseBody } from 'services/types/response';
+import { hasError } from 'utils/utils';
 
 const ingredientsAdapter = createEntityAdapter<TIngredient>({
   selectId: ({ _id }) => _id,
 });
 
+const hasData = (a: PA<TIngredientsResponseBody>): a is PA<Required<TIngredientsResponseBody>> => {
+  const data = a.payload?.data;
+  return !!data && Array.isArray(data);
+};
+
+const initialState = ingredientsAdapter.getInitialState<TIngredientsState>({
+  status: 'idle',
+  error: {},
+  ids: [],
+  entities: {},
+});
+
 const ingredients = createSlice({
   name: 'ingredients',
-  initialState: ingredientsAdapter.getInitialState<TThunkState>({
-    status: 'idle',
-    error: {},
-  }),
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -22,19 +33,15 @@ const ingredients = createSlice({
       })
       .addCase(fetch.rejected, (state, action) => {
         state.status = 'failed';
-        if (action.error) {
-          state.error = action.error;
-        }
+        state.error = action.error;
       })
-      .addCase(fetch.fulfilled, (state, action) => {
-        const { success, data, message } = action.payload;
-        if (success) {
-          state.status = 'succeeded';
-          state.error = {};
-          ingredientsAdapter.setAll(state, data);
-        } else {
-          state.error = { message };
-        }
+      .addMatcher(isAllOf(fetch.fulfilled, hasError), (state, action) => {
+        state.error.message = action.payload.message;
+      })
+      .addMatcher(isAllOf(fetch.fulfilled, hasData), (state, action) => {
+        state.status = 'succeeded';
+        state.error = {};
+        ingredientsAdapter.setAll(state, action.payload.data);
       });
   },
 });
