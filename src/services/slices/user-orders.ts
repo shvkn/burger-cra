@@ -1,7 +1,8 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, isAllOf } from '@reduxjs/toolkit';
 import { connect, onGetMessage, onClose, onOpen, sendMessage } from 'services/actions/user-orders';
 import { TOrder } from 'services/types/data';
-import { TOrdersState, TWebSocketSate } from 'services/types';
+import { TOrdersState, TWebSocketSate } from 'services/types/state';
+import { hasError, hasOrders } from 'utils/utils';
 
 const userOrdersEntityAdapter = createEntityAdapter<TOrder>({ selectId: ({ _id }) => _id });
 
@@ -26,18 +27,17 @@ const userOrdersSlice = createSlice({
         state.status = 'opened';
       })
       .addCase(onClose, (state, _) => initialState)
-      .addCase(onGetMessage, (state, action) => {
-        const { success, orders, total, totalToday, message } = action.payload;
-        if (success) {
-          userOrdersEntityAdapter.setMany(state, orders);
-          state.total = total;
-          state.totalToday = totalToday;
-          state.error = {};
-        } else {
-          state.error.message = message;
-        }
+      .addCase(sendMessage, () => {})
+      .addMatcher(isAllOf(onGetMessage, hasError), (state, action) => {
+        state.error.message = action.payload?.message;
       })
-      .addCase(sendMessage, () => {});
+      .addMatcher(isAllOf(onGetMessage, hasOrders), (state, action) => {
+        const { orders, total, totalToday } = action.payload;
+        userOrdersEntityAdapter.setMany(state, orders);
+        state.total = total;
+        state.totalToday = totalToday;
+        state.error = {};
+      });
   },
 });
 
