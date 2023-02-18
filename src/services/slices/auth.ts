@@ -1,20 +1,30 @@
-import { createSlice, isAllOf, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
-import { login, register, logout, getUser, patchUser, resetPassword } from 'services/actions/auth';
+import {
+  createSlice,
+  isAllOf,
+  isFulfilled,
+  isPending,
+  isRejected,
+  PayloadAction as PA,
+} from '@reduxjs/toolkit';
+import { getUser, login, logout, patchUser, register, resetPassword } from 'services/actions/auth';
+import { hasError } from 'utils/utils';
+import { TAuthState } from 'services/types/state';
+import { TUserResponseBody } from 'services/types/response';
 
-const initialState = {
-  user: null,
-  status: 'idle',
+const initialState: TAuthState = {
+  user: {},
   isAuthorized: false,
-  error: null,
+  status: 'idle',
+  error: {},
 };
 
 const isPendingAction = isPending(login, register, logout, getUser, patchUser, resetPassword);
 const isFulfilledAction = isFulfilled(login, register, logout, getUser, patchUser, resetPassword);
 const isRejectedAction = isRejected(login, register, logout, getUser, patchUser, resetPassword);
 
-const hasMessage = (action) => !!action.payload?.message;
-const hasError = (action) => action.payload?.success === false;
-const hasUser = (action) => !!action.payload?.user;
+const hasUser = (a: PA<TUserResponseBody>): a is PA<Required<TUserResponseBody>> => {
+  return !!a.payload?.user;
+};
 
 const authSlice = createSlice({
   name: 'auth',
@@ -30,14 +40,14 @@ const authSlice = createSlice({
         state.status = 'idle';
       })
       .addMatcher(isPendingAction, (state) => {
-        state.error = null;
+        state.error = {};
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ?? action.error;
       })
-      .addMatcher(isAllOf(isFulfilledAction, hasError, hasMessage), (state, action) => {
-        state.error = action.payload.message;
+      .addMatcher(isAllOf(isFulfilledAction, hasError), (state, action) => {
+        state.error.message = action.payload.message;
         state.isAuthorized = false;
       })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {

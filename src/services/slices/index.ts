@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import ingredients from 'services/slices/ingredients';
 import burger from 'services/slices/burger';
 import order from 'services/slices/order';
-import auth from './auth';
+import auth from 'services/slices/auth';
 import orders from 'services/slices/orders';
 import userOrders from 'services/slices/user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
