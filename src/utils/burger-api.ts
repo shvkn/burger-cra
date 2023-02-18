@@ -1,12 +1,11 @@
 import { NORMA_API } from 'utils/constants';
-import { TIngredientsResponseBody, TOrderResponseBody } from 'services/types';
 import { TIngredientId } from 'services/types/data';
 import { request } from 'utils/utils';
+import { TIngredientsResponseBody, TOrderResponseBody } from 'services/types/response';
 
 export const getIngredientsRequest = () => {
   return request<TIngredientsResponseBody>(`${NORMA_API}/ingredients`, {});
 };
-
 export const postOrderRequest = (
   accessToken: string,
   ingredients: ReadonlyArray<TIngredientId>
