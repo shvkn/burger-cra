@@ -1,9 +1,8 @@
-import { createEntityAdapter, createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, isAllOf } from '@reduxjs/toolkit';
 import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'services/actions/orders';
 import { TOrder } from 'services/types/data';
 import { TOrdersState, TWebSocketSate } from 'services/types/state';
-import { hasError } from 'utils/utils';
-import { TOrderWsMessage } from 'services/types/response';
+import { hasError, hasOrders } from 'utils/utils';
 
 const ordersEntityAdapter = createEntityAdapter<TOrder>({
   selectId: ({ _id }) => _id,
@@ -16,10 +15,6 @@ const initialState = ordersEntityAdapter.getInitialState<TWebSocketSate & TOrder
   total: 0,
   totalToday: 0,
 });
-
-const hasOrders = (a: PA<TOrderWsMessage>): a is PA<Required<TOrderWsMessage>> => {
-  return !!a.payload?.orders;
-};
 
 const ordersSlice = createSlice({
   name: 'orders',

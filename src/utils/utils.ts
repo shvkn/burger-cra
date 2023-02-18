@@ -2,7 +2,7 @@ import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
 import { TKeySuccessFalse } from 'services/types';
 import { PayloadAction as PA } from '@reduxjs/toolkit';
-import { TAuthResponseBody, TBaseResponseBody } from 'services/types/response';
+import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -170,4 +170,7 @@ export const hasError = (
   a: PA<TBaseResponseBody>
 ): a is PA<TBaseResponseBody & TKeySuccessFalse> => {
   return !a.payload?.success;
+};
+export const hasOrders = (a: PA<TOrderWsMessage>): a is PA<Required<TOrderWsMessage>> => {
+  return !!a.payload?.orders;
 };
