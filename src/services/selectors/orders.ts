@@ -27,7 +27,7 @@ const selectIsWSOpened = createSelector(selectOrderStatus, (status) => status ==
 const selectIsWSClosed = createSelector(selectOrderStatus, (status) => status === 'closed');
 
 // TODO Вынести в общий функционал
-const selectIngredients = (id: TIngredientId) =>
+const selectIngredients = (id: string) =>
   createSelector(
     [selectOrderById(id), ingredientsSelectors.selectEntities],
     (order, ingredientsEntities) => {

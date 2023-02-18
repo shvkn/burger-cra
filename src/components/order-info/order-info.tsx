@@ -1,21 +1,20 @@
-import React, { useMemo } from 'react';
-import { orderPropTypes } from 'utils/prop-types';
-import { useSelector } from 'react-redux';
+import React, { FC, useMemo } from 'react';
 import _ from 'lodash';
 import styles from './order-info.module.css';
 import OrderStatus from 'components/order-status';
 import { OrderStatuses } from 'utils/constants';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientsSelectors from 'services/selectors/ingredients';
+import { TOrder } from 'services/types/data';
+import { useAppSelector } from 'services/slices';
+import ordersSelectors from 'services/selectors/orders';
 
-function OrderInfo({ order }) {
-  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
-  const ingredients = useMemo(() => {
-    return order.ingredients
-      .map((id) => ingredientsEntities[id])
-      .filter((ingredient) => !!ingredient);
-  }, [order.ingredients, ingredientsEntities]);
-  const totalPrice = _.sumBy(ingredients, 'price');
+type TOrderInfo = {
+  order: TOrder;
+};
+
+const OrderInfo: FC<TOrderInfo> = ({ order }) => {
+  const ingredients = useAppSelector(ordersSelectors.selectIngredients(order._id));
+  const totalPrice = useAppSelector(ordersSelectors.selectTotalPrice(order._id));
 
   const uniqIngredients = useMemo(() => _.uniqBy(ingredients, '_id'), [ingredients]);
   const ingredientsCounts = useMemo(() => _.countBy(order.ingredients), [order.ingredients]);
@@ -59,10 +58,6 @@ function OrderInfo({ order }) {
       </div>
     </article>
   );
-}
-
-OrderInfo.propTypes = {
-  order: orderPropTypes.isRequired,
 };
 
 export default OrderInfo;
