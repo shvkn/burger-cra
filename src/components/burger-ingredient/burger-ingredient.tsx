@@ -1,16 +1,21 @@
 import styles from './burger-ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
-import { ingredientPropTypes } from 'utils/prop-types';
+import React, { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from 'utils/constants';
-import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { selectIngredientCountById } from 'services/selectors/burger';
+import { TIngredient } from 'services/types/data';
+import { useAppSelector } from 'services/slices';
 
-function BurgerIngredient({ ingredient }) {
+type TBurgerIngredient = {
+  ingredient: TIngredient;
+};
+
+const BurgerIngredient: FC<TBurgerIngredient> = ({ ingredient }) => {
   const id = ingredient._id;
-  const count = useSelector(selectIngredientCountById(id));
+  // TODO вынести в параметры
+  const count = useAppSelector(selectIngredientCountById(id));
   const location = useLocation();
   const [, dragRef] = useDrag({
     type: ItemTypes.BURGER_INGREDIENT,
@@ -39,10 +44,6 @@ function BurgerIngredient({ ingredient }) {
       <h3 className='mt-2 text text_type_main-default'>{ingredient.name}</h3>
     </Link>
   );
-}
-
-BurgerIngredient.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
 };
 
 export default React.memo(BurgerIngredient);
