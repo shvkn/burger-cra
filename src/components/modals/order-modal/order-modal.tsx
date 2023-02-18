@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info';
 import ordersSelectors from 'services/selectors/orders';
+import { useAppSelector } from 'services/slices';
 
-function OrderModal() {
-  const { id } = useParams();
-  const entities = useSelector(ordersSelectors.selectEntities);
-  const order = entities[id];
+const OrderModal: FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const order = useAppSelector(ordersSelectors.selectOrderById(id));
   const history = useHistory();
 
   const handleClose = () => {
@@ -17,7 +16,7 @@ function OrderModal() {
 
   return order ? (
     <Modal handleClose={handleClose}>
-      <Modal.Header>
+      <Modal.Header handleClose={handleClose}>
         <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
       </Modal.Header>
       <Modal.Content>
@@ -25,6 +24,6 @@ function OrderModal() {
       </Modal.Content>
     </Modal>
   ) : null;
-}
+};
 
 export default OrderModal;
