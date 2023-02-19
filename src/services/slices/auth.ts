@@ -12,7 +12,7 @@ import { TAuthSlice } from 'services/types/state';
 import { TUserResponseBody } from 'services/types/response';
 
 const initialState: TAuthSlice = {
-  user: {},
+  user: null,
   isAuthorized: false,
   status: 'idle',
   error: {},
@@ -49,6 +49,7 @@ const authSlice = createSlice({
       .addMatcher(isAllOf(isFulfilledAction, hasError), (state, action) => {
         state.error.message = action.payload.message;
         state.isAuthorized = false;
+        state.user = null;
       })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {
         state.status = 'succeeded';

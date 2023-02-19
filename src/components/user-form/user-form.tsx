@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import styles from 'pages/profile/profile.module.css';
 import {
   Button,
@@ -7,23 +15,23 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import * as authActions from 'services/actions/auth';
-import { useDispatch, useSelector } from 'react-redux';
 import authSelectors from 'services/selectors/auth';
+import { useAppDispatch, useAppSelector } from 'services/slices';
+import { TPatchUserData } from 'services/types';
 
-function UserForm() {
-  const user = useSelector(authSelectors.selectUser);
-  const formRef = useRef();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const isFormChanged = user?.name !== form.name || user?.email !== form.email;
-
-  const dispatch = useDispatch();
+const UserForm: FC = () => {
+  const user = useAppSelector(authSelectors.selectUser);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [form, setForm] = useState<Required<TPatchUserData>>({ name: '', email: '', password: '' });
+  const isFormChanged = !!user && (user.name !== form.name || user.email !== form.email);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setForm({ name: user.name, email: user.email, password: '' });
+    !!user && setForm({ ...user, password: '' });
   }, [user]);
 
-  const handlePatchUser = useCallback(
-    (e) => {
+  const handleSubmit = useCallback(
+    (e: Event) => {
       e.preventDefault();
       dispatch(authActions.patchUser(form));
     },
@@ -32,17 +40,18 @@ function UserForm() {
 
   useEffect(() => {
     const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handlePatchUser);
-    return () => formRefValue?.removeEventListener('submit', handlePatchUser);
-  }, [handlePatchUser]);
+    formRefValue?.addEventListener('submit', handleSubmit);
+    return () => formRefValue?.removeEventListener('submit', handleSubmit);
+  }, [handleSubmit]);
 
-  const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const target = e.target;
+    !!target && setForm({ ...form, [target.name]: target.value });
   };
 
-  const resetChanges = (e) => {
+  const handleReset = (e: SyntheticEvent): void => {
     e.preventDefault();
-    setForm({ name: user.name, email: user.email, password: '' });
+    !!user && setForm({ ...user, password: '' });
   };
 
   return (
@@ -59,7 +68,7 @@ function UserForm() {
         name={'email'}
         placeholder={'E-mail'}
         onChange={onChange}
-        icon={'EditIcon'}
+        isIcon={true}
         extraClass={'mt-6'}
       />
       <PasswordInput
@@ -72,7 +81,7 @@ function UserForm() {
       />
       {isFormChanged && (
         <div className={`mt-6 ${styles.buttons}`}>
-          <Button htmlType={'reset'} type={'secondary'} onClick={resetChanges} extraClass={'ml-4'}>
+          <Button htmlType={'reset'} type={'secondary'} onClick={handleReset} extraClass={'ml-4'}>
             Отменить
           </Button>
           <Button htmlType={'submit'}>Сохранить</Button>
@@ -80,6 +89,6 @@ function UserForm() {
       )}
     </form>
   );
-}
+};
 
 export default UserForm;

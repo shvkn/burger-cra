@@ -1,5 +1,5 @@
 import { TError } from 'services/types/index';
-import { TIngredientId } from 'services/types/data';
+import { TIngredientId, TUser } from 'services/types/data';
 
 export type TThunkState = {
   status: 'idle' | 'loading' | 'failed' | 'succeeded';
@@ -18,7 +18,7 @@ export type TOrdersSlice = {
 export type TUserOrdersSlice = TOrdersSlice;
 
 export type TAuthSlice = {
-  user: {};
+  user: TUser | null;
   isAuthorized: boolean;
 } & TThunkState;
 
