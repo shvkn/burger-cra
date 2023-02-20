@@ -1,6 +1,8 @@
 import store from 'services/slices';
-import { TUser } from 'services/types/data';
+import { TIngredient, TIngredientId, TUser } from 'services/types/data';
 import { ActionCreatorWithOptionalPayload, SerializedError } from '@reduxjs/toolkit';
+import { Location, LocationState } from 'history';
+import { TBurgerSlice } from 'services/types/state';
 
 export type TRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
@@ -43,3 +45,14 @@ export type TGetResetCodeParams = {
 export type TKeySuccessFalse = {
   success: false;
 };
+export type TBurgerIngredient = {
+  id: TIngredientId;
+  uid: string;
+  data: TIngredient;
+};
+
+export type TLocationState = {
+  from?: Location;
+  burger?: TBurgerSlice;
+  background?: Location;
+} & LocationState;
