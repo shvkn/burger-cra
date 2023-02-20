@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import React, { FC, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import {
@@ -21,12 +21,12 @@ import UserOrderPage from 'pages/user-order/user-order';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
-import { useAppDispatch } from 'services/slices';
+import { useAppDispatch, useAppLocation } from 'services/slices';
 
-function App() {
-  const location = useLocation();
-  const background = location.state?.background;
+const App: FC = () => {
+  const location = useAppLocation();
   const dispatch = useAppDispatch();
+  const background = location.state?.background;
 
   useEffect(() => {
     dispatch(ingredientsActions.fetch());
@@ -56,6 +56,6 @@ function App() {
       )}
     </AppLayout>
   );
-}
+};
 
 export default App;
