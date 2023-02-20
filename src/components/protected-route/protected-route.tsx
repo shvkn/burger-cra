@@ -8,7 +8,7 @@ import { RouteProps } from 'react-router';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 
 type TProtectedRoute = {
-  nonAuthOnly: boolean;
+  nonAuthOnly?: boolean;
 } & RouteProps;
 
 const ProtectedRoute: FC<TProtectedRoute> = ({
