@@ -4,7 +4,7 @@ import RegistrationPage from './registration';
 import ForgotPasswordPage from 'pages/forgot-password';
 import ResetPasswordPage from './reset-password';
 import ProfilePage from './profile';
-import IngredientPage from './ingredient';
+import IngredientPage from 'pages/ingredient';
 import NotFoundedPage from './not-founded';
 import OrderPage from './order';
 import FeedPage from './feed';

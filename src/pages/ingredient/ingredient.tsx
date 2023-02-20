@@ -2,15 +2,16 @@ import React from 'react';
 import IngredientDetails from 'components/ingredient-details';
 import DetailsLayout from 'components/details-layout';
 import styles from './ingredient.module.css';
-import { useSelector } from 'react-redux';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import { useParams } from 'react-router-dom';
 import { NotFoundedPage } from 'pages/index';
+import { useAppSelector } from 'services/slices';
+import { TIngredientId } from 'services/types/data';
 
-function IngredientPage() {
-  const { id } = useParams();
-  const entities = useSelector(ingredientsSelectors.selectEntities);
-  const ingredient = entities[id];
+const IngredientPage = () => {
+  // TODO
+  const { id } = useParams<{ id: TIngredientId }>();
+  const ingredient = useAppSelector(ingredientsSelectors.selectById(id));
   return ingredient ? (
     <main className={`mt-30 ${styles.layout}`}>
       <DetailsLayout>
@@ -25,6 +26,6 @@ function IngredientPage() {
   ) : (
     <NotFoundedPage />
   );
-}
+};
 
 export default IngredientPage;
