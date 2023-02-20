@@ -7,7 +7,7 @@ import ProfilePage from 'pages/profile';
 import IngredientPage from 'pages/ingredient';
 import NotFoundedPage from 'pages/not-founded';
 import OrderPage from 'pages/order';
-import FeedPage from './feed';
+import FeedPage from 'pages/feed';
 import UserOrderPage from 'pages/user-order';
 
 export {

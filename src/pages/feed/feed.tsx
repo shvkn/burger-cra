@@ -1,31 +1,37 @@
-import React, { useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import styles from './feed.module.css';
-import { useSelector } from 'react-redux';
 import ordersSelectors from 'services/selectors/orders';
-import _ from 'lodash';
 import Order from 'components/order';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
-import useOrders from 'hooks/use-orders';
+import { useAppDispatch, useAppSelector } from 'services/slices';
+import actions from 'services/actions/orders';
 
-function FeedPage() {
-  const [orders] = useOrders();
-  const total = useSelector(ordersSelectors.selectTotal);
-  const totalToday = useSelector(ordersSelectors.selectTotalToday);
-  const isOrdersLoading = useSelector(ordersSelectors.selectIsLoading);
-  const isOrdersEmpty = useSelector(ordersSelectors.selectIsEmpty);
+const FeedPage: FC = () => {
+  const isWsOpened = useAppSelector(ordersSelectors.selectIsWSOpened);
+  const isWsClosed = useAppSelector(ordersSelectors.selectIsWSClosed);
+  const dispatch = useAppDispatch();
 
-  const sortedOrders = useMemo(() => {
-    return _.orderBy(orders, 'createdAt', 'desc');
-  }, [orders]);
+  useEffect(() => {
+    isWsClosed && dispatch(actions.connect());
+    return () => {
+      isWsOpened && dispatch(actions.close());
+    };
+  }, [dispatch, isWsOpened, isWsClosed]);
+
+  const orders = useAppSelector(ordersSelectors.selectAll);
+  const total = useAppSelector(ordersSelectors.selectTotal);
+  const totalToday = useAppSelector(ordersSelectors.selectTotalToday);
+  const isOrdersLoading = useAppSelector(ordersSelectors.selectIsLoading);
+  const isOrdersEmpty = useAppSelector(ordersSelectors.selectIsEmpty);
 
   const ordersStateDone = useMemo(
-    () => _.filter(sortedOrders, { status: 'done' }).slice(0, 20),
-    [sortedOrders]
+    () => orders.filter(({ status }) => status === 'done').slice(0, 20),
+    [orders]
   );
 
   const ordersStatePending = useMemo(
-    () => _.filter(sortedOrders, { status: 'pending' }).slice(0, 20),
-    [sortedOrders]
+    () => orders.filter(({ status }) => status === 'pending').slice(0, 20),
+    [orders]
   );
 
   return (
@@ -42,7 +48,7 @@ function FeedPage() {
               </p>
             ) : (
               <ul className={`${styles.ordersList} scroll`}>
-                {sortedOrders.map((order) => (
+                {orders.map((order) => (
                   <li key={order._id} className={'mb-4 mr-2'}>
                     <Order order={order} hideStatus />
                   </li>
@@ -84,6 +90,6 @@ function FeedPage() {
       )}
     </main>
   );
-}
+};
 
 export default FeedPage;
