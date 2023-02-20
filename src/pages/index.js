@@ -2,7 +2,7 @@ import ConstructorPage from 'pages/constructor';
 import LoginPage from 'pages/login';
 import RegistrationPage from 'pages/registration';
 import ForgotPasswordPage from 'pages/forgot-password';
-import ResetPasswordPage from './reset-password';
+import ResetPasswordPage from 'pages/reset-password';
 import ProfilePage from './profile';
 import IngredientPage from 'pages/ingredient';
 import NotFoundedPage from 'pages/not-founded';

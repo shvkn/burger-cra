@@ -1,36 +1,39 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 import authSelectors from 'services/selectors/auth';
 import * as authActions from 'services/actions/auth';
+import { TResetPasswordParams } from 'services/types';
+import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
+import { TBaseResponseBody } from 'services/types/response';
 
-function ResetPasswordPage() {
-  const [form, setValue] = useState({ password: '', token: '' });
-  const history = useHistory();
-  const formRef = useRef();
-  const dispatch = useDispatch();
-  const error = useSelector(authSelectors.selectError);
+const ResetPasswordPage: FC = () => {
+  const [form, setValue] = useState<TResetPasswordParams>({ password: '', token: '' });
+  const history = useAppHistory();
+  const formRef = useRef<HTMLFormElement>(null);
+  const dispatch = useAppDispatch();
+  const error = useAppSelector(authSelectors.selectError);
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
   const isIncorrectToken = useMemo(() => {
-    return error === 'Incorrect reset token';
+    return error.message === 'Incorrect reset token';
   }, [error]);
 
   const handleSubmit = useCallback(
-    (e) => {
+    (e: SubmitEvent) => {
       e.preventDefault();
       const resetPassword = () => dispatch(authActions.resetPassword(form)).unwrap();
-      const goNext = (response) => {
+      const redirect = <T extends TBaseResponseBody>(response: T) => {
         if (response.success) {
           history.replace({ pathname: '/login' });
         }
+        return response;
       };
-      resetPassword().then(goNext);
+      resetPassword().then(redirect);
     },
     [dispatch, history, form]
   );
@@ -65,7 +68,7 @@ function ResetPasswordPage() {
           error={isIncorrectToken}
           errorText={'Введен неверный код'}
         />
-        <Button htmlType={'submit'} type={'primary'} size={'large'} onClick={handleSubmit}>
+        <Button htmlType={'submit'} type={'primary'} size={'large'}>
           Сохранить
         </Button>
       </form>
@@ -77,6 +80,6 @@ function ResetPasswordPage() {
       </p>
     </main>
   );
-}
+};
 
 export default ResetPasswordPage;
