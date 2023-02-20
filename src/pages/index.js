@@ -1,5 +1,5 @@
 import ConstructorPage from 'pages/constructor';
-import LoginPage from './login';
+import LoginPage from 'pages/login';
 import RegistrationPage from './registration';
 import ForgotPasswordPage from 'pages/forgot-password';
 import ResetPasswordPage from './reset-password';

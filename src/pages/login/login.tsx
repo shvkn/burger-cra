@@ -1,31 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from 'react';
 import {
   Button,
-  PasswordInput,
   EmailInput,
+  PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'services/actions/auth';
-import authSelectors from 'services/selectors/auth';
+import { TLoginParams } from 'services/types';
+import { useAppDispatch } from 'services/slices';
 
-function LoginPage() {
-  const [form, setValue] = useState({ email: '', password: '' });
-  const dispatch = useDispatch();
-  const formRef = useRef();
-  const error = useSelector(authSelectors.selectError);
-
-  const isInvalidCredentials = useMemo(() => {
-    return error === 'email or password are incorrect';
-  }, [error]);
-
-  const onChange = (e) => {
+const LoginPage: FC = () => {
+  const [form, setValue] = useState<TLoginParams>({ email: '', password: '' });
+  const dispatch = useAppDispatch();
+  const formRef = useRef<HTMLFormElement>(null);
+  // TODO Реализовать отображение ошибок
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = useCallback(
-    (e) => {
+    (e: SubmitEvent) => {
       e.preventDefault();
       dispatch(authActions.login(form));
     },
@@ -55,8 +50,6 @@ function LoginPage() {
           value={form.password}
           onChange={onChange}
           placeholder={'Пароль'}
-          error={isInvalidCredentials}
-          errorText={'Неверный логин или пароль'}
         />
         <Button htmlType={'submit'} type={'primary'} size={'large'}>
           Войти
@@ -82,6 +75,6 @@ function LoginPage() {
       </ul>
     </main>
   );
-}
+};
 
 export default LoginPage;
