@@ -5,6 +5,7 @@ import {
   removeIngredient,
   reset,
   setBun,
+  setState,
 } from 'services/actions/burger';
 import { TBurgerSlice } from 'services/types/state';
 
@@ -43,6 +44,7 @@ const burger = createSlice({
         const [dragElement] = state.ingredients.splice(dragIndex, 1);
         state.ingredients.splice(hoverIndex, 0, dragElement);
       })
+      .addCase(setState, (state, action) => action.payload)
       .addCase(reset, () => initialState);
   },
 });

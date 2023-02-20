@@ -25,7 +25,7 @@ export type TAuthSlice = {
 export type TIngredientsSlice = TThunkState;
 
 export type TBurgerSlice = {
-  bun: string;
+  bun: TIngredientId;
   ingredients: Array<{
     id: TIngredientId;
     uid: string;
