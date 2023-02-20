@@ -13,10 +13,11 @@ export type TIngredient = {
   readonly image_mobile: string;
   readonly image_large: string;
 };
+export type TOrderStatus = 'done' | 'pending' | 'created';
 export type TOrder = {
   readonly _id: string;
   readonly number: number;
-  readonly status: 'done' | 'pending' | 'created';
+  readonly status: TOrderStatus;
   readonly name: string;
   readonly createdAt: string;
   readonly updatedAt: string;
