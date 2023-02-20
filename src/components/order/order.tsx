@@ -1,28 +1,30 @@
-import React, { useMemo } from 'react';
-import { Link, useLocation, useRouteMatch } from 'react-router-dom';
+import React, { FC, useMemo } from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
-import { orderPropTypes } from 'utils/prop-types';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
 import OrderStatus from 'components/order-status';
-import PropTypes from 'prop-types';
-import { OrderStatuses } from 'utils/constants';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import _ from 'lodash';
+import { TIngredient, TOrder } from 'services/types/data';
+import { useAppLocation, useAppSelector } from 'services/slices';
 
 const ingredientsToRenderCount = 6;
 
-function Order({ order, hideStatus = false }) {
+type TOrderComponentParams = {
+  order: TOrder;
+  hideStatus?: boolean;
+};
+const Order: FC<TOrderComponentParams> = ({ order, hideStatus = false }) => {
   const { url } = useRouteMatch();
-  const location = useLocation();
-  const ingredientsEntities = useSelector(ingredientsSelectors.selectEntities);
-
+  const location = useAppLocation();
+  const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
+  // TODO Вынести в общий функционал
   const orderIngredients = useMemo(() => {
     return order.ingredients
       .map((id) => ingredientsEntities[id])
-      .filter((ingredient) => ingredient !== undefined && ingredient !== null);
+      .filter((ingredient): ingredient is TIngredient => !!ingredient);
   }, [order.ingredients, ingredientsEntities]);
-
+  // TODO Вынести в общий функционал. Выпилить lodash
   const totalPrice = useMemo(() => {
     return _.sumBy(orderIngredients, 'price');
   }, [orderIngredients]);
@@ -51,7 +53,7 @@ function Order({ order, hideStatus = false }) {
         {!hideStatus && (
           <p
             className={`mt-2 text text_type_main-small ${
-              order.status === OrderStatuses.DONE && 'text_color_success'
+              order.status === 'done' && 'text_color_success'
             }`}
           >
             <OrderStatus status={order.status} />
@@ -84,11 +86,6 @@ function Order({ order, hideStatus = false }) {
       </div>
     </Link>
   );
-}
-
-Order.propTypes = {
-  order: orderPropTypes.isRequired,
-  hideStatus: PropTypes.bool,
 };
 
 export default Order;

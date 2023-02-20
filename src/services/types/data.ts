@@ -16,7 +16,7 @@ export type TIngredient = {
 export type TOrder = {
   readonly _id: string;
   readonly number: number;
-  readonly status: string;
+  readonly status: 'done' | 'pending' | 'created';
   readonly name: string;
   readonly createdAt: string;
   readonly updatedAt: string;
