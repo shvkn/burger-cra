@@ -6,7 +6,7 @@ import ResetPasswordPage from 'pages/reset-password';
 import ProfilePage from './profile';
 import IngredientPage from 'pages/ingredient';
 import NotFoundedPage from 'pages/not-founded';
-import OrderPage from './order';
+import OrderPage from 'pages/order';
 import FeedPage from './feed';
 import UserOrderPage from 'pages/user-order';
 
