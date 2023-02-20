@@ -6,9 +6,11 @@ const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middl
   return (store) => (next) => (action) => {
     const { payload } = action;
     if (wsActions.connect.match(action)) {
-      const accessToken = payload?.accessToken;
-      const url = accessToken ? `${wsUrl}?token=${accessToken}` : wsUrl;
-      socket = new WebSocket(url);
+      if (socket === null) {
+        const accessToken = payload?.accessToken;
+        const url = accessToken ? `${wsUrl}?token=${accessToken}` : wsUrl;
+        socket = new WebSocket(url);
+      }
     }
     if (socket) {
       socket.onopen = (event: Event) => {
@@ -16,16 +18,18 @@ const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middl
       };
       socket.onclose = (event: CloseEvent) => {
         store.dispatch(wsActions.onClose(event.type));
+        socket = null;
       };
       socket.onmessage = (event: MessageEvent) => {
         const { data } = event;
         store.dispatch(wsActions.onGetMessage(JSON.parse(data)));
       };
-      if (wsActions.close.match(action)) {
-        socket.close();
-      }
       if (wsActions.sendMessage.match(action)) {
         socket.send(JSON.stringify(payload));
+      }
+      if (wsActions.close.match(action)) {
+        socket.close();
+        socket = null;
       }
     }
     next(action);
