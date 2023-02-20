@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import DetailsLayout from 'components/details-layout/details-layout';
 import OrderInfo from 'components/order-info/order-info';
 import styles from './order.module.css';
 import { useParams } from 'react-router-dom';
-import useOrders from 'hooks/use-orders';
 import { NotFoundedPage } from 'pages/index';
+import { useSelector } from 'react-redux';
+import ordersSelectors from 'services/selectors/orders';
+import { useAppDispatch } from 'services/slices';
+import ordersWsActions from 'services/actions/orders';
 
-function OrderPage() {
-  const { id } = useParams();
-  const [, entities] = useOrders();
-  const order = entities[id];
+const OrderPage: FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ordersWsActions.connect());
+    return () => {
+      dispatch(ordersWsActions.close());
+    };
+  }, [dispatch]);
+
+  const order = useSelector(ordersSelectors.selectOrderById(id));
 
   return order ? (
     <main className={`mt-30 ${styles.layout}`}>
@@ -25,6 +36,6 @@ function OrderPage() {
   ) : (
     <NotFoundedPage />
   );
-}
+};
 
 export default OrderPage;
