@@ -3,7 +3,7 @@ import LoginPage from 'pages/login';
 import RegistrationPage from 'pages/registration';
 import ForgotPasswordPage from 'pages/forgot-password';
 import ResetPasswordPage from 'pages/reset-password';
-import ProfilePage from './profile';
+import ProfilePage from 'pages/profile';
 import IngredientPage from 'pages/ingredient';
 import NotFoundedPage from 'pages/not-founded';
 import OrderPage from 'pages/order';

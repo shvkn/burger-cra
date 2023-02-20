@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import styles from './profile.module.css';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import UserOrders from 'components/user-orders/user-orders';
 import UserForm from 'components/user-form/user-form';
 import LogoutPage from 'pages/logout';
 
-const linkCN = (isActive) => {
+const linkCN = (isActive: boolean): string => {
   return `${styles.link} text text_type_main-medium ${
     isActive ? 'text_color_primary' : 'text_color_inactive'
   }`;
 };
 
-const routes = [
+type TRoute = {
+  path: string;
+  title: string;
+  exact?: boolean;
+  sidebar?: string;
+  children?: ReactNode;
+};
+
+const routes: ReadonlyArray<TRoute> = [
   {
     path: '',
     title: 'Профиль',
@@ -33,7 +41,7 @@ const routes = [
   },
 ];
 
-function ProfilePage() {
+const ProfilePage: FC = () => {
   const { url } = useRouteMatch();
 
   return (
@@ -75,6 +83,6 @@ function ProfilePage() {
       </div>
     </main>
   );
-}
+};
 
 export default ProfilePage;
