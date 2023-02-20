@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './not-founded.module.css';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory } from 'react-router-dom';
+import { useAppHistory } from 'services/slices';
 
-function NotFoundedPage() {
-  const history = useHistory();
-  const handleClick = () => {
+const NotFoundedPage: FC = () => {
+  const history = useAppHistory();
+
+  const handleClick = (): void => {
     history.replace({ pathname: '/' });
   };
+
   return (
     <main className={styles.layout}>
       <h1 className={'text text_type_main-large text_color_error'}>404</h1>
@@ -17,6 +19,6 @@ function NotFoundedPage() {
       </Button>
     </main>
   );
-}
+};
 
 export default NotFoundedPage;
