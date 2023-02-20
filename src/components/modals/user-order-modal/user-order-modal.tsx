@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import userOrdersSelectors from 'services/selectors/user-orders';
+import { useAppHistory } from 'services/slices';
 
-function UserOrderModal() {
-  const { id } = useParams();
-  const entities = useSelector(userOrdersSelectors.selectEntities);
-  const order = entities[id];
-  const history = useHistory();
+const UserOrderModal: FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const order = useSelector(userOrdersSelectors.selectById(id));
+  const history = useAppHistory();
 
   const handleClose = () => {
     history.goBack();
@@ -17,7 +17,7 @@ function UserOrderModal() {
 
   return order ? (
     <Modal handleClose={handleClose}>
-      <Modal.Header>
+      <Modal.Header handleClose={handleClose}>
         <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
       </Modal.Header>
       <Modal.Content>
@@ -25,6 +25,6 @@ function UserOrderModal() {
       </Modal.Content>
     </Modal>
   ) : null;
-}
+};
 
 export default UserOrderModal;
