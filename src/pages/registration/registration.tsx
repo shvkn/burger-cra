@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from 'react';
 import styles from './registration.module.css';
 import {
   Button,
@@ -7,27 +7,21 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'services/actions/auth';
-import authSelectors from 'services/selectors/auth';
+import { TRegisterParams } from 'services/types';
+import { useAppDispatch } from 'services/slices';
 
-function RegistrationPage() {
-  const [form, setValue] = useState({ name: '', email: '', password: '' });
-  const dispatch = useDispatch();
-  const formRef = useRef();
+const RegistrationPage: FC = () => {
+  const [form, setValue] = useState<TRegisterParams>({ name: '', email: '', password: '' });
+  const dispatch = useAppDispatch();
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const error = useSelector(authSelectors.selectError);
-
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const isUserExist = useMemo(() => {
-    return error === 'User already exists';
-  }, [error]);
-
   const handleSubmit = useCallback(
-    (e) => {
+    (e: SubmitEvent) => {
       e.preventDefault();
       dispatch(authActions.register(form));
     },
@@ -57,8 +51,6 @@ function RegistrationPage() {
           value={form.email}
           onChange={onChange}
           placeholder={'E-mail'}
-          error={isUserExist}
-          errorText={'Пользователь с таким e-mail уже существует'}
         />
         <PasswordInput
           extraClass={'mt-6 mb-6'}
@@ -79,6 +71,6 @@ function RegistrationPage() {
       </p>
     </main>
   );
-}
+};
 
 export default RegistrationPage;
