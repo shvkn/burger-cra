@@ -70,9 +70,14 @@ export const processAuthResponse = (response: TAuthResponseBody) => {
   }
   return Promise.resolve(response);
 };
-// TODO Добавить проверку на не JSON
+
 const processResponse = async <T>(response: Response): Promise<T> => {
-  return response.json();
+  try {
+    return response.json();
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
 };
 
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
@@ -82,14 +87,17 @@ export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise
 export const hasAuthTokens = (): boolean => {
   return !!getAccessToken() || !!getRefreshToken();
 };
+
 export const hasError = (
   a: PA<TBaseResponseBody>
 ): a is PA<TBaseResponseBody & TKeySuccessFalse> => {
   return !a.payload?.success;
 };
+
 export const hasOrders = (a: PA<TOrderWsMessage>): a is PA<Required<TOrderWsMessage>> => {
   return !!a.payload?.orders;
 };
+
 export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
   return arr.reduce<Record<string, T[]>>((prev, curr) => {
     const groupKey = fn(curr);
