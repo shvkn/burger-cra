@@ -56,3 +56,6 @@ export type TLocationState = {
   burger?: TBurgerSlice;
   background?: Location;
 } & LocationState;
+export type TDndSortableItem = {
+  index: number;
+};

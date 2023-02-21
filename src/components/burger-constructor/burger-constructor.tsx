@@ -10,7 +10,7 @@ import {
 import Modal from 'components/modal/modal';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
-import { ItemTypes } from 'utils/constants';
+import { DndItemTypes } from 'utils/constants';
 import * as burgerActions from 'services/actions/burger';
 import * as orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
@@ -51,7 +51,7 @@ function BurgerConstructor() {
   const isIngredientsEmpty = burgerIngredients.length === 0;
 
   const [, dropTarget] = useDrop({
-    accept: ItemTypes.BURGER_INGREDIENT,
+    accept: DndItemTypes.BURGER_INGREDIENT,
     drop: (item: TDnDIngredientItem): void => {
       const id = item.id;
       const ingredient = ingredientsEntities[id];

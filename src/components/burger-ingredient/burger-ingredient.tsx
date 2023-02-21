@@ -2,7 +2,7 @@ import styles from './burger-ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC } from 'react';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from 'utils/constants';
+import { DndItemTypes } from 'utils/constants';
 import { Link, useLocation } from 'react-router-dom';
 import { selectIngredientCountById } from 'services/selectors/burger';
 import { TIngredient } from 'services/types/data';
@@ -18,7 +18,7 @@ const BurgerIngredient: FC<TBurgerIngredient> = ({ ingredient }) => {
   const count = useAppSelector(selectIngredientCountById(id));
   const location = useLocation();
   const [, dragRef] = useDrag({
-    type: ItemTypes.BURGER_INGREDIENT,
+    type: DndItemTypes.BURGER_INGREDIENT,
     item: { id },
   });
 

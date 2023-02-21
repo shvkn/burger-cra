@@ -2,7 +2,6 @@ import React, { FC, useMemo } from 'react';
 import _ from 'lodash';
 import styles from './order-info.module.css';
 import OrderStatus from 'components/order-status';
-import { OrderStatuses } from 'utils/constants';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TOrder } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
@@ -24,7 +23,7 @@ const OrderInfo: FC<TOrderInfo> = ({ order }) => {
       <h1 className={'mt-5 text text_type_main-medium'}>{order.name}</h1>
       <p
         className={`mt-2 text text_type_main-default ${
-          order.status === OrderStatuses.DONE && 'text_color_success'
+          order.status === 'done' && 'text_color_success'
         }`}
       >
         <OrderStatus status={order.status} />
