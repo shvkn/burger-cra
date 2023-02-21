@@ -3,12 +3,12 @@ import styles from './ingredients-category.module.css';
 import BurgerIngredient from 'components/burger-ingredient';
 import { TIngredient } from 'services/types/data';
 
-type TIngredientsCategory = {
-  readonly items: ReadonlyArray<TIngredient>;
-  readonly title: string;
+type TIngredientsCategoryProps = {
+  items: Array<TIngredient>;
+  title: string;
 };
 
-const IngredientsCategory: FC<TIngredientsCategory> = ({ items, title }) => (
+const IngredientsCategory: FC<TIngredientsCategoryProps> = ({ items, title }) => (
   <>
     <h2 className='text text_type_main-medium'>{title}</h2>
     <div className='pt-6 pr-2 pb-10 pl-4'>

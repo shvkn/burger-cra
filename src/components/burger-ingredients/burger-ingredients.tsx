@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import IngredientsCategory from 'components/ingredients-category';
@@ -18,7 +18,7 @@ const entryEqualComparer: TEntityEqualComparer = (a, b) => {
   return a.target.id === b.target.id;
 };
 
-function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
   const [activeTab, setActiveTab] = useState<TIngredientType>(categories[0].type);
   const ingredients = useAppSelector(ingredientsSelectors.selectAll);
   const ingredientsByType: Record<TIngredientType, TIngredient[]> = groupBy(
@@ -85,6 +85,6 @@ function BurgerIngredients() {
       </ul>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

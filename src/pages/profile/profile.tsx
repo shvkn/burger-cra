@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import styles from './profile.module.css';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import UserOrders from 'components/user-orders/user-orders';
 import UserForm from 'components/user-form/user-form';
 import LogoutPage from 'pages/logout';
+import { TRouteItem } from 'services/types';
 
 const linkCN = (isActive: boolean): string => {
   return `${styles.link} text text_type_main-medium ${
@@ -11,15 +12,7 @@ const linkCN = (isActive: boolean): string => {
   }`;
 };
 
-type TRoute = {
-  path: string;
-  title: string;
-  exact?: boolean;
-  sidebar?: string;
-  children?: ReactNode;
-};
-
-const routes: ReadonlyArray<TRoute> = [
+const routes: ReadonlyArray<TRouteItem> = [
   {
     path: '',
     title: 'Профиль',

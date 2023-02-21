@@ -7,11 +7,11 @@ import { TOrder } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 import ordersSelectors from 'services/selectors/orders';
 
-type TOrderInfo = {
+type TOrderInfoProps = {
   order: TOrder;
 };
 
-const OrderInfo: FC<TOrderInfo> = ({ order }) => {
+const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
   const ingredients = useAppSelector(ordersSelectors.selectIngredients(order._id));
   const totalPrice = useAppSelector(ordersSelectors.selectTotalPrice(order._id));
 

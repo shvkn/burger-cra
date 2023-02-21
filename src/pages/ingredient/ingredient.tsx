@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import IngredientDetails from 'components/ingredient-details';
 import DetailsLayout from 'components/details-layout';
 import styles from './ingredient.module.css';
@@ -8,7 +8,7 @@ import { NotFoundedPage } from 'pages/index';
 import { useAppSelector } from 'services/slices';
 import { TIngredientId } from 'services/types/data';
 
-const IngredientPage = () => {
+const IngredientPage: FC = () => {
   // TODO
   const { id } = useParams<{ id: TIngredientId }>();
   const ingredient = useAppSelector(ingredientsSelectors.selectById(id));

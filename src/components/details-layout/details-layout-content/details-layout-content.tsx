@@ -1,9 +1,9 @@
 import React, { FC, ReactNode } from 'react';
 
-type TDetailsLayoutContent = {
+type TDetailsLayoutContentProps = {
   children: ReactNode;
 };
 
-const DetailsLayoutContent: FC<TDetailsLayoutContent> = ({ children }) => <>{children}</>;
+const DetailsLayoutContent: FC<TDetailsLayoutContentProps> = ({ children }) => <>{children}</>;
 
 export default DetailsLayoutContent;

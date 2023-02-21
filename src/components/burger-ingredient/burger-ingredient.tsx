@@ -8,11 +8,11 @@ import { selectIngredientCountById } from 'services/selectors/burger';
 import { TIngredient } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 
-type TBurgerIngredient = {
+type TBurgerIngredientProps = {
   ingredient: TIngredient;
 };
 
-const BurgerIngredient: FC<TBurgerIngredient> = ({ ingredient }) => {
+const BurgerIngredient: FC<TBurgerIngredientProps> = ({ ingredient }) => {
   const id = ingredient._id;
   // TODO вынести в параметры
   const count = useAppSelector(selectIngredientCountById(id));

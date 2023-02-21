@@ -7,11 +7,11 @@ import { hasAuthTokens } from 'utils/utils';
 import { RouteProps } from 'react-router';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 
-type TProtectedRoute = {
+type TProtectedRouteProps = {
   nonAuthOnly?: boolean;
 } & RouteProps;
 
-const ProtectedRoute: FC<TProtectedRoute> = ({
+const ProtectedRoute: FC<TProtectedRouteProps> = ({
   children,
   component,
   nonAuthOnly = false,

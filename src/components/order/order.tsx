@@ -10,11 +10,12 @@ import { useAppLocation, useAppSelector } from 'services/slices';
 
 const ingredientsToRenderCount = 6;
 
-type TOrderComponentParams = {
+type TOrderProps = {
   order: TOrder;
   hideStatus?: boolean;
 };
-const Order: FC<TOrderComponentParams> = ({ order, hideStatus = false }) => {
+
+const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
   const { url } = useRouteMatch();
   const location = useAppLocation();
   const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);

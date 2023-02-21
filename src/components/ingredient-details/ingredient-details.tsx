@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import styles from './ingredient-details.module.css';
 import { TIngredient } from 'services/types/data';
 
-type TIngredientDetails = {
+type TIngredientDetailsProps = {
   ingredient: TIngredient;
 };
 
-const IngredientDetails: FC<TIngredientDetails> = ({ ingredient }) => (
+const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredient }) => (
   <article className={styles.container}>
     <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
     <p className={`mt-4 mb-8 text text_type_main-medium ${styles.name}`}>{ingredient.name}</p>

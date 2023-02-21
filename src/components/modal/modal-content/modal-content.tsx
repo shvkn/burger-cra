@@ -1,10 +1,10 @@
 import styles from './modal-content.module.css';
 import React, { FC, ReactNode } from 'react';
 
-export type TModalContent = {
+export type TModalContentProps = {
   children: ReactNode;
 };
-const ModalContent: FC<TModalContent> = ({ children }) => {
+const ModalContent: FC<TModalContentProps> = ({ children }) => {
   return <div className={`${styles.container}`}>{children}</div>;
 };
 

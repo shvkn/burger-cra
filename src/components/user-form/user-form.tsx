@@ -31,7 +31,7 @@ const UserForm: FC = () => {
   }, [user]);
 
   const handleSubmit = useCallback(
-    (e: Event) => {
+    (e: SubmitEvent) => {
       e.preventDefault();
       dispatch(authActions.patchUser(form));
     },

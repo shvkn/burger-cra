@@ -8,11 +8,11 @@ type TDetailsLayoutExtensions = {
   Content: typeof DetailsPageContent;
 };
 
-type TDetailsLayout = {
+type TDetailsLayoutProps = {
   children: ReactNode;
 };
 
-const DetailsLayout: FC<TDetailsLayout> & TDetailsLayoutExtensions = ({ children }) => (
+const DetailsLayout: FC<TDetailsLayoutProps> & TDetailsLayoutExtensions = ({ children }) => (
   <div className={styles.layout}>{children}</div>
 );
 

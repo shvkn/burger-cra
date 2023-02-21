@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import styles from './burger-constructor.module.css';
 import {
@@ -22,7 +22,7 @@ import orderSelectors from 'services/selectors/order';
 
 type TDnDIngredientItem = { id: TIngredientId };
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
   const history = useAppHistory();
@@ -203,6 +203,6 @@ function BurgerConstructor() {
       </div>
     </div>
   );
-}
+};
 
 export default BurgerConstructor;

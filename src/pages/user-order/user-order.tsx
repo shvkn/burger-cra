@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DetailsLayout from 'components/details-layout';
 import styles from './user-order.module.css';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import { useAppDispatch, useAppSelector } from 'services/slices';
 
-function UserOrderPage() {
+const UserOrderPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const isWsOpened = useAppSelector(userOrdersSelectors.selectIsWSOpened);
@@ -34,6 +34,6 @@ function UserOrderPage() {
       </DetailsLayout>
     </main>
   ) : null;
-}
+};
 
 export default UserOrderPage;

@@ -1,11 +1,11 @@
 import React, { FC, SyntheticEvent } from 'react';
 import styles from './modal-overlay.module.css';
 
-type TModalOverlayComponentParams = {
+type TModalOverlayProps = {
   onClick: () => void;
 };
 
-const ModalOverlay: FC<TModalOverlayComponentParams> = ({ onClick }) => {
+const ModalOverlay: FC<TModalOverlayProps> = ({ onClick }) => {
   const handleClose = (e: SyntheticEvent) => {
     if (e.currentTarget === e.target) {
       onClick();

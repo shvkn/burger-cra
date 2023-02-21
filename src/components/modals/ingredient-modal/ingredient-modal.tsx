@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Modal from 'components/modal';
 import IngredientDetails from 'components/ingredient-details';
 import { useHistory, useParams } from 'react-router-dom';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import { useAppSelector } from 'services/slices';
 
-const IngredientModal = () => {
+const IngredientModal: FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const ingredient = useAppSelector(ingredientsSelectors.selectById(id));

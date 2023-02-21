@@ -2,12 +2,12 @@ import styles from './modal-header.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC, ReactNode } from 'react';
 
-export type TModalHeader = {
+export type TModalHeaderProps = {
   children?: ReactNode;
   handleClose: () => void;
 };
 
-const ModalHeader: FC<TModalHeader> = ({ children, handleClose }) => {
+const ModalHeader: FC<TModalHeaderProps> = ({ children, handleClose }) => {
   return children ? (
     <div className={`ml-10 mt-10 mr-10 ${styles.container}`}>
       {children && <div>{children}</div>}

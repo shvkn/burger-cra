@@ -37,7 +37,7 @@ const ResetPasswordPage: FC = () => {
     },
     [dispatch, history, form]
   );
-
+  // TODO Вынести в useForm?
   useEffect(() => {
     const formRefValue = formRef.current;
     formRefValue?.addEventListener('submit', handleSubmit);

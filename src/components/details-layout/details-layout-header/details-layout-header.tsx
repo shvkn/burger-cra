@@ -1,11 +1,11 @@
 import React, { FC, ReactNode } from 'react';
 import styles from './details-layout-header.module.css';
 
-type TDetailsLayoutHeader = {
+type TDetailsLayoutHeaderProps = {
   children: ReactNode;
 };
 
-const DetailsLayoutHeader: FC<TDetailsLayoutHeader> = ({ children }) => (
+const DetailsLayoutHeader: FC<TDetailsLayoutHeaderProps> = ({ children }) => (
   <div className={styles.container}>{children}</div>
 );
 

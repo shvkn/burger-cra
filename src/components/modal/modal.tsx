@@ -11,14 +11,14 @@ type TModalExtensions = {
   Content: typeof ModalContent;
 };
 
-type TModal = {
+type TModalProps = {
   children: ReactNode;
   handleClose: () => void;
 };
 
 const MODAL_ROOT = document.getElementById('react-modals') as HTMLElement;
 
-const Modal: FC<TModal> & TModalExtensions = ({ children, handleClose }) => {
+const Modal: FC<TModalProps> & TModalExtensions = ({ children, handleClose }) => {
   useEffect(() => {
     const handleCloseByEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
