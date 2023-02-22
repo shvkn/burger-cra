@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import authSelectors from 'services/selectors/auth';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
@@ -19,24 +19,33 @@ const ProtectedRoute: FC<TProtectedRouteProps> = ({
 }) => {
   const isAuthorized = useAppSelector(authSelectors.selectIsAuthorized);
   const isAuthLoading = useAppSelector(authSelectors.selectIsLoading);
+  const isAuthError = useAppSelector(authSelectors.selectIsError);
+
   const dispatch = useAppDispatch();
   const { location } = useAppHistory();
+  const canBeAuthorized = hasAuthTokens();
+
   const authOnly = !nonAuthOnly;
 
-  useEffect(() => {
-    const canBeAuthorized = hasAuthTokens();
-    if (!isAuthorized && !isAuthLoading && canBeAuthorized) {
-      dispatch(authActions.getUser());
+  if (!canBeAuthorized) {
+    dispatch(authActions.logout());
+  } else {
+    if (!isAuthError) {
+      !isAuthorized && !isAuthLoading && dispatch(authActions.getUser());
     }
-  }, [isAuthorized, dispatch, isAuthLoading]);
+  }
 
-  return isAuthLoading && !isAuthorized ? (
-    <LoadingCurtain />
-  ) : authOnly && !isAuthorized ? (
-    <Redirect to={{ pathname: '/login', state: { from: location } }} />
-  ) : nonAuthOnly && isAuthorized ? (
-    <Redirect to={location.state.from ?? '/'} />
-  ) : children ? (
+  if (isAuthLoading && !isAuthorized) {
+    return <LoadingCurtain />;
+  }
+  if (authOnly && !isAuthorized) {
+    return <Redirect to={{ pathname: '/login', state: { from: location } }} />;
+  }
+  if (nonAuthOnly && isAuthorized) {
+    return <Redirect to={location.state?.from ?? '/'} />;
+  }
+
+  return children ? (
     <Route {...rest}>{children}</Route>
   ) : component ? (
     <Route {...rest} component={component} />

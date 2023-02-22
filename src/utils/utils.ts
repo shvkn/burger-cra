@@ -160,7 +160,7 @@ export const callRequestWithAccessToken = async <
     }
     return constructResponseBody<TBaseResponseBody>({
       success: false,
-      message: Messages.MISSED_TOKEN,
+      message: Messages.INVALID_TOKEN,
     });
   } catch (e) {
     throw e;

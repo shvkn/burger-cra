@@ -95,7 +95,11 @@ const BurgerConstructor: FC = () => {
       .then(({ message, success }) => {
         if (success) {
           dispatch(burgerActions.reset());
-        } else if (message === Messages.MISSED_TOKEN) {
+          history.replace({
+            ...history.location,
+            state: {},
+          });
+        } else if (message === Messages.INVALID_TOKEN) {
           history.push({
             pathname: '/login',
             state: {

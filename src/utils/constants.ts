@@ -6,6 +6,6 @@ export const DndItemTypes = {
   SORTABLE_ITEM: 'SORTABLE_ITEM',
 };
 export const Messages = {
-  MISSED_TOKEN: 'JWT token is missed',
+  INVALID_TOKEN: 'Token is invalid',
   INCORRECT_RESET_TOKEN: 'Incorrect reset token',
 };

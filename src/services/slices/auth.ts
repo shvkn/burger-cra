@@ -36,9 +36,6 @@ const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(logout.pending, () => initialState)
-      .addMatcher(isFulfilledAction, (state) => {
-        state.status = 'idle';
-      })
       .addMatcher(isPendingAction, (state) => {
         state.error = {};
       })
@@ -50,6 +47,9 @@ const authSlice = createSlice({
         state.error.message = action.payload.message;
         state.isAuthorized = false;
         state.user = null;
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.status = 'idle';
       })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {
         state.status = 'succeeded';

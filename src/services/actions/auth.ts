@@ -11,6 +11,7 @@ import {
 
 import {
   callRequestWithAccessToken,
+  constructResponseBody,
   dropAuthTokens,
   getRefreshToken,
   processAuthResponse,
@@ -50,6 +51,9 @@ export const logout = createAsyncThunk('auth/logout', async () => {
       dropAuthTokens();
       return logoutRequest(refreshToken);
     }
+    return constructResponseBody({
+      success: true,
+    });
   } catch (e) {
     console.log(e);
     throw e;
