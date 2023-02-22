@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useMemo, useState } from 'react';
 import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
@@ -6,43 +6,38 @@ import authSelectors from 'services/selectors/auth';
 import * as authActions from 'services/actions/auth';
 import { TResetPasswordParams } from 'services/types';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
-import { TBaseResponseBody } from 'services/types/response';
+import useForm from 'hooks/use-form';
+import { Messages } from 'utils/constants';
+
+const initFormData: TResetPasswordParams = { password: '', token: '' };
 
 const ResetPasswordPage: FC = () => {
-  const [form, setValue] = useState<TResetPasswordParams>({ password: '', token: '' });
+  const [form, setValue] = useState<TResetPasswordParams>(initFormData);
   const history = useAppHistory();
-  const formRef = useRef<HTMLFormElement>(null);
   const dispatch = useAppDispatch();
   const error = useAppSelector(authSelectors.selectError);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValue({ ...form, [name]: value });
   };
 
-  const isIncorrectToken = useMemo(() => {
-    return error.message === 'Incorrect reset token';
-  }, [error]);
-
-  const handleSubmit = useCallback(
-    (e: SubmitEvent) => {
-      e.preventDefault();
-      const resetPassword = () => dispatch(authActions.resetPassword(form)).unwrap();
-      const redirect = <T extends TBaseResponseBody>(response: T) => {
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    dispatch(authActions.resetPassword(form))
+      .unwrap()
+      .then((response) => {
         if (response.success) {
           history.replace({ pathname: '/login' });
         }
-        return response;
-      };
-      resetPassword().then(redirect);
-    },
-    [dispatch, history, form]
-  );
-  // TODO Вынести в useForm?
-  useEffect(() => {
-    const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleSubmit);
-    return () => formRefValue?.removeEventListener('submit', handleSubmit);
-  }, [handleSubmit]);
+      });
+  };
+
+  const formRef = useForm(handleSubmit);
+
+  const isIncorrectToken = useMemo(() => {
+    return error.message === Messages.INCORRECT_RESET_TOKEN;
+  }, [error]);
 
   if (history.location.state?.from?.pathname !== '/forgot-password') {
     return <Redirect to='/' />;

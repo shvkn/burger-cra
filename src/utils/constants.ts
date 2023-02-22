@@ -7,4 +7,5 @@ export const DndItemTypes = {
 };
 export const Messages = {
   MISSED_TOKEN: 'JWT token is missed',
+  INCORRECT_RESET_TOKEN: 'Incorrect reset token',
 };
