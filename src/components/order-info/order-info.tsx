@@ -1,12 +1,11 @@
 import React, { FC, useMemo } from 'react';
-import _ from 'lodash';
 import styles from './order-info.module.css';
 import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TOrder } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
+import { countBy, getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 
 type TOrderInfoProps = {
   order: TOrder;
@@ -25,8 +24,12 @@ const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
     [ingredientsEntities, order]
   );
 
-  const uniqIngredients = useMemo(() => _.uniqBy(ingredients, '_id'), [ingredients]);
-  const ingredientsCounts = useMemo(() => _.countBy(order.ingredients), [order.ingredients]);
+  const uniqIngredients = useMemo(
+    () => ingredients.filter((i, idx, arr) => arr.indexOf(i) === idx),
+    [ingredients]
+  );
+
+  const ingredientsCounts = useMemo(() => countBy(ingredients, (i) => i._id), [ingredients]);
 
   return (
     <article className={styles.container}>
@@ -48,7 +51,7 @@ const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
             </p>
             <div className={`ml-4 ${styles.price}`}>
               <p className='mr-2 text text_type_digits-default'>{`${
-                ingredientsCounts[ingredient._id]
+                ingredient.type === 'bun' ? 2 : ingredientsCounts[ingredient._id]
               } x ${ingredient.price}`}</p>
               <CurrencyIcon type='primary' />
             </div>

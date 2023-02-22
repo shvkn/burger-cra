@@ -110,6 +110,14 @@ export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
   }, {});
 };
 
+export const countBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
+  return arr.reduce<Record<string, number>>((prev, curr) => {
+    const groupKey = fn(curr);
+    const count = prev[groupKey] || 0;
+    return { ...prev, [groupKey]: count + 1 };
+  }, {});
+};
+
 export const constructResponseBody = <T extends TBaseResponseBody>(
   params: T
 ): TBaseResponseBody => {
