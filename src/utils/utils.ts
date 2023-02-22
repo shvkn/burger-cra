@@ -101,7 +101,10 @@ export const hasOrders = (a: PA<TOrderWsMessage>): a is PA<Required<TOrderWsMess
   return !!a.payload?.orders;
 };
 
-export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
+export const groupBy = <T extends any, K extends (item: T) => string>(
+  arr: ReadonlyArray<T>,
+  fn: K
+): Record<ReturnType<K>, T[]> => {
   return arr.reduce<Record<string, T[]>>((prev, curr) => {
     const groupKey = fn(curr);
     const group = prev[groupKey] || [];
@@ -116,6 +119,10 @@ export const countBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
     const count = prev[groupKey] || 0;
     return { ...prev, [groupKey]: count + 1 };
   }, {});
+};
+
+export const sumBy = <T>(arr: ReadonlyArray<T>, fn: (i: T) => number): number => {
+  return arr.reduce((acc, cur) => acc + fn(cur), 0);
 };
 
 export const constructResponseBody = <T extends TBaseResponseBody>(
@@ -175,18 +182,52 @@ export const getChangedEntries = <
   );
 };
 
+export const sortByKey = <T extends TIngredient, K extends keyof T>(
+  key: K,
+  value: T[K],
+  order: 'asc' | 'desc' = 'desc'
+) => {
+  return (a: T, b: T) => {
+    const t1 = a[key] === value ? 1 : 0;
+    const t2 = b[key] === value ? 1 : 0;
+    return order === 'desc' ? t2 - t1 : t1 - t2;
+  };
+};
+
+export const mapIdsToEntities = <T>(
+  ids: ReadonlyArray<string>,
+  entities: Dictionary<T>
+): Array<T> => {
+  return ids.map((id) => entities[id]).filter((i): i is T => !!i);
+};
+
 export const getOrderIngredients = (
   order: TOrder,
   ingredientsEntities: Dictionary<TIngredient>
 ) => {
-  return order.ingredients
-    .map((ingredientId) => ingredientsEntities[ingredientId])
-    .filter((ingredient): ingredient is TIngredient => !!ingredient);
+  try {
+    const orderIngredients = mapIdsToEntities(order.ingredients, ingredientsEntities);
+    const burger = groupBy(orderIngredients, (i) => {
+      return i.type === 'bun' ? 'bun' : 'ingredients';
+    });
+    const bun = burger?.bun?.pop();
+    const ingredients = burger?.ingredients;
+    return !!bun
+      ? !!ingredients?.length
+        ? [bun, ...ingredients]
+        : [bun]
+      : !!ingredients?.length
+      ? [...ingredients]
+      : [];
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 };
 
 export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionary<TIngredient>) => {
-  return getOrderIngredients(order, ingredientsEntities).reduce(
-    (total, { price }) => total + price,
-    0
-  );
+  const orderIngredients = getOrderIngredients(order, ingredientsEntities);
+  return sumBy(orderIngredients, (i) => {
+    return i.type === 'bun' ? 2 * i.price : i.price;
+  });
 };
