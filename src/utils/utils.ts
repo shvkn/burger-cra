@@ -150,3 +150,18 @@ export const callRequestWithAccessToken = async <
     throw e;
   }
 };
+export const getChangedEntries = <
+  T extends { [x: string]: any },
+  K extends { [k in keyof T]: any }
+>(
+  originObj: T,
+  comparableObj: K
+) => {
+  return Object.keys(originObj).reduce(
+    (result, key) => ({
+      ...result,
+      ...(originObj[key] !== comparableObj[key] && { [key]: comparableObj[key] }),
+    }),
+    {}
+  );
+};
