@@ -21,7 +21,7 @@ const FeedPage: FC = () => {
   const orders = useAppSelector(ordersSelectors.selectAll);
   const total = useAppSelector(ordersSelectors.selectTotal);
   const totalToday = useAppSelector(ordersSelectors.selectTotalToday);
-  const isOrdersLoading = useAppSelector(ordersSelectors.selectIsLoading);
+  const isOrdersLoading = useAppSelector(ordersSelectors.selectIsWSConnecting);
   const isOrdersEmpty = useAppSelector(ordersSelectors.selectIsEmpty);
 
   const ordersStateDone = useMemo(
