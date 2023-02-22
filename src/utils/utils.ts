@@ -1,10 +1,11 @@
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
 import { TKeySuccessFalse } from 'services/types';
-import { PayloadAction as PA } from '@reduxjs/toolkit';
+import { Dictionary, PayloadAction as PA } from '@reduxjs/toolkit';
 import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
 import { refreshTokenRequest } from 'utils/auth-api';
 import { Messages } from 'utils/constants';
+import { TIngredient, TOrder } from 'services/types/data';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -163,5 +164,19 @@ export const getChangedEntries = <
       ...(originObj[key] !== comparableObj[key] && { [key]: comparableObj[key] }),
     }),
     {}
+  );
+};
+export const getOrderIngredients = (
+  order: TOrder,
+  ingredientsEntities: Dictionary<TIngredient>
+) => {
+  return order.ingredients
+    .map((ingredientId) => ingredientsEntities[ingredientId])
+    .filter((ingredient): ingredient is TIngredient => !!ingredient);
+};
+export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionary<TIngredient>) => {
+  return getOrderIngredients(order, ingredientsEntities).reduce(
+    (total, { price }) => total + price,
+    0
   );
 };
