@@ -25,13 +25,14 @@ const selectIsWSConnecting = createSelector(selectWSStatus, (status) => status =
 const selectIsWSOpened = createSelector(selectWSStatus, (status) => status === 'opened');
 const selectIsWSClosed = createSelector(selectWSStatus, (status) => status === 'closed');
 
-const selectIngredients = (id: string) =>
-  createSelector(
+const selectIngredients = (id: string) => {
+  return createSelector(
     [selectById(id), ingredientsSelectors.selectEntities],
     (order, ingredientsEntities) => {
       return order ? getOrderIngredients(order, ingredientsEntities) : [];
     }
   );
+};
 
 const selectTotalPrice = (id: string) => {
   return createSelector(

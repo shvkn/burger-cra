@@ -166,6 +166,7 @@ export const getChangedEntries = <
     {}
   );
 };
+
 export const getOrderIngredients = (
   order: TOrder,
   ingredientsEntities: Dictionary<TIngredient>
@@ -174,6 +175,7 @@ export const getOrderIngredients = (
     .map((ingredientId) => ingredientsEntities[ingredientId])
     .filter((ingredient): ingredient is TIngredient => !!ingredient);
 };
+
 export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionary<TIngredient>) => {
   return getOrderIngredients(order, ingredientsEntities).reduce(
     (total, { price }) => total + price,
