@@ -1,44 +1,39 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import styles from './forgot-password.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
 import { useAppDispatch, useAppHistory } from 'services/slices';
-import { TBaseResponseBody } from 'services/types/response';
+import useForm from 'hooks/use-form';
+import { TGetResetCodeParams } from 'services/types';
+
+const initFormData: TGetResetCodeParams = {
+  email: '',
+};
 
 const ForgotPasswordPage: FC = () => {
-  const [form, setValue] = useState({ email: '' });
   const history = useAppHistory();
-  const formRef = useRef<HTMLFormElement>(null);
   const dispatch = useAppDispatch();
 
-  const handleSubmit = useCallback(
-    (e: SubmitEvent) => {
-      e.preventDefault();
-
-      const redirect = <T extends TBaseResponseBody>(response: T): T => {
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    dispatch(authActions.getResetCode(form))
+      .unwrap()
+      .then((response) => {
         if (response.success) {
           history.replace({
             pathname: '/reset-password',
             state: { from: history.location },
           });
         }
-        return response;
-      };
-
-      dispatch(authActions.getResetCode(form)).unwrap().then(redirect);
-    },
-    [dispatch, form, history]
-  );
-
-  useEffect(() => {
-    const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleSubmit);
-    return () => formRefValue?.removeEventListener('submit', handleSubmit);
-  }, [handleSubmit]);
+      });
+  };
+  const [form, setValue] = useState<TGetResetCodeParams>(initFormData);
+  const formRef = useForm(handleSubmit);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValue({ ...form, [name]: value });
   };
 
   return (
