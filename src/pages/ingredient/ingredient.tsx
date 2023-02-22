@@ -9,7 +9,6 @@ import { useAppSelector } from 'services/slices';
 import { TIngredientId } from 'services/types/data';
 
 const IngredientPage: FC = () => {
-  // TODO
   const { id } = useParams<{ id: TIngredientId }>();
   const ingredient = useAppSelector(ingredientsSelectors.selectById(id));
   return ingredient ? (

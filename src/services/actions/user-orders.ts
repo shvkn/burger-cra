@@ -8,7 +8,6 @@ export const onGetMessage = createAction<TOrderWsMessage>('userOrders/websocket/
 export const onClose = createAction('userOrders/websocket/on-close');
 export const close = createAction('userOrders/websocket/close');
 export const connect = createAction('userOrders/websocket/connect', () => {
-  // TODO Проверять AccessToken
   return { payload: { accessToken: getAccessToken() } };
 });
 export const sendMessage = createAction('userOrders/websocket/send-message');
