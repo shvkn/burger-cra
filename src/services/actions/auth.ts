@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as userOrdersWebsocketActions from 'services/actions/user-orders';
 import {
   getResetCodeRequest,
   getUserRequest,
@@ -44,15 +43,12 @@ export const register = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
+export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     const refreshToken = getRefreshToken();
     if (refreshToken) {
-      return logoutRequest(refreshToken).finally(() => {
-        // TODO
-        dispatch(userOrdersWebsocketActions.close());
-        dropAuthTokens();
-      });
+      dropAuthTokens();
+      return logoutRequest(refreshToken);
     }
   } catch (e) {
     console.log(e);
