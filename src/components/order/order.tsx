@@ -4,9 +4,9 @@ import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderStatus from 'components/order-status';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import _ from 'lodash';
-import { TIngredient, TOrder } from 'services/types/data';
+import { TOrder } from 'services/types/data';
 import { useAppLocation, useAppSelector } from 'services/slices';
+import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 
 const ingredientsToRenderCount = 6;
 
@@ -19,16 +19,16 @@ const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
   const { url } = useRouteMatch();
   const location = useAppLocation();
   const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
-  // TODO Вынести в общий функционал
-  const orderIngredients = useMemo(() => {
-    return order.ingredients
-      .map((id) => ingredientsEntities[id])
-      .filter((ingredient): ingredient is TIngredient => !!ingredient);
-  }, [order.ingredients, ingredientsEntities]);
-  // TODO Вынести в общий функционал. Выпилить lodash
-  const totalPrice = useMemo(() => {
-    return _.sumBy(orderIngredients, 'price');
-  }, [orderIngredients]);
+
+  const orderIngredients = useMemo(
+    () => getOrderIngredients(order, ingredientsEntities),
+    [ingredientsEntities, order]
+  );
+
+  const totalPrice = useMemo(
+    () => getOrderTotalPrice(order, ingredientsEntities),
+    [ingredientsEntities, order]
+  );
 
   const ingredientsToRender = useMemo(() => {
     return orderIngredients.slice(0, ingredientsToRenderCount).reverse();
@@ -89,4 +89,4 @@ const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
   );
 };
 
-export default Order;
+export default React.memo(Order);
