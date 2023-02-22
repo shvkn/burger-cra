@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import styles from './registration.module.css';
 import {
   Button,
@@ -10,29 +10,29 @@ import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
 import { TRegisterParams } from 'services/types';
 import { useAppDispatch } from 'services/slices';
+import useForm from 'hooks/use-form';
+
+const initFormData: TRegisterParams = {
+  name: '',
+  email: '',
+  password: '',
+};
 
 const RegistrationPage: FC = () => {
-  const [form, setValue] = useState<TRegisterParams>({ name: '', email: '', password: '' });
+  const [form, setValue] = useState<TRegisterParams>(initFormData);
   const dispatch = useAppDispatch();
-  const formRef = useRef<HTMLFormElement>(null);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValue({ ...form, [name]: value });
   };
 
-  const handleSubmit = useCallback(
-    (e: SubmitEvent) => {
-      e.preventDefault();
-      dispatch(authActions.register(form));
-    },
-    [form, dispatch]
-  );
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    dispatch(authActions.register(form));
+  };
 
-  useEffect(() => {
-    const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleSubmit);
-    return () => formRefValue?.removeEventListener('submit', handleSubmit);
-  }, [handleSubmit]);
+  const formRef = useForm(handleSubmit);
 
   return (
     <main className={`${styles.layout}`}>
