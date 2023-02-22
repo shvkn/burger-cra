@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import {
   Button,
   EmailInput,
@@ -9,29 +9,28 @@ import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
 import { TLoginParams } from 'services/types';
 import { useAppDispatch } from 'services/slices';
+import useForm from 'hooks/use-form';
+
+const initFormData: TLoginParams = {
+  email: '',
+  password: '',
+};
 
 const LoginPage: FC = () => {
-  const [form, setValue] = useState<TLoginParams>({ email: '', password: '' });
   const dispatch = useAppDispatch();
-  const formRef = useRef<HTMLFormElement>(null);
-  // TODO Реализовать отображение ошибок
+  const [form, setValue] = useState<TLoginParams>(initFormData);
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    name && value && setValue({ ...form, [name]: value });
   };
 
-  const handleSubmit = useCallback(
-    (e: SubmitEvent) => {
-      e.preventDefault();
-      dispatch(authActions.login(form));
-    },
-    [form, dispatch]
-  );
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+    dispatch(authActions.login(form));
+  };
 
-  useEffect(() => {
-    const formRefValue = formRef.current;
-    formRefValue?.addEventListener('submit', handleSubmit);
-    return () => formRefValue?.removeEventListener('submit', handleSubmit);
-  }, [handleSubmit]);
+  const formRef = useForm(handleSubmit);
 
   return (
     <main className={`${styles.layout}`}>
