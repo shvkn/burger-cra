@@ -5,16 +5,18 @@ import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TOrder } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
-import ordersSelectors from 'services/selectors/orders';
+import ingredientsSelectors from 'services/selectors/ingredients';
+import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 
 type TOrderInfoProps = {
   order: TOrder;
 };
 
 const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
-  const ingredients = useAppSelector(ordersSelectors.selectIngredients(order._id));
-  const totalPrice = useAppSelector(ordersSelectors.selectTotalPrice(order._id));
-
+  const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
+  const ingredients = getOrderIngredients(order, ingredientsEntities);
+  const totalPrice = getOrderTotalPrice(order, ingredientsEntities);
+  console.log({ totalPrice });
   const uniqIngredients = useMemo(() => _.uniqBy(ingredients, '_id'), [ingredients]);
   const ingredientsCounts = useMemo(() => _.countBy(order.ingredients), [order.ingredients]);
 
