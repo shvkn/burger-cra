@@ -14,9 +14,17 @@ type TOrderInfoProps = {
 
 const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
   const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
-  const ingredients = getOrderIngredients(order, ingredientsEntities);
-  const totalPrice = getOrderTotalPrice(order, ingredientsEntities);
-  console.log({ totalPrice });
+
+  const ingredients = useMemo(
+    () => getOrderIngredients(order, ingredientsEntities),
+    [ingredientsEntities, order]
+  );
+
+  const totalPrice = useMemo(
+    () => getOrderTotalPrice(order, ingredientsEntities),
+    [ingredientsEntities, order]
+  );
+
   const uniqIngredients = useMemo(() => _.uniqBy(ingredients, '_id'), [ingredients]);
   const ingredientsCounts = useMemo(() => _.countBy(order.ingredients), [order.ingredients]);
 
