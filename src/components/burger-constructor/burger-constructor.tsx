@@ -10,11 +10,10 @@ import {
 import Modal from 'components/modal/modal';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
-import { DndItemTypes } from 'utils/constants';
+import { DndItemTypes, Messages } from 'utils/constants';
 import * as burgerActions from 'services/actions/burger';
 import * as orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import authSelectors from 'services/selectors/auth';
 import burgerSelectors from 'services/selectors/burger';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 import { TIngredientId } from 'services/types/data';
@@ -43,12 +42,9 @@ const BurgerConstructor: FC = () => {
   const burgerIngredients = useAppSelector(burgerSelectors.selectIngredients);
   const burgerTotalPrice = useAppSelector(burgerSelectors.selectTotalPrice);
 
-  const isAuthorized = useAppSelector(authSelectors.selectIsAuthorized);
   const isOrderLoading = useAppSelector(orderSelectors.selectIsOrderLoading);
 
   const isOrderError = useAppSelector(orderSelectors.selectIsOrderFailed);
-
-  const isIngredientsEmpty = burgerIngredients.length === 0;
 
   const [, dropTarget] = useDrop({
     accept: DndItemTypes.BURGER_INGREDIENT,
@@ -81,32 +77,33 @@ const BurgerConstructor: FC = () => {
   const handleMove = (hoverIndex: number, dragIndex: number): void => {
     dispatch(burgerActions.moveIngredient(hoverIndex, dragIndex));
   };
-  const isOrderValid = !!burgerBun && !!burgerIngredients;
-  // TODO Подумать над useCallback
+  const isBunSelected = !!burgerBun;
+  const isIngredientsSelected = !!burgerIngredients.length;
+
+  const isOrderValid = isBunSelected && isIngredientsSelected;
+
   const makeOrder = (): void => {
-    if (!isAuthorized) {
-      history.push({
-        pathname: '/login',
-        state: {
-          from: { ...history.location, state: { burger: burgerSlice } },
-        },
-      });
-    } else {
-      if (!isOrderValid) {
-        return;
-      }
-      const ingredientsIds = burgerIngredients?.map(({ data }) => data._id);
-      const bunId = burgerBun._id;
-      handleOpenModal();
-      const orderIds = [bunId, ...ingredientsIds, bunId];
-      dispatch(orderActions.makeOrder(orderIds))
-        .unwrap()
-        .then((response) => {
-          if (response?.success) {
-            dispatch(burgerActions.reset());
-          }
-        });
+    if (!isOrderValid) {
+      return;
     }
+    const ingredientsIds = burgerIngredients?.map(({ data }) => data._id);
+    const bunId = burgerBun._id;
+    handleOpenModal();
+    const orderIds = [bunId, ...ingredientsIds, bunId];
+    dispatch(orderActions.makeOrder(orderIds))
+      .unwrap()
+      .then(({ message, success }) => {
+        if (success) {
+          dispatch(burgerActions.reset());
+        } else if (message === Messages.MISSED_TOKEN) {
+          history.push({
+            pathname: '/login',
+            state: {
+              from: { ...history.location, state: { burger: burgerSlice } },
+            },
+          });
+        }
+      });
   };
 
   return (
@@ -130,7 +127,7 @@ const BurgerConstructor: FC = () => {
         </Modal>
       )}
       <div className={`ml-4 ${styles.container}`}>
-        {burgerBun && (
+        {isBunSelected && (
           <div className={`ml-8 ${styles.bun}`}>
             <ConstructorElement
               text={`${burgerBun.name} (верх)`}
@@ -144,15 +141,15 @@ const BurgerConstructor: FC = () => {
         {!isOrderValid && (
           <div className={styles.message}>
             <p className={`mt-8 text text_type_main-medium text_color_inactive`}>
-              {isIngredientsEmpty
-                ? burgerBun
+              {!isIngredientsSelected
+                ? !isBunSelected
                   ? 'Пожалуйста, перетащите булку и ингредиенты'
                   : 'Добавьте ингредиенты'
                 : 'Добавьте булку'}
             </p>
           </div>
         )}
-        {!isIngredientsEmpty && (
+        {isIngredientsSelected && (
           <ul className={`${styles.ingredients} mt-10 scroll`}>
             {burgerIngredients.map(({ id, uid, data }, index) => {
               const { image, price, name } = data;
@@ -174,7 +171,7 @@ const BurgerConstructor: FC = () => {
             })}
           </ul>
         )}
-        {burgerBun && (
+        {isBunSelected && (
           <div className={`ml-8 ${styles.bun}`}>
             <ConstructorElement
               text={`${burgerBun.name} (низ)`}
@@ -204,5 +201,4 @@ const BurgerConstructor: FC = () => {
     </div>
   );
 };
-
 export default BurgerConstructor;

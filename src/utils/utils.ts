@@ -4,6 +4,7 @@ import { TKeySuccessFalse } from 'services/types';
 import { PayloadAction as PA } from '@reduxjs/toolkit';
 import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
 import { refreshTokenRequest } from 'utils/auth-api';
+import { Messages } from 'utils/constants';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -107,6 +108,13 @@ export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
     return { ...prev, [groupKey]: group };
   }, {});
 };
+
+export const constructResponseBody = <T extends TBaseResponseBody>(
+  params: T
+): TBaseResponseBody => {
+  return { ...params };
+};
+
 export const callRequestWithAccessToken = async <
   P extends TBaseResponseBody,
   T extends (token: string, ...rest: any[]) => Promise<P>
@@ -134,11 +142,10 @@ export const callRequestWithAccessToken = async <
       }
       return response;
     }
-    const responseBody: TBaseResponseBody = {
+    return constructResponseBody<TBaseResponseBody>({
       success: false,
-      message: 'Refresh token is missed',
-    };
-    return responseBody;
+      message: Messages.MISSED_TOKEN,
+    });
   } catch (e) {
     throw e;
   }

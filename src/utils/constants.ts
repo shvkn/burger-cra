@@ -5,3 +5,6 @@ export const DndItemTypes = {
   BURGER_INGREDIENT: 'BURGER_INGREDIENT',
   SORTABLE_ITEM: 'SORTABLE_ITEM',
 };
+export const Messages = {
+  MISSED_TOKEN: 'JWT token is missed',
+};
