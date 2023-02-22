@@ -3,6 +3,7 @@ import { CookieSerializeOptions } from 'cookie';
 import { TKeySuccessFalse } from 'services/types';
 import { PayloadAction as PA } from '@reduxjs/toolkit';
 import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
+import { refreshTokenRequest } from 'utils/auth-api';
 
 export type TAuthTokens = {
   accessToken: string | undefined;
@@ -105,4 +106,40 @@ export const groupBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
     group.push(curr);
     return { ...prev, [groupKey]: group };
   }, {});
+};
+export const callRequestWithAccessToken = async <
+  P extends TBaseResponseBody,
+  T extends (token: string, ...rest: any[]) => Promise<P>
+>(
+  request: T,
+  ...args: T extends (token: string, ...rest: infer R) => any ? R : never
+) => {
+  try {
+    const accessToken = getAccessToken();
+    if (!!accessToken) {
+      const response = await request.call(null, accessToken, ...args);
+      if (response.success) {
+        return response;
+      }
+    }
+    const refreshToken = getRefreshToken();
+    if (!!refreshToken) {
+      const response = await refreshTokenRequest(refreshToken);
+      if (response.success) {
+        await processAuthResponse(response);
+        const newAccessToken = getAccessToken();
+        if (!!newAccessToken) {
+          return request.call(null, newAccessToken, ...args);
+        }
+      }
+      return response;
+    }
+    const responseBody: TBaseResponseBody = {
+      success: false,
+      message: 'Refresh token is missed',
+    };
+    return responseBody;
+  } catch (e) {
+    throw e;
+  }
 };
