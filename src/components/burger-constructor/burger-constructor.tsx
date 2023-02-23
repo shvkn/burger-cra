@@ -126,7 +126,9 @@ const BurgerConstructor: FC = () => {
                 Произошла ошибка и мы не смогли принять ваш заказ. Пожалуйста, повторите позже.
               </p>
             )}
-            {!isOrderError && orderNumber && <OrderDetails number={orderNumber} />}
+            {!isOrderLoading && !isOrderError && orderNumber && (
+              <OrderDetails number={orderNumber} />
+            )}
           </Modal.Content>
         </Modal>
       )}
