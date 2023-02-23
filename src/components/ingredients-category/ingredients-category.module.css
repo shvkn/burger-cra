@@ -1,7 +1,6 @@
 .ingredients {
   display: grid;
-  grid-row-gap: calc(var(--offset-base-size) * 8);
-  grid-column-gap: calc(var(--offset-base-size) * 6);
+  grid-gap: calc(var(--offset-base-size) * 8) calc(var(--offset-base-size) * 6);
   grid-template-columns: repeat(2, min-content);
   padding: 0;
   margin: 0;

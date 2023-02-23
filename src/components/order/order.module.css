@@ -66,8 +66,8 @@
 
 .extraCount {
   position: relative;
-  margin: auto;
   z-index: 1;
+  margin: auto;
 }
 
 .extra::before {
