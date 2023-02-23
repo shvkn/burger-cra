@@ -38,21 +38,21 @@ const authSlice = createSlice({
       .addCase(logout.pending, () => initialState)
       .addMatcher(isPendingAction, (state) => {
         state.error = {};
+        state.status = 'loading';
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.status = 'failed';
         state.error = action.payload ?? action.error;
+      })
+      .addMatcher(isFulfilledAction, (state) => {
+        state.status = 'succeeded';
       })
       .addMatcher(isAllOf(isFulfilledAction, hasError), (state, action) => {
         state.error.message = action.payload.message;
         state.isAuthorized = false;
         state.user = null;
       })
-      .addMatcher(isFulfilledAction, (state) => {
-        state.status = 'idle';
-      })
       .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {
-        state.status = 'succeeded';
         state.user = action.payload.user;
         state.isAuthorized = true;
       });

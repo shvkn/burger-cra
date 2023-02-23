@@ -47,8 +47,8 @@ export const register = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   try {
     const refreshToken = getRefreshToken();
+    dropAuthTokens();
     if (refreshToken) {
-      dropAuthTokens();
       return logoutRequest(refreshToken);
     }
     return constructResponseBody({

@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import authSelectors from 'services/selectors/auth';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import * as authActions from 'services/actions/auth';
-import { hasAuthTokens } from 'utils/utils';
+import { getAccessToken, getRefreshToken } from 'utils/utils';
 import { RouteProps } from 'react-router';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
+import useConstructor from 'hooks/use-constructor';
 
 type TProtectedRouteProps = {
   nonAuthOnly?: boolean;
@@ -23,17 +24,27 @@ const ProtectedRoute: FC<TProtectedRouteProps> = ({
 
   const dispatch = useAppDispatch();
   const { location } = useAppHistory();
-  const canBeAuthorized = hasAuthTokens();
 
   const authOnly = !nonAuthOnly;
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  const hasAnyToken = !!accessToken || !!refreshToken;
 
-  if (!canBeAuthorized) {
-    dispatch(authActions.logout());
-  } else {
-    if (!isAuthError) {
-      !isAuthorized && !isAuthLoading && dispatch(authActions.getUser());
+  useConstructor(() => {
+    if (!isAuthLoading && !isAuthError && hasAnyToken) {
+      dispatch(authActions.getUser());
     }
-  }
+  });
+
+  useEffect(() => {
+    if (!isAuthLoading) {
+      if (isAuthError || (isAuthorized && !hasAnyToken)) {
+        dispatch(authActions.logout());
+      } else if (!accessToken && !!refreshToken) {
+        dispatch(authActions.getUser());
+      }
+    }
+  });
 
   if (isAuthLoading && !isAuthorized) {
     return <LoadingCurtain />;
