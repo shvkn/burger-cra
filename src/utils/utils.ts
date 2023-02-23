@@ -1,16 +1,12 @@
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { TKeySuccessFalse } from 'services/types';
+import { TAuthTokens, TKeySuccessFalse } from 'services/types';
 import { Dictionary, PayloadAction as PA } from '@reduxjs/toolkit';
 import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
 import { refreshTokenRequest } from 'utils/auth-api';
 import { Messages } from 'utils/constants';
 import { TIngredient, TOrder } from 'services/types/data';
 
-export type TAuthTokens = {
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
-};
 export const getToken = (name: keyof TAuthTokens): string | undefined => {
   return getCookie(name);
 };
@@ -85,10 +81,6 @@ const processResponse = async <T>(response: Response): Promise<T> => {
 
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
   return fetch(input, init).then(processResponse<T>);
-};
-
-export const hasAuthTokens = (): boolean => {
-  return !!getAccessToken() || !!getRefreshToken();
 };
 
 export const hasError = (

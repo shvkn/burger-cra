@@ -11,59 +11,67 @@ export type AppDispatch = typeof store.dispatch;
 export type TError = SerializedError;
 
 export type TWebSocketActions = {
-  onOpen: ActionCreatorWithOptionalPayload<any>;
-  onGetMessage: ActionCreatorWithOptionalPayload<any>;
-  onClose: ActionCreatorWithOptionalPayload<any>;
-  close: ActionCreatorWithOptionalPayload<any>;
-  connect: ActionCreatorWithOptionalPayload<any>;
-  sendMessage: ActionCreatorWithOptionalPayload<any>;
+  readonly onOpen: ActionCreatorWithOptionalPayload<any>;
+  readonly onGetMessage: ActionCreatorWithOptionalPayload<any>;
+  readonly onClose: ActionCreatorWithOptionalPayload<any>;
+  readonly close: ActionCreatorWithOptionalPayload<any>;
+  readonly connect: ActionCreatorWithOptionalPayload<any>;
+  readonly sendMessage: ActionCreatorWithOptionalPayload<any>;
 };
 
 export type TPatchUserData = {
-  password?: string;
+  readonly password?: string;
 } & { [k in keyof TUser]?: TUser[k] };
 
 export type TLoginParams = {
-  email: string;
-  password: string;
+  readonly email: string;
+  readonly password: string;
 };
 
 export type TRegisterParams = {
-  name: string;
-  email: string;
-  password: string;
+  readonly name: string;
+  readonly email: string;
+  readonly password: string;
 };
 
 export type TResetPasswordParams = {
-  token: string;
-  password: string;
+  readonly token: string;
+  readonly password: string;
 };
 
 export type TGetResetCodeParams = {
-  email: string;
+  readonly email: string;
 };
 
 export type TKeySuccessFalse = {
-  success: false;
+  readonly success: false;
 };
+
 export type TBurgerIngredient = {
-  id: TIngredientId;
-  uid: string;
-  data: TIngredient;
+  readonly id: TIngredientId;
+  readonly uid: string;
+  readonly data: TIngredient;
 };
 
 export type TLocationState = {
-  from?: Location;
-  burger?: TBurgerSlice;
-  background?: Location;
+  readonly from?: Location;
+  readonly burger?: TBurgerSlice;
+  readonly background?: Location;
 } & LocationState;
+
 export type TDndSortableItem = {
   index: number;
 };
+
 export type TRouteItem = {
-  path: string;
-  title: string;
-  exact?: boolean;
-  sidebar?: string;
-  children?: ReactNode;
+  readonly path: string;
+  readonly title: string;
+  readonly exact?: boolean;
+  readonly sidebar?: string;
+  readonly children?: ReactNode;
+};
+
+export type TAuthTokens = {
+  readonly accessToken: string | undefined;
+  readonly refreshToken: string | undefined;
 };
