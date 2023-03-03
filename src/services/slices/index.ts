@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import ingredients from 'services/slices/ingredients';
 import burger from 'services/slices/burger';
 import order from 'services/slices/order';
 import auth from 'services/slices/auth';
@@ -11,10 +10,11 @@ import userOrdersWSActions from 'services/actions/user-orders';
 import { NORMA_WS_API } from 'utils/constants';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ingredientModel } from 'entities/ingredient';
 
 export default configureStore({
   reducer: {
-    ingredients,
+    ingredients: ingredientModel.reducer,
     order,
     burger,
     auth,
