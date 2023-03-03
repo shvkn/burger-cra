@@ -7,7 +7,6 @@ import {
 import styles from './login.module.css';
 import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
-import { TLoginParams } from 'services/types';
 import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 

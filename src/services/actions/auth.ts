@@ -16,13 +16,6 @@ import {
   getRefreshToken,
   processAuthResponse,
 } from 'utils/utils';
-import {
-  TGetResetCodeParams,
-  TLoginParams,
-  TPatchUserData,
-  TRegisterParams,
-  TResetPasswordParams,
-} from 'services/types';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }: TLoginParams) => {
   try {

@@ -1,7 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { ingredientsAdapter } from 'services/slices/ingredients';
-import { TRootState } from 'services/types';
-import { TIngredientId } from 'services/types/data';
 
 const selectIngredients = (state: TRootState) => state.ingredients;
 

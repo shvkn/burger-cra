@@ -1,7 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 import { getAccessToken } from 'utils/utils';
-import { TWebSocketActions } from 'services/types';
-import { TOrderWsMessage } from 'services/types/response';
 
 export const onOpen = createAction('userOrders/websocket/on-open');
 export const onGetMessage = createAction<TOrderWsMessage>('userOrders/websocket/on-get-message');

@@ -1,7 +1,6 @@
 import { ordersEntityAdapter } from 'services/slices/orders';
 import { createSelector } from '@reduxjs/toolkit';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { TRootState } from 'services/types';
 import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 
 const selectOrdersSlice = (state: TRootState) => state.orders;

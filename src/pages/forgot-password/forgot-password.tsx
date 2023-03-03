@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
 import { useAppDispatch, useAppHistory } from 'services/slices';
 import useForm from 'hooks/use-form';
-import { TGetResetCodeParams } from 'services/types';
 
 const initFormData: TGetResetCodeParams = {
   email: '',

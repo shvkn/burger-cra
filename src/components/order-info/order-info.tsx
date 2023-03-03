@@ -2,7 +2,6 @@ import React, { FC, useMemo } from 'react';
 import styles from './order-info.module.css';
 import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TOrder } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import { countBy, getOrderIngredients, getOrderTotalPrice } from 'utils/utils';

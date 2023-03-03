@@ -5,7 +5,6 @@ import { useDrag } from 'react-dnd';
 import { DndItemTypes } from 'utils/constants';
 import { Link, useLocation } from 'react-router-dom';
 import burgerSelectors from 'services/selectors/burger';
-import { TIngredient } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 
 type TBurgerIngredientProps = {

@@ -16,7 +16,6 @@ import * as orderActions from 'services/actions/order';
 import ingredientsSelectors from 'services/selectors/ingredients';
 import burgerSelectors from 'services/selectors/burger';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
-import { TIngredientId } from 'services/types/data';
 import orderSelectors from 'services/selectors/order';
 
 type TDnDIngredientItem = { id: TIngredientId };

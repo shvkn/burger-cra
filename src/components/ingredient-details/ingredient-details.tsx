@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styles from './ingredient-details.module.css';
-import { TIngredient } from 'services/types/data';
 
 type TIngredientDetailsProps = {
   ingredient: TIngredient;

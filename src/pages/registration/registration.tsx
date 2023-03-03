@@ -8,7 +8,6 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import * as authActions from 'services/actions/auth';
-import { TRegisterParams } from 'services/types';
 import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 

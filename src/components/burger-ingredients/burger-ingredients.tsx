@@ -3,7 +3,6 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import IngredientsCategory from 'components/ingredients-category';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { TIngredient, TIngredientType } from 'services/types/data';
 import { useAppSelector } from 'services/slices';
 import useIntersectionObserver, { TEntityEqualComparer } from 'hooks/use-intersection-observer';
 import { groupBy } from 'utils/utils';

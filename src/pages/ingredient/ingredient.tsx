@@ -6,7 +6,6 @@ import ingredientsSelectors from 'services/selectors/ingredients';
 import { useParams } from 'react-router-dom';
 import { NotFoundedPage } from 'pages/index';
 import { useAppSelector } from 'services/slices';
-import { TIngredientId } from 'services/types/data';
 
 const IngredientPage: FC = () => {
   const { id } = useParams<{ id: TIngredientId }>();

@@ -10,7 +10,6 @@ import ordersWSActions from 'services/actions/orders';
 import userOrdersWSActions from 'services/actions/user-orders';
 import { NORMA_WS_API } from 'utils/constants';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, TLocationState, TRootState } from 'services/types';
 import { useHistory, useLocation } from 'react-router-dom';
 
 export default configureStore({

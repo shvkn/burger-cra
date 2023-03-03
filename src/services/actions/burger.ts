@@ -1,6 +1,4 @@
 import { createAction, nanoid } from '@reduxjs/toolkit';
-import { TIngredientId } from 'services/types/data';
-import { TBurgerSlice } from 'services/types/state';
 
 export const setBun = createAction('burger/set-bun', (id: TIngredientId) => ({ payload: id }));
 

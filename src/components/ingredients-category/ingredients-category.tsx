@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styles from './ingredients-category.module.css';
 import BurgerIngredient from 'components/burger-ingredient';
-import { TIngredient } from 'services/types/data';
 
 type TIngredientsCategoryProps = {
   items: Array<TIngredient>;

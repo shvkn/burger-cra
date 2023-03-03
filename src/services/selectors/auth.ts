@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { TRootState } from 'services/types';
 
 const selectAuth = (state: TRootState) => state.auth;
 

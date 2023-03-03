@@ -9,7 +9,6 @@ import {
 import * as authActions from 'services/actions/auth';
 import authSelectors from 'services/selectors/auth';
 import { useAppDispatch, useAppSelector } from 'services/slices';
-import { TPatchUserData } from 'services/types';
 import useForm from 'hooks/use-form';
 import { getChangedEntries } from 'utils/utils';
 

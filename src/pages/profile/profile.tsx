@@ -4,7 +4,6 @@ import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import UserOrders from 'components/user-orders/user-orders';
 import UserForm from 'components/user-form/user-form';
 import LogoutPage from 'pages/logout';
-import { TRouteItem } from 'services/types';
 
 const linkCN = (isActive: boolean): string => {
   return `${styles.link} text text_type_main-medium ${

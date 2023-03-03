@@ -1,7 +1,5 @@
 import { NORMA_API } from 'utils/constants';
 import { request } from 'utils/utils';
-import { TPatchUserData } from 'services/types';
-import { TAuthResponseBody, TBaseResponseBody, TUserResponseBody } from 'services/types/response';
 
 export const registerUserRequest = async (name: string, email: string, password: string) => {
   try {

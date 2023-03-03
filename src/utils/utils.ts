@@ -1,11 +1,8 @@
 import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { TAuthTokens, TKeySuccessFalse } from 'services/types';
 import { Dictionary, PayloadAction as PA } from '@reduxjs/toolkit';
-import { TAuthResponseBody, TBaseResponseBody, TOrderWsMessage } from 'services/types/response';
 import { refreshTokenRequest } from 'utils/auth-api';
 import { Messages } from 'utils/constants';
-import { TIngredient, TOrder } from 'services/types/data';
 
 export const getToken = (name: keyof TAuthTokens): string | undefined => {
   return getCookie(name);

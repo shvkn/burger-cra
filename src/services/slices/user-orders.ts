@@ -1,7 +1,5 @@
 import { createEntityAdapter, createSlice, isAllOf } from '@reduxjs/toolkit';
 import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'services/actions/user-orders';
-import { TOrder } from 'services/types/data';
-import { TUserOrdersSlice, TWebSocketSate } from 'services/types/state';
 import { hasError, hasOrders } from 'utils/utils';
 
 const userOrdersEntityAdapter = createEntityAdapter<TOrder>({ selectId: ({ _id }) => _id });

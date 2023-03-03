@@ -1,4 +1,3 @@
-import { TWebSocketActions } from 'services/types';
 import { Middleware } from 'redux';
 
 const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middleware => {

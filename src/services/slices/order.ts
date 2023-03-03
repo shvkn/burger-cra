@@ -1,8 +1,6 @@
 import { createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { makeOrder } from 'services/actions/order';
 import { hasError } from 'utils/utils';
-import { TThunkState } from 'services/types/state';
-import { TOrderResponseBody } from 'services/types/response';
 
 const initialState: TThunkState & {
   number: number | null;

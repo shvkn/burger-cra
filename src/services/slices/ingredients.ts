@@ -1,8 +1,5 @@
 import { createEntityAdapter, createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { fetch } from 'services/actions/ingredients';
-import { TIngredient } from 'services/types/data';
-import { TIngredientsSlice } from 'services/types/state';
-import { TIngredientsResponseBody } from 'services/types/response';
 import { hasError } from 'utils/utils';
 
 const ingredientsAdapter = createEntityAdapter<TIngredient>({

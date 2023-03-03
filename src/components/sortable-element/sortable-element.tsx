@@ -1,7 +1,6 @@
 import React, { FC, ReactNode, useRef } from 'react';
 import { DndItemTypes } from 'utils/constants';
 import { useDrag, useDrop } from 'react-dnd';
-import { TDndSortableItem } from 'services/types';
 
 type TSortableElementProps = {
   children: ReactNode;

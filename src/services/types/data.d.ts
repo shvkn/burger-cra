@@ -1,6 +1,6 @@
-export type TIngredientId = string;
-export type TIngredientType = 'bun' | 'sauce' | 'main';
-export type TIngredient = {
+declare type TIngredientId = string;
+declare type TIngredientType = 'bun' | 'sauce' | 'main';
+declare type TIngredient = {
   readonly _id: TIngredientId;
   readonly name: string;
   readonly type: TIngredientType;
@@ -13,8 +13,8 @@ export type TIngredient = {
   readonly image_mobile: string;
   readonly image_large: string;
 };
-export type TOrderStatus = 'done' | 'pending' | 'created';
-export type TOrder = {
+declare type TOrderStatus = 'done' | 'pending' | 'created';
+declare type TOrder = {
   readonly _id: string;
   readonly number: number;
   readonly status: TOrderStatus;
@@ -23,7 +23,7 @@ export type TOrder = {
   readonly updatedAt: string;
   readonly ingredients: ReadonlyArray<TIngredientId>;
 };
-export type TUser = {
+declare type TUser = {
   readonly name: string;
   readonly email: string;
 };

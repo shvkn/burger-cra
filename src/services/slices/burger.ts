@@ -7,7 +7,6 @@ import {
   setBun,
   setState,
 } from 'services/actions/burger';
-import { TBurgerSlice } from 'services/types/state';
 
 const initialState: TBurgerSlice = {
   bun: '',

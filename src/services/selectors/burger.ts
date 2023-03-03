@@ -1,8 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { TBurgerIngredient, TRootState } from 'services/types';
-import { TIngredientId } from 'services/types/data';
-import { TBurgerSlice } from 'services/types/state';
 import { sumBy } from 'utils/utils';
 
 const selectIngredientsEntities = (state: TRootState) => ingredientsSelectors.selectEntities(state);

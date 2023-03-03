@@ -8,8 +8,6 @@ import {
 } from '@reduxjs/toolkit';
 import { getUser, login, logout, patchUser, register, resetPassword } from 'services/actions/auth';
 import { hasError } from 'utils/utils';
-import { TAuthSlice } from 'services/types/state';
-import { TUserResponseBody } from 'services/types/response';
 
 const initialState: TAuthSlice = {
   user: null,

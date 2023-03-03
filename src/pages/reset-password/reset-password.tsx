@@ -4,7 +4,6 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { Link, Redirect } from 'react-router-dom';
 import authSelectors from 'services/selectors/auth';
 import * as authActions from 'services/actions/auth';
-import { TResetPasswordParams } from 'services/types';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { Messages } from 'utils/constants';

@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { TOrderStatus } from 'services/types/data';
 
 const dict: Record<TOrderStatus, string> = {
   done: 'Выполнен',

@@ -4,7 +4,6 @@ import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderStatus from 'components/order-status';
 import ingredientsSelectors from 'services/selectors/ingredients';
-import { TOrder } from 'services/types/data';
 import { useAppLocation, useAppSelector } from 'services/slices';
 import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 
