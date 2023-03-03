@@ -15,13 +15,13 @@ import {
   ResetPasswordPage,
 } from 'pages';
 import ProtectedRoute from 'components/protected-route';
-import * as ingredientsActions from 'services/actions/ingredients';
 import AppLayout from 'components/app-layout/app-layout';
 import UserOrderPage from 'pages/user-order/user-order';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
 import { useAppDispatch, useAppLocation } from 'services/slices';
+import { ingredientModel } from 'entities/ingredient';
 
 const App: FC = () => {
   const location = useAppLocation();
@@ -29,7 +29,7 @@ const App: FC = () => {
   const background = location.state?.background;
 
   useEffect(() => {
-    dispatch(ingredientsActions.fetch());
+    dispatch(ingredientModel.actions.getIngredientsAsync());
   }, [dispatch]);
 
   return (
