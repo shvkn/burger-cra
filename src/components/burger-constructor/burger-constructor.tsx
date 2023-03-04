@@ -13,10 +13,10 @@ import SortableElement from 'components/sortable-element';
 import { DndItemTypes, Messages } from 'utils/constants';
 import * as burgerActions from 'services/actions/burger';
 import * as orderActions from 'services/actions/order';
-import ingredientsSelectors from 'services/selectors/ingredients';
 import burgerSelectors from 'services/selectors/burger';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 import orderSelectors from 'services/selectors/order';
+import { ingredientModel } from 'entities/ingredient';
 
 type TDnDIngredientItem = { id: TIngredientId };
 
@@ -32,7 +32,7 @@ const BurgerConstructor: FC = () => {
     }
   }, [dispatch, history.location.state?.burger]);
 
-  const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
+  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
   const burgerSlice = useAppSelector(burgerSelectors.selectBurgerSlice);
 
   const orderNumber = useAppSelector(orderSelectors.selectOrderNumber);
