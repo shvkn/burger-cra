@@ -7,7 +7,7 @@ import {
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import * as authActions from 'services/actions/auth';
+import { authModel } from 'entities/auth';
 import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 
@@ -28,7 +28,7 @@ const RegistrationPage: FC = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    dispatch(authActions.register(form));
+    dispatch(authModel.actions.register(form));
   };
 
   const formRef = useForm(handleSubmit);
