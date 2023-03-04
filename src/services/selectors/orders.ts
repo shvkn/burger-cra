@@ -1,7 +1,7 @@
 import { ordersEntityAdapter } from 'services/slices/orders';
 import { createSelector } from '@reduxjs/toolkit';
-import ingredientsSelectors from 'services/selectors/ingredients';
 import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
+import { ingredientModel } from 'entities/ingredient';
 
 const selectOrdersSlice = (state: TRootState) => state.orders;
 const selectWSStatus = (state: TRootState) => selectOrdersSlice(state).status;
@@ -26,7 +26,7 @@ const selectIsWSClosed = createSelector(selectWSStatus, (status) => status === '
 
 const selectIngredients = (id: string) => {
   return createSelector(
-    [selectById(id), ingredientsSelectors.selectEntities],
+    [selectById(id), ingredientModel.selectors.selectEntities],
     (order, ingredientsEntities) => {
       return order ? getOrderIngredients(order, ingredientsEntities) : [];
     }
@@ -35,7 +35,7 @@ const selectIngredients = (id: string) => {
 
 const selectTotalPrice = (id: string) => {
   return createSelector(
-    [selectById(id), ingredientsSelectors.selectEntities],
+    [selectById(id), ingredientModel.selectors.selectEntities],
     (order, ingredientsEntities) => {
       return order ? getOrderTotalPrice(order, ingredientsEntities) : 0;
     }
