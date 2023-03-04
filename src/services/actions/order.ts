@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { callRequestWithAccessToken } from 'utils/utils';
-import { postOrderRequest } from 'utils/burger-api';
+import { burgerApi } from 'shared/api';
 
 export const makeOrder = createAsyncThunk(
   'order/place-order',
   async (ingredientsIds: ReadonlyArray<TIngredientId>) => {
     try {
-      return callRequestWithAccessToken(postOrderRequest, ingredientsIds);
+      return callRequestWithAccessToken(burgerApi.createOrderRequest, ingredientsIds);
     } catch (e) {
       console.log(e);
       throw e;
