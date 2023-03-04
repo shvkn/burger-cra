@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { DndItemTypes } from 'utils/constants';
 import { Link, useLocation } from 'react-router-dom';
-import burgerSelectors from 'services/selectors/burger';
 import { useAppSelector } from 'services/slices';
+import { burgerModel } from 'entities/burger';
 
 type TBurgerIngredientProps = {
   ingredient: TIngredient;
@@ -13,7 +13,8 @@ type TBurgerIngredientProps = {
 
 const BurgerIngredient: FC<TBurgerIngredientProps> = ({ ingredient }) => {
   const id = ingredient._id;
-  const count = useAppSelector(burgerSelectors.selectCountById(id));
+  // TODO вынести в пропсы
+  const count = useAppSelector(burgerModel.selectors.selectCountById(id));
   const location = useLocation();
   const [, dragRef] = useDrag({
     type: DndItemTypes.BURGER_INGREDIENT,
