@@ -11,12 +11,11 @@ import Modal from 'components/modal/modal';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { DndItemTypes, Messages } from 'utils/constants';
-import * as burgerActions from 'services/actions/burger';
 import * as orderActions from 'services/actions/order';
-import burgerSelectors from 'services/selectors/burger';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 import orderSelectors from 'services/selectors/order';
 import { ingredientModel } from 'entities/ingredient';
+import { burgerModel } from 'entities/burger';
 
 type TDnDIngredientItem = { id: TIngredientId };
 
@@ -28,21 +27,20 @@ const BurgerConstructor: FC = () => {
   useEffect(() => {
     const burgerFromHistory = history.location.state?.burger;
     if (burgerFromHistory) {
-      dispatch(burgerActions.setState(burgerFromHistory));
+      dispatch(burgerModel.actions.setState(burgerFromHistory));
     }
   }, [dispatch, history.location.state?.burger]);
 
   const { entities: ingredientsEntities } = ingredientModel.useIngredients();
-  const burgerSlice = useAppSelector(burgerSelectors.selectBurgerSlice);
+  const {
+    state: burgerSlice,
+    bun: burgerBun,
+    ingredients: burgerIngredients,
+    totalPrice: burgerTotalPrice,
+  } = burgerModel.useBurger({ ingredientsEntities });
 
   const orderNumber = useAppSelector(orderSelectors.selectOrderNumber);
-
-  const burgerBun = useAppSelector(burgerSelectors.selectBunIngredient);
-  const burgerIngredients = useAppSelector(burgerSelectors.selectIngredients);
-  const burgerTotalPrice = useAppSelector(burgerSelectors.selectTotalPrice);
-
   const isOrderLoading = useAppSelector(orderSelectors.selectIsOrderLoading);
-
   const isOrderError = useAppSelector(orderSelectors.selectIsOrderFailed);
 
   const [, dropTarget] = useDrop({
@@ -54,9 +52,9 @@ const BurgerConstructor: FC = () => {
         return;
       }
       if (ingredient.type === 'bun') {
-        dispatch(burgerActions.setBun(id));
+        dispatch(burgerModel.actions.setBun(id));
       } else {
-        dispatch(burgerActions.addIngredient(id));
+        dispatch(burgerModel.actions.addIngredient(id));
       }
     },
   });
@@ -70,11 +68,11 @@ const BurgerConstructor: FC = () => {
   };
 
   const handleRemove = (index: number): void => {
-    dispatch(burgerActions.removeIngredient(index));
+    dispatch(burgerModel.actions.removeIngredient(index));
   };
 
   const handleMove = (hoverIndex: number, dragIndex: number): void => {
-    dispatch(burgerActions.moveIngredient(hoverIndex, dragIndex));
+    dispatch(burgerModel.actions.moveIngredient(hoverIndex, dragIndex));
   };
   const isBunSelected = !!burgerBun;
   const isIngredientsSelected = !!burgerIngredients.length;
@@ -93,7 +91,7 @@ const BurgerConstructor: FC = () => {
       .unwrap()
       .then(({ message, success }) => {
         if (success) {
-          dispatch(burgerActions.reset());
+          dispatch(burgerModel.actions.reset());
           history.replace({
             ...history.location,
             state: {},
