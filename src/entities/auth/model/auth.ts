@@ -103,12 +103,13 @@ export const useAuth = () => {
   const isFailed = useSelector(selectIsFailed);
   const isLoading = useSelector(selectIsLoading);
   const isSucceeded = useSelector(selectIsSucceeded);
-
+  const error = useSelector(selectError);
   return {
     user,
     isAuthorized,
     isFailed,
     isLoading,
     isSucceeded,
+    error,
   };
 };
