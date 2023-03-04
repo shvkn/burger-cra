@@ -6,17 +6,16 @@ import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import * as authActions from 'services/actions/auth';
-import authSelectors from 'services/selectors/auth';
-import { useAppDispatch, useAppSelector } from 'services/slices';
+import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { getChangedEntries } from 'utils/utils';
+import { authModel } from 'entities/auth';
 
 type TUserFormData = Required<TPatchUserData>;
 
 const UserForm: FC = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(authSelectors.selectUser);
+  const { user } = authModel.useAuth();
 
   const initFormData: TUserFormData = useMemo(
     () => ({
@@ -31,7 +30,8 @@ const UserForm: FC = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    dispatch(authActions.patchUser(getChangedEntries(initFormData, form)));
+    const changedEntries = getChangedEntries(initFormData, form);
+    dispatch(authModel.actions.patchUser(changedEntries));
   };
   const formRef = useForm(handleSubmit);
   const isFormChanged = JSON.stringify(initFormData) !== JSON.stringify(form);
