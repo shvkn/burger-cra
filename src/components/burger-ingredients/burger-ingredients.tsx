@@ -2,10 +2,9 @@ import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import IngredientsCategory from 'components/ingredients-category';
-import ingredientsSelectors from 'services/selectors/ingredients';
-import { useAppSelector } from 'services/slices';
 import useIntersectionObserver, { TEntityEqualComparer } from 'hooks/use-intersection-observer';
 import { groupBy } from 'utils/utils';
+import { ingredientModel } from 'entities/ingredient';
 
 const categories: Array<{ type: TIngredientType; title: string }> = [
   { type: 'bun', title: 'Булки' },
@@ -19,7 +18,7 @@ const entryEqualComparer: TEntityEqualComparer = (a, b) => {
 
 const BurgerIngredients: FC = () => {
   const [activeTab, setActiveTab] = useState<TIngredientType>(categories[0].type);
-  const ingredients = useAppSelector(ingredientsSelectors.selectAll);
+  const { ingredients } = ingredientModel.useIngredients();
   const ingredientsByType: Record<TIngredientType, TIngredient[]> = groupBy(
     ingredients,
     (i) => i.type
