@@ -55,7 +55,8 @@ const authSlice = createSlice({
       })
       .addMatcher(isRejectedAction, (state, action) => {
         state.status = 'failed';
-        state.error = action.error;
+        // TODO протестировать на rejectWithValue
+        state.error = action.error ?? action.payload;
       })
       .addMatcher(isFulfilledAction, (state) => {
         state.status = 'succeeded';
