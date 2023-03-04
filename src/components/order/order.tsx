@@ -3,9 +3,9 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderStatus from 'components/order-status';
-import ingredientsSelectors from 'services/selectors/ingredients';
-import { useAppLocation, useAppSelector } from 'services/slices';
+import { useAppLocation } from 'services/slices';
 import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
+import { ingredientModel } from 'entities/ingredient';
 
 const ingredientsToRenderCount = 6;
 
@@ -17,7 +17,7 @@ type TOrderProps = {
 const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
   const { url } = useRouteMatch();
   const location = useAppLocation();
-  const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
+  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
 
   const orderIngredients = useMemo(
     () => getOrderIngredients(order, ingredientsEntities),
