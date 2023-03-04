@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import burger from 'services/slices/burger';
 import order from 'services/slices/order';
-import auth from 'services/slices/auth';
 import orders from 'services/slices/orders';
 import userOrders from 'services/slices/user-orders';
 import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
@@ -11,13 +10,14 @@ import { NORMA_WS_API } from 'utils/constants';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ingredientModel } from 'entities/ingredient';
+import { authModel } from 'entities/auth';
 
 export default configureStore({
   reducer: {
     ingredients: ingredientModel.reducer,
     order,
     burger,
-    auth,
+    auth: authModel.reducer,
     orders,
     userOrders,
   },
