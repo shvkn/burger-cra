@@ -19,3 +19,7 @@ export const getErrorMessage = (error: SerializedError | FetchBaseQueryError) =>
   }
   return error?.message;
 };
+
+export const sumBy = <T>(arr: ReadonlyArray<T>, fn: (i: T) => number): number => {
+  return arr.reduce((acc, cur) => acc + fn(cur), 0);
+};
