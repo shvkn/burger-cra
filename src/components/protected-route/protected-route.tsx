@@ -1,26 +1,23 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import authSelectors from 'services/selectors/auth';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
-import * as authActions from 'services/actions/auth';
 import { getAccessToken, getRefreshToken } from 'utils/utils';
 import { RouteProps } from 'react-router';
-import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
+import { useAppDispatch, useAppHistory } from 'services/slices';
 import useConstructor from 'hooks/use-constructor';
+import { authModel } from 'entities/auth';
 
 type TProtectedRouteProps = {
   nonAuthOnly?: boolean;
 } & RouteProps;
 
-const ProtectedRoute: FC<TProtectedRouteProps> = ({
+const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   children,
   component,
   nonAuthOnly = false,
   ...rest
 }) => {
-  const isAuthorized = useAppSelector(authSelectors.selectIsAuthorized);
-  const isAuthLoading = useAppSelector(authSelectors.selectIsLoading);
-  const isAuthError = useAppSelector(authSelectors.selectIsError);
+  const { isAuthorized, isLoading: isAuthLoading, error } = authModel.useAuth();
 
   const dispatch = useAppDispatch();
   const { location } = useAppHistory();
@@ -31,17 +28,20 @@ const ProtectedRoute: FC<TProtectedRouteProps> = ({
   const hasAnyToken = !!accessToken || !!refreshToken;
 
   useConstructor(() => {
-    if (!isAuthLoading && !isAuthError && hasAnyToken) {
-      dispatch(authActions.getUser());
+    if (error) {
+      return;
+    }
+    if (!isAuthLoading && hasAnyToken) {
+      dispatch(authModel.actions.getUser());
     }
   });
 
   useEffect(() => {
     if (!isAuthLoading) {
-      if (isAuthError || (isAuthorized && !hasAnyToken)) {
-        dispatch(authActions.logout());
+      if (error || (isAuthorized && !hasAnyToken)) {
+        dispatch(authModel.actions.logout());
       } else if (!accessToken && !!refreshToken) {
-        dispatch(authActions.getUser());
+        dispatch(authModel.actions.getUser());
       }
     }
   });
