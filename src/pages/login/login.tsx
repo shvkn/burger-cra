@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import {
   Button,
   EmailInput,
@@ -6,16 +6,16 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 import { Link } from 'react-router-dom';
-import * as authActions from 'services/actions/auth';
 import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
+import { authModel } from 'entities/auth';
 
 const initFormData: TLoginParams = {
   email: '',
   password: '',
 };
 
-const LoginPage: FC = () => {
+const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [form, setValue] = useState<TLoginParams>(initFormData);
 
@@ -26,7 +26,7 @@ const LoginPage: FC = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    dispatch(authActions.login(form));
+    dispatch(authModel.actions.login(form));
   };
 
   const formRef = useForm(handleSubmit);
