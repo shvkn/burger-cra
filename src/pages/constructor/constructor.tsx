@@ -4,14 +4,15 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import BurgerIngredients from 'components/burger-ingredients';
 import BurgerConstructor from 'components/burger-constructor';
-import ingredientsSelectors from 'services/selectors/ingredients';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
-import { useAppSelector } from 'services/slices';
+import { ingredientModel } from 'entities/ingredient';
 
 const ConstructorPage: FC = () => {
-  const isIngredientsSucceeded = useAppSelector(ingredientsSelectors.selectIsSucceeded);
-  const isIngredientsFailed = useAppSelector(ingredientsSelectors.selectIsFailed);
-  const isIngredientsLoading = useAppSelector(ingredientsSelectors.selectIsLoading);
+  const {
+    isSucceeded: isIngredientsSucceeded,
+    isLoading: isIngredientsLoading,
+    isFailed: isIngredientsFailed,
+  } = ingredientModel.useIngredients();
   return (
     <main className={styles.layout}>
       {isIngredientsLoading && <LoadingCurtain />}
