@@ -1,4 +1,4 @@
-import { BURGER_API, NORMA_API } from 'shared/config';
+import { NORMA_API } from 'shared/config';
 import { request } from 'shared/lib';
 
 export const createOrderRequest = (
@@ -6,7 +6,7 @@ export const createOrderRequest = (
   ingredients: ReadonlyArray<TIngredientId>
 ) => {
   try {
-    return request<TOrderResponseBody>(`${NORMA_API}${BURGER_API.POST_ORDER_SLUG}`, {
+    return request<TOrderResponseBody>(`${NORMA_API}/orders`, {
       method: 'POST',
       headers: {
         authorization: accessToken,
