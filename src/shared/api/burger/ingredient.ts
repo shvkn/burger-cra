@@ -1,4 +1,4 @@
-import { request } from '../lib';
+import { request } from 'shared/lib';
 import { BURGER_API, NORMA_API } from 'shared/config';
 
 export const getIngredientsRequest = () => {

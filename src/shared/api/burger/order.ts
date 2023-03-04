@@ -1,5 +1,5 @@
 import { BURGER_API, NORMA_API } from 'shared/config';
-import { request } from 'shared/api/lib';
+import { request } from 'shared/lib';
 
 export const createOrderRequest = (
   accessToken: string,
