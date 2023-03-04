@@ -2,16 +2,15 @@ import React, { FC, useMemo } from 'react';
 import styles from './order-info.module.css';
 import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppSelector } from 'services/slices';
-import ingredientsSelectors from 'services/selectors/ingredients';
 import { countBy, getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
+import { ingredientModel } from 'entities/ingredient';
 
 type TOrderInfoProps = {
   order: TOrder;
 };
 
 const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
-  const ingredientsEntities = useAppSelector(ingredientsSelectors.selectEntities);
+  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
 
   const ingredients = useMemo(
     () => getOrderIngredients(order, ingredientsEntities),
