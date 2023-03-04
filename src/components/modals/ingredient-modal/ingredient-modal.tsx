@@ -2,13 +2,12 @@ import React, { FC } from 'react';
 import Modal from 'components/modal';
 import IngredientDetails from 'components/ingredient-details';
 import { useHistory, useParams } from 'react-router-dom';
-import ingredientsSelectors from 'services/selectors/ingredients';
-import { useAppSelector } from 'services/slices';
+import { ingredientModel } from 'entities/ingredient';
 
 const IngredientModal: FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const ingredient = useAppSelector(ingredientsSelectors.selectById(id));
+  const ingredient = ingredientModel.useIngredient(id);
 
   const handleClose = () => {
     history.goBack();
