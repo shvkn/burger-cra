@@ -2,11 +2,11 @@ import React, { ChangeEvent, FC, useMemo, useState } from 'react';
 import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
-import authSelectors from 'services/selectors/auth';
-import * as authActions from 'services/actions/auth';
-import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
+import { useAppDispatch, useAppHistory } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { Messages } from 'utils/constants';
+import { authModel } from 'entities/auth';
+import { getErrorMessage } from 'shared/lib';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 
@@ -14,7 +14,7 @@ const ResetPasswordPage: FC = () => {
   const [form, setValue] = useState<TResetPasswordParams>(initFormData);
   const history = useAppHistory();
   const dispatch = useAppDispatch();
-  const error = useAppSelector(authSelectors.selectError);
+  const { error } = authModel.useAuth();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,10 +23,10 @@ const ResetPasswordPage: FC = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    dispatch(authActions.resetPassword(form))
+    dispatch(authModel.actions.resetPassword(form))
       .unwrap()
-      .then((response) => {
-        if (response.success) {
+      .then(({ success }) => {
+        if (success) {
           history.replace({ pathname: '/login' });
         }
       });
@@ -35,7 +35,11 @@ const ResetPasswordPage: FC = () => {
   const formRef = useForm(handleSubmit);
 
   const isIncorrectToken = useMemo(() => {
-    return error.message === Messages.INCORRECT_RESET_TOKEN;
+    if (error) {
+      const msg = getErrorMessage(error);
+      return msg === Messages.INCORRECT_RESET_TOKEN;
+    }
+    return false;
   }, [error]);
 
   if (history.location.state?.from?.pathname !== '/forgot-password') {
