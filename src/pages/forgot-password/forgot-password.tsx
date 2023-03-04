@@ -2,9 +2,9 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import styles from './forgot-password.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import * as authActions from 'services/actions/auth';
 import { useAppDispatch, useAppHistory } from 'services/slices';
 import useForm from 'hooks/use-form';
+import { authModel } from 'entities/auth';
 
 const initFormData: TGetResetCodeParams = {
   email: '',
@@ -16,7 +16,7 @@ const ForgotPasswordPage: FC = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    dispatch(authActions.getResetCode(form))
+    dispatch(authModel.actions.getResetCode(form))
       .unwrap()
       .then((response) => {
         if (response.success) {
