@@ -25,7 +25,10 @@ const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   const authOnly = !nonAuthOnly;
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
-  const hasAnyToken = !!accessToken || !!refreshToken;
+  const hasAccessToken = !!accessToken;
+  const hasRefreshToken = !!refreshToken;
+  const hasAnyToken = hasAccessToken || hasAccessToken;
+  const hasError = !!error;
 
   useConstructor(() => {
     if (error) {
@@ -38,9 +41,10 @@ const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
 
   useEffect(() => {
     if (!isAuthLoading) {
-      if (error || (isAuthorized && !hasAnyToken)) {
+      if (hasError || (isAuthorized && !hasAnyToken)) {
+        console.log(error);
         dispatch(authModel.actions.logout());
-      } else if (!accessToken && !!refreshToken) {
+      } else if (!hasError && !hasAccessToken && hasRefreshToken) {
         dispatch(authModel.actions.getUser());
       }
     }
