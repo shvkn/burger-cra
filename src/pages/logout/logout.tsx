@@ -1,13 +1,13 @@
-import React, { FC, useEffect } from 'react';
-import * as authActions from 'services/actions/auth';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useAppDispatch } from 'services/slices';
+import { authModel } from 'entities/auth';
 
-const LogoutPage: FC = () => {
+const LogoutPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(authActions.logout());
+    dispatch(authModel.actions.logout());
   }, [dispatch]);
 
   return <Redirect to={'/'} />;
