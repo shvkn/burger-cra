@@ -1,27 +1,28 @@
-import React, { FC, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import DetailsLayout from 'components/details-layout';
 import styles from './user-order.module.css';
 import OrderInfo from 'components/order-info';
-import actions from 'services/actions/user-orders';
 import { useSelector } from 'react-redux';
-import userOrdersSelectors from 'services/selectors/user-orders';
 import { useAppDispatch, useAppSelector } from 'shared/lib';
+import { ordersModel } from 'entities/order';
+import { getAccessToken } from 'utils/utils';
 
-const UserOrderPage: FC = () => {
+const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const isWsOpened = useAppSelector(userOrdersSelectors.selectIsWSOpened);
-  const isWsClosed = useAppSelector(userOrdersSelectors.selectIsWSClosed);
+  const isWsOpened = useAppSelector(ordersModel.selectors.selectIsWSOpened);
+  const isWsClosed = useAppSelector(ordersModel.selectors.selectIsWSClosed);
 
-  useEffect(() => {
-    isWsClosed && dispatch(actions.connect());
+  React.useEffect(() => {
+    isWsClosed &&
+      dispatch(ordersModel.actions.connect({ route: '/orders', accessToken: getAccessToken() }));
     return () => {
-      isWsOpened && dispatch(actions.close());
+      isWsOpened && dispatch(ordersModel.actions.close());
     };
   }, [dispatch, isWsClosed, isWsOpened]);
 
-  const order = useSelector(userOrdersSelectors.selectById(id));
+  const order = useSelector(ordersModel.selectors.selectById(id));
   return order ? (
     <main className={`mt-30 ${styles.layout}`}>
       <DetailsLayout>
