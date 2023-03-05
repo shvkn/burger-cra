@@ -1,15 +1,14 @@
 import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { Modal } from 'shared/ui';
 import OrderInfo from 'components/order-info';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useAppHistory } from 'shared/lib';
+import { useAppSelector } from 'shared/lib';
 import { ordersModel } from 'entities/order';
 
-const UserOrderModal: React.FC = () => {
+export const OrderModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const order = useSelector(ordersModel.selectors.selectById(id));
-  const history = useAppHistory();
+  const order = useAppSelector(ordersModel.selectors.selectOrderById(id));
+  const history = useHistory();
 
   const handleClose = () => {
     history.goBack();
@@ -26,5 +25,3 @@ const UserOrderModal: React.FC = () => {
     </Modal>
   ) : null;
 };
-
-export default UserOrderModal;

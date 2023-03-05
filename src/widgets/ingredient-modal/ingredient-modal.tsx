@@ -4,7 +4,7 @@ import { IngredientDetails } from 'entities/ingredient/ui';
 import { useHistory, useParams } from 'react-router-dom';
 import { ingredientModel } from 'entities/ingredient';
 
-const IngredientModal: React.FC = () => {
+export const IngredientModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const ingredient = ingredientModel.useIngredient(id);
@@ -24,5 +24,3 @@ const IngredientModal: React.FC = () => {
     </Modal>
   ) : null;
 };
-
-export default IngredientModal;
