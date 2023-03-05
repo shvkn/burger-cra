@@ -1,9 +1,9 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { Dictionary } from '@reduxjs/toolkit';
-import { deleteCookie, getCookie, setCookie } from 'utils/cookie';
+import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
 import { CookieSerializeOptions } from 'cookie';
-import { refreshTokenRequest } from 'utils/auth-api';
-import { Messages } from 'utils/constants';
+import { authApi } from 'shared/api';
+import { Messages } from 'shared/config';
 
 const processResponse = async <T>(response: Response): Promise<T> => {
   try {
@@ -132,7 +132,7 @@ export const callRequestWithAccessToken = async <
     }
     const refreshToken = getRefreshToken();
     if (!!refreshToken) {
-      const response = await refreshTokenRequest(refreshToken);
+      const response = await authApi.token.refreshTokens(refreshToken);
       if (response.success) {
         await processAuthResponse(response);
         const newAccessToken = getAccessToken();

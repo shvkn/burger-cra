@@ -3,9 +3,9 @@ import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import useForm from 'hooks/use-form';
-import { Messages } from 'utils/constants';
 import { authModel } from 'entities/auth';
 import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
+import { Messages } from 'shared/config';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 
