@@ -3,7 +3,6 @@ import DetailsLayout from 'components/details-layout/details-layout';
 import OrderInfo from 'components/order-info/order-info';
 import styles from './order.module.css';
 import { useParams } from 'react-router-dom';
-import { NotFoundedPage } from 'pages/index';
 import { useSelector } from 'react-redux';
 import ordersSelectors from 'services/selectors/orders';
 import { useAppDispatch } from 'services/slices';
@@ -33,9 +32,7 @@ const OrderPage: FC = () => {
         </DetailsLayout.Content>
       </DetailsLayout>
     </main>
-  ) : (
-    <NotFoundedPage />
-  );
+  ) : null;
 };
 
 export default OrderPage;

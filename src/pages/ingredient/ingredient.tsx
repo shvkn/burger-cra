@@ -3,7 +3,6 @@ import IngredientDetails from 'components/ingredient-details';
 import DetailsLayout from 'components/details-layout';
 import styles from './ingredient.module.css';
 import { useParams } from 'react-router-dom';
-import { NotFoundedPage } from 'pages/index';
 import { ingredientModel } from 'entities/ingredient';
 
 const IngredientPage: FC = () => {
@@ -20,9 +19,7 @@ const IngredientPage: FC = () => {
         </DetailsLayout.Content>
       </DetailsLayout>
     </main>
-  ) : (
-    <NotFoundedPage />
-  );
+  ) : null;
 };
 
 export default IngredientPage;

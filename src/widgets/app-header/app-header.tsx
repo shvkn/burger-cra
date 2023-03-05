@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BurgerIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useRouteMatch } from 'react-router-dom';
-import styles from './app-header.module.css';
+import styles from 'widgets/app-header/app-header.module.css';
 
 const getLinkCN = (isActive: boolean) => {
   return `pt-4 pl-5 pb-4 pr-5 text text_type_main-default text_color_${

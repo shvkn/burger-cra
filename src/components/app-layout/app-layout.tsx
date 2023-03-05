@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import styles from './app-layout.module.css';
-import AppHeader from 'components/app-header';
+import AppHeader from 'widgets/app-header';
 
 type TAppLayoutProps = {
   children: ReactNode;
