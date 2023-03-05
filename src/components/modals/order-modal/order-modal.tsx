@@ -1,13 +1,13 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Modal } from 'shared/ui';
 import OrderInfo from 'components/order-info';
-import ordersSelectors from 'services/selectors/orders';
 import { useAppSelector } from 'shared/lib';
+import { ordersModel } from 'entities/order';
 
-const OrderModal: FC = () => {
+const OrderModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const order = useAppSelector(ordersSelectors.selectOrderById(id));
+  const order = useAppSelector(ordersModel.selectors.selectOrderById(id));
   const history = useHistory();
 
   const handleClose = () => {

@@ -4,22 +4,21 @@ import OrderInfo from 'components/order-info/order-info';
 import styles from './order.module.css';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ordersSelectors from 'services/selectors/orders';
-import ordersWsActions from 'services/actions/orders';
 import { useAppDispatch } from 'shared/lib';
+import { ordersModel } from 'entities/order';
 
 const OrderPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(ordersWsActions.connect());
+    dispatch(ordersModel.actions.connect({ route: '/orders/all' }));
     return () => {
-      dispatch(ordersWsActions.close());
+      dispatch(ordersModel.actions.close());
     };
   }, [dispatch]);
 
-  const order = useSelector(ordersSelectors.selectOrderById(id));
+  const order = useSelector(ordersModel.selectors.selectOrderById(id));
 
   return order ? (
     <main className={`mt-30 ${styles.layout}`}>
