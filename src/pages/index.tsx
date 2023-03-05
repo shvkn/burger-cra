@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAppLocation } from 'services/slices';
 import { Route, Switch } from 'react-router-dom';
 import ProtectedRoute from 'components/protected-route';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
@@ -16,6 +15,7 @@ import IngredientPage from './ingredient';
 import OrderPage from './order';
 import FeedPage from './feed';
 import NotFoundedPage from './not-founded';
+import { useAppLocation } from 'shared/lib';
 
 export const Routes: React.FC = () => {
   const location = useAppLocation();

@@ -6,7 +6,7 @@ import OrderInfo from 'components/order-info';
 import actions from 'services/actions/user-orders';
 import { useSelector } from 'react-redux';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { useAppDispatch, useAppSelector } from 'services/slices';
+import { useAppDispatch, useAppSelector } from 'shared/lib';
 
 const UserOrderPage: FC = () => {
   const { id } = useParams<{ id: string }>();

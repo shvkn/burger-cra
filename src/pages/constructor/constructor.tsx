@@ -6,8 +6,7 @@ import BurgerIngredients from 'components/burger-ingredients';
 import BurgerConstructor from 'components/burger-constructor';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { ingredientModel } from 'entities/ingredient';
-import { groupBy } from 'shared/lib';
-import { useAppDispatch } from 'services/slices';
+import { groupBy, useAppDispatch } from 'shared/lib';
 
 const groupByType = (ingredients: TIngredient[]) => groupBy(ingredients, ({ type }) => type);
 

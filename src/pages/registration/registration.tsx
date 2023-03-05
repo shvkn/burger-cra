@@ -8,8 +8,8 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { authModel } from 'entities/auth';
-import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
+import { useAppDispatch } from 'shared/lib';
 
 const initFormData: TRegisterParams = {
   name: '',

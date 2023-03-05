@@ -1,5 +1,5 @@
-declare type TRootState = ReturnType<typeof import('services/slices').default.getState>;
-declare type AppDispatch = typeof import('services/slices').default.dispatch;
+declare type TRootState = ReturnType<typeof import('app/store').store.getState>;
+declare type AppDispatch = typeof import('app/store').store.dispatch;
 declare type SerializedError = import('@reduxjs/toolkit').SerializedError;
 declare type TError = SerializedError;
 type ActionCreatorWithOptionalPayload = import('@reduxjs/toolkit').ActionCreatorWithOptionalPayload;

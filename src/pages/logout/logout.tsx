@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useAppDispatch } from 'services/slices';
 import { authModel } from 'entities/auth';
+import { useAppDispatch } from 'shared/lib';
 
 const LogoutPage: React.FC = () => {
   const dispatch = useAppDispatch();

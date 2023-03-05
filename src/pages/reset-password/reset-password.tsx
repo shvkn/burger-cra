@@ -2,11 +2,10 @@ import React, { ChangeEvent, FC, useMemo, useState } from 'react';
 import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
-import { useAppDispatch, useAppHistory } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { Messages } from 'utils/constants';
 import { authModel } from 'entities/auth';
-import { getErrorMessage } from 'shared/lib';
+import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 

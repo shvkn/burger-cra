@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './feed.module.css';
 import { ordersModel } from 'entities/order';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
-import { useAppDispatch } from 'services/slices';
 import { OrderList } from 'widgets/order-list';
 import { Dashboard } from 'widgets/dashboard';
 import { ingredientModel } from 'entities/ingredient';
+import { useAppDispatch } from 'shared/lib';
 
 const FeedPage: React.FC = () => {
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =

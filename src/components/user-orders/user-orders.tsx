@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAppDispatch } from 'services/slices';
 import { ordersModel } from 'entities/order';
 import { getAccessToken } from 'utils/utils';
 import { OrderList } from 'widgets/order-list';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
+import { useAppDispatch } from 'shared/lib';
 
 const UserOrders: React.FC = () => {
   const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders();

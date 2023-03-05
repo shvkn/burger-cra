@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import Modal from 'components/modal';
 import OrderInfo from 'components/order-info';
 import ordersSelectors from 'services/selectors/orders';
-import { useAppSelector } from 'services/slices';
+import { useAppSelector } from 'shared/lib';
 
 const OrderModal: FC = () => {
   const { id } = useParams<{ id: string }>();

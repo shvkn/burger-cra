@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from './not-founded.module.css';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppHistory } from 'services/slices';
+import { useAppHistory } from 'shared/lib';
 
 const NotFoundedPage: FC = () => {
   const history = useAppHistory();

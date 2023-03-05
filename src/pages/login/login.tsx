@@ -6,9 +6,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login.module.css';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { authModel } from 'entities/auth';
+import { useAppDispatch } from 'shared/lib';
 
 const initFormData: TLoginParams = {
   email: '',

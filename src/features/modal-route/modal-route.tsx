@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteProps } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useAppLocation } from 'services/slices';
+import { useAppLocation } from 'shared/lib';
 
 type TModalRoute = {
   children: React.ReactNode;

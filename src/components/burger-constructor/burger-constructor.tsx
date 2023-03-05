@@ -12,10 +12,10 @@ import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { DndItemTypes, Messages } from 'utils/constants';
 import * as orderActions from 'services/actions/order';
-import { useAppDispatch, useAppHistory, useAppSelector } from 'services/slices';
 import orderSelectors from 'services/selectors/order';
 import { ingredientModel } from 'entities/ingredient';
 import { burgerModel } from 'entities/burger';
+import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
 
 type TDnDIngredientItem = { id: TIngredientId };
 

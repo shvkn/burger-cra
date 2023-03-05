@@ -4,7 +4,7 @@ import OrderInfo from 'components/order-info';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import userOrdersSelectors from 'services/selectors/user-orders';
-import { useAppHistory } from 'services/slices';
+import { useAppHistory } from 'shared/lib';
 
 const UserOrderModal: FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -6,10 +6,10 @@ import {
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppDispatch } from 'services/slices';
 import useForm from 'hooks/use-form';
 import { getChangedEntries } from 'utils/utils';
 import { authModel } from 'entities/auth';
+import { useAppDispatch } from 'shared/lib';
 
 type TUserFormData = Required<TPatchUserData>;
 

@@ -5,8 +5,8 @@ import styles from './order.module.css';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ordersSelectors from 'services/selectors/orders';
-import { useAppDispatch } from 'services/slices';
 import ordersWsActions from 'services/actions/orders';
+import { useAppDispatch } from 'shared/lib';
 
 const OrderPage: FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -3,9 +3,9 @@ import { Redirect, Route } from 'react-router-dom';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { getAccessToken, getRefreshToken } from 'utils/utils';
 import { RouteProps } from 'react-router';
-import { useAppDispatch, useAppHistory } from 'services/slices';
 import useConstructor from 'hooks/use-constructor';
 import { authModel } from 'entities/auth';
+import { useAppDispatch, useAppHistory } from 'shared/lib';
 
 type TProtectedRouteProps = {
   nonAuthOnly?: boolean;
