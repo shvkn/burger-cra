@@ -11,7 +11,7 @@ type TBurgerIngredientsProps = {
   groups: [string, TIngredient[]][];
 };
 
-const BurgerIngredients: React.FC<TBurgerIngredientsProps> = ({ groups }) => {
+export const BurgerIngredients: React.FC<TBurgerIngredientsProps> = ({ groups }) => {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const groupsRootRef = useRef<HTMLDivElement | null>(null);
   const counts = useBurgerCounts();
@@ -70,5 +70,3 @@ const BurgerIngredients: React.FC<TBurgerIngredientsProps> = ({ groups }) => {
     </section>
   );
 };
-
-export default BurgerIngredients;
