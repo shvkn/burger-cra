@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './feed.module.css';
 import { ordersModel } from 'entities/order';
-import LoadingCurtain from 'components/loading-curtain/loading-curtain';
+import { LoadingCurtain } from 'shared/ui';
 import { OrderList } from 'widgets/order-list';
 import { Dashboard } from 'widgets/dashboard';
 import { ingredientModel } from 'entities/ingredient';

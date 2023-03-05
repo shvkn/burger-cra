@@ -2,7 +2,7 @@ import React from 'react';
 import { ordersModel } from 'entities/order';
 import { getAccessToken } from 'utils/utils';
 import { OrderList } from 'widgets/order-list';
-import LoadingCurtain from 'components/loading-curtain/loading-curtain';
+import { LoadingCurtain } from 'shared/ui';
 import { useAppDispatch } from 'shared/lib';
 
 const UserOrders: React.FC = () => {

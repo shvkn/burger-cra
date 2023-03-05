@@ -1,13 +1,11 @@
-import React, { FC } from 'react';
-import Spinner from 'components/spinner/spinner';
+import React from 'react';
+import { Spinner } from '../spinner';
 import styles from './loading-curtain.module.css';
 
-const LoadingCurtain: FC = () => (
+export const LoadingCurtain: React.FC = () => (
   <div className={styles.container}>
     <div className={styles.loaderWrapper}>
       <Spinner />
     </div>
   </div>
 );
-
-export default LoadingCurtain;
