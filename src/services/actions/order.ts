@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { callRequestWithAccessToken } from 'utils/utils';
 import { burgerApi } from 'shared/api';
+import { callRequestWithAccessToken } from 'shared/lib';
 
 export const makeOrder = createAsyncThunk(
   'order/place-order',

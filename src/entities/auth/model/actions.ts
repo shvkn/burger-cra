@@ -6,7 +6,7 @@ import {
   dropAuthTokens,
   getRefreshToken,
   processAuthResponse,
-} from 'utils/utils';
+} from 'shared/lib';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }: TLoginParams) => {
   try {

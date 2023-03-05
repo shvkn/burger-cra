@@ -1,5 +1,5 @@
 import { NORMA_API } from 'utils/constants';
-import { request } from 'utils/utils';
+import { request } from 'shared/lib';
 
 export const registerUserRequest = async (name: string, email: string, password: string) => {
   try {

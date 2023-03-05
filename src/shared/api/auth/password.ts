@@ -1,5 +1,5 @@
 import { NORMA_API } from 'shared/config';
-import { request } from 'utils/utils';
+import { request } from 'shared/lib';
 
 const BASE_URL = `${NORMA_API}/password-reset`;
 

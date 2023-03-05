@@ -4,9 +4,8 @@ import DetailsLayout from 'components/details-layout';
 import styles from './user-order.module.css';
 import OrderInfo from 'components/order-info';
 import { useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from 'shared/lib';
+import { getAccessToken, useAppDispatch, useAppSelector } from 'shared/lib';
 import { ordersModel } from 'entities/order';
-import { getAccessToken } from 'utils/utils';
 
 const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

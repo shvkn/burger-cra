@@ -1,5 +1,5 @@
 import { AUTH_URL } from 'shared/api/auth/config';
-import { request } from 'utils/utils';
+import { request } from 'shared/lib';
 
 const BASE_URL = `${AUTH_URL}`;
 

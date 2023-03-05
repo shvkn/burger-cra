@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { LoadingCurtain } from 'shared/ui';
-import { getAccessToken, getRefreshToken } from 'utils/utils';
 import { RouteProps } from 'react-router';
 import useConstructor from 'hooks/use-constructor';
 import { authModel } from 'entities/auth';
-import { useAppDispatch, useAppHistory } from 'shared/lib';
+import { getAccessToken, getRefreshToken, useAppDispatch, useAppHistory } from 'shared/lib';
 
 type TProtectedRouteProps = {
   nonAuthOnly?: boolean;

@@ -1,6 +1,6 @@
 import { createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
 import { makeOrder } from 'services/actions/order';
-import { hasError } from 'utils/utils';
+import { hasError } from 'shared/lib';
 
 const initialState: TThunkState & {
   number: number | null;

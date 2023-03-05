@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './styles.module.css';
 import { ModalRoute } from 'features/modal-route';
 import { Order } from 'entities/order';
-import { getOrderIngredients } from 'utils/utils';
 import { ingredientModel } from 'entities/ingredient';
 import { useRouteMatch } from 'react-router-dom';
 import { clsx } from 'clsx';
+import { getOrderIngredients } from 'shared/lib';
 
 type TOrderListParams = {
   orders: TOrder[];

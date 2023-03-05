@@ -8,8 +8,8 @@ import {
 } from '@reduxjs/toolkit';
 import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'entities/order/model/actions';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 import { useSelector } from 'react-redux';
+import { getOrderIngredients, getOrderTotalPrice } from 'shared/lib';
 
 export const hasError = (
   action: PayloadAction<TBaseResponseBody>
