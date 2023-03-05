@@ -4,15 +4,19 @@ import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { Routes } from 'pages';
 
-import { AppLayout } from 'widgets/app-layout';
+import AppHeader from 'widgets/app-header';
 
 import { withProviders } from './providers';
+import styles from './styles.module.css';
 
 const App = () => {
   return (
-    <AppLayout>
-      <Routes />
-    </AppLayout>
+    <div className={styles.layout}>
+      <AppHeader />
+      <div className={styles.mainContainer}>
+        <Routes />
+      </div>
+    </div>
   );
 };
 
