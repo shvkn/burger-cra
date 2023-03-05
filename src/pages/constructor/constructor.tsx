@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './constructor.module.css';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -7,10 +7,17 @@ import BurgerConstructor from 'components/burger-constructor';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { ingredientModel } from 'entities/ingredient';
 import { groupBy } from 'shared/lib';
+import { useAppDispatch } from 'services/slices';
 
 const groupByType = (ingredients: TIngredient[]) => groupBy(ingredients, ({ type }) => type);
 
 const ConstructorPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(ingredientModel.actions.getIngredientsAsync());
+  }, [dispatch]);
+
   const {
     isSucceeded: isIngredientsSucceeded,
     isLoading: isIngredientsLoading,

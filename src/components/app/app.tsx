@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
@@ -20,17 +20,11 @@ import UserOrderPage from 'pages/user-order/user-order';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
-import { useAppDispatch, useAppLocation } from 'services/slices';
-import { ingredientModel } from 'entities/ingredient';
+import { useAppLocation } from 'services/slices';
 
 const App: FC = () => {
   const location = useAppLocation();
-  const dispatch = useAppDispatch();
   const background = location.state?.background;
-
-  useEffect(() => {
-    dispatch(ingredientModel.actions.getIngredientsAsync());
-  }, [dispatch]);
 
   return (
     <AppLayout>

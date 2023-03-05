@@ -5,19 +5,23 @@ import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { useAppDispatch } from 'services/slices';
 import { OrderList } from 'widgets/order-list';
 import { Dashboard } from 'widgets/dashboard';
+import { ingredientModel } from 'entities/ingredient';
 
 const FeedPage: React.FC = () => {
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =
     ordersModel.useOrders();
-
+  const { isSucceeded, isLoading } = ingredientModel.useIngredients();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
+    if (!isSucceeded && !isLoading) {
+      dispatch(ingredientModel.actions.getIngredientsAsync());
+    }
     isWsClosed && dispatch(ordersModel.actions.connect({ route: '/orders/all' }));
     return () => {
       isWsOpened && dispatch(ordersModel.actions.close());
     };
-  }, [dispatch, isWsOpened, isWsClosed]);
+  }, [dispatch, isWsOpened, isWsClosed, isSucceeded, isLoading]);
 
   return (
     <main className={styles.layout}>
