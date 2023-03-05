@@ -14,7 +14,7 @@ type TOrderProps = {
   hideStatus?: boolean;
 };
 
-const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
+export const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
   const { url } = useRouteMatch();
   const location = useAppLocation();
   const { entities: ingredientsEntities } = ingredientModel.useIngredients();
@@ -87,5 +87,3 @@ const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
     </Link>
   );
 };
-
-export default React.memo(Order);

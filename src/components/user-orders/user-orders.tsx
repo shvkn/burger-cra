@@ -1,9 +1,11 @@
 import React, { FC, useEffect } from 'react';
 import styles from 'pages/profile/profile.module.css';
-import Order from 'components/order';
+import { Order } from 'entities/order';
 import { useAppDispatch, useAppSelector } from 'services/slices';
 import userOrdersSelectors from 'services/selectors/user-orders';
 import actions from 'services/actions/user-orders';
+
+const MemoizedOrder = React.memo(Order);
 
 const UserOrders: FC = () => {
   const orders = useAppSelector(userOrdersSelectors.selectAll);
@@ -23,7 +25,7 @@ const UserOrders: FC = () => {
       {orders.map((order) => {
         return (
           <li key={order._id} className={'mb-4 mr-2'}>
-            <Order order={order} />
+            <MemoizedOrder order={order} />
           </li>
         );
       })}

@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import styles from './feed.module.css';
 import ordersSelectors from 'services/selectors/orders';
-import Order from 'components/order';
+import { Order } from 'entities/order';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { useAppDispatch, useAppSelector } from 'services/slices';
 import actions from 'services/actions/orders';
+
+const MemoizedOrder = React.memo(Order);
 
 const FeedPage: FC = () => {
   const isWsOpened = useAppSelector(ordersSelectors.selectIsWSOpened);
@@ -50,7 +52,7 @@ const FeedPage: FC = () => {
               <ul className={`${styles.ordersList} scroll`}>
                 {orders.map((order) => (
                   <li key={order._id} className={'mb-4 mr-2'}>
-                    <Order order={order} hideStatus />
+                    <MemoizedOrder order={order} hideStatus />
                   </li>
                 ))}
               </ul>
