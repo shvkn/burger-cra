@@ -8,7 +8,7 @@ type TSortableElementProps = {
   handleMove: (hoverIndex: number, dragIndex: number) => void;
 };
 
-const SortableElement: FC<TSortableElementProps> = ({ children, index, handleMove }) => {
+export const SortableElement: FC<TSortableElementProps> = ({ children, index, handleMove }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ isDragging }, dragRef] = useDrag({
     type: DndItemTypes.SORTABLE_ITEM,
@@ -45,5 +45,3 @@ const SortableElement: FC<TSortableElementProps> = ({ children, index, handleMov
     </div>
   );
 };
-
-export default SortableElement;
