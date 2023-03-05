@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import IngredientDetails from 'components/ingredient-details';
-import DetailsLayout from 'components/details-layout';
+import { DetailsLayout } from 'shared/ui';
 import styles from './ingredient.module.css';
 import { useParams } from 'react-router-dom';
 import { ingredientModel } from 'entities/ingredient';

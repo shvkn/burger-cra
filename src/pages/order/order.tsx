@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import DetailsLayout from 'components/details-layout/details-layout';
+import { DetailsLayout } from 'shared/ui';
 import OrderInfo from 'components/order-info/order-info';
 import styles from './order.module.css';
 import { useParams } from 'react-router-dom';

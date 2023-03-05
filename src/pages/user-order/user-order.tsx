@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import DetailsLayout from 'components/details-layout';
+import { DetailsLayout } from 'shared/ui';
 import styles from './user-order.module.css';
 import OrderInfo from 'components/order-info';
 import { useSelector } from 'react-redux';
