@@ -19,7 +19,7 @@ import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
 
 type TDnDIngredientItem = { id: TIngredientId };
 
-const BurgerConstructor: FC = () => {
+export const BurgerConstructor: FC = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
   const history = useAppHistory();
@@ -204,4 +204,3 @@ const BurgerConstructor: FC = () => {
     </div>
   );
 };
-export default BurgerConstructor;
