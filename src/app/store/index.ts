@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import order from 'services/slices/order';
 import userOrders from 'services/slices/user-orders';
-import WebSocketMiddleware from 'services/middlewares/web-socket-middleware';
+import { WebSocketMiddleware } from './middlewares';
 import { NORMA_WS_API } from 'utils/constants';
 import { ingredientModel } from 'entities/ingredient';
 import { authModel } from 'entities/auth';

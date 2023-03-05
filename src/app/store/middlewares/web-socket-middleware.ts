@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 
-const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middleware => {
+export const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middleware => {
   let socket: WebSocket | null = null;
   return (store) => (next) => (action) => {
     const { payload } = action;
@@ -34,5 +34,3 @@ const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middl
     next(action);
   };
 };
-
-export default WebSocketMiddleware;
