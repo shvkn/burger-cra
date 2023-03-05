@@ -14,6 +14,7 @@ import { FeedPage } from './feed';
 import { ForgotPasswordPage } from './forgot-password';
 import { IngredientPage } from './ingredient';
 import { LoginPage } from './login';
+import { LogoutPage } from './logout';
 import { NotFoundedPage } from './not-founded';
 import { OrderPage } from './order';
 import { ProfilePage } from './profile';
@@ -37,6 +38,7 @@ export const Routes: React.FC = () => {
         <Route path='/ingredient/:id' component={IngredientPage} />
         <Route path='/feed/:id' component={OrderPage} />
         <Route path='/feed' component={FeedPage} />
+        <Route path='/logout' component={LogoutPage} />
         <Route path='*' component={NotFoundedPage} />
       </Switch>
       ;

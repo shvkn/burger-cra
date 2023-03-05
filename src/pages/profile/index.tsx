@@ -1,19 +1,12 @@
+import { clsx } from 'clsx';
 import React from 'react';
-import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
-// TODO
-// import LogoutPage from 'pages/logout';
+import { NavLink, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { UserOrders } from 'widgets/user-orders';
 
 import { UserForm } from 'features/edit-user';
 
 import styles from './styles.module.css';
-
-const linkCN = (isActive: boolean): string => {
-  return `${styles.link} text text_type_main-medium ${
-    isActive ? 'text_color_primary' : 'text_color_inactive'
-  }`;
-};
 
 const routes: ReadonlyArray<TRouteItem> = [
   {
@@ -33,7 +26,7 @@ const routes: ReadonlyArray<TRouteItem> = [
   {
     path: '/logout',
     title: 'Выход',
-    children: null, // TODO
+    children: <Redirect to={'/logout'} />,
   },
 ];
 
@@ -47,7 +40,17 @@ export const ProfilePage: React.FC = () => {
           {routes.map((route, idx) => {
             return (
               <li key={idx} className={'pt-4 pb-4'}>
-                <NavLink exact={route.exact} to={`${url}${route.path}`} className={linkCN}>
+                <NavLink
+                  exact={route.exact}
+                  to={`${url}${route.path}`}
+                  className={(isActive: boolean): string =>
+                    clsx(
+                      styles.link,
+                      'text text_type_main-medium',
+                      isActive ? 'text_color_primary' : 'text_color_inactive'
+                    )
+                  }
+                >
                   {route.title}
                 </NavLink>
               </li>
@@ -57,7 +60,7 @@ export const ProfilePage: React.FC = () => {
         <Switch>
           {routes.map((route, idx) => {
             return route.sidebar ? (
-              <Route key={`${idx}_`} exact={route.exact} path={`${url}${route.path}`}>
+              <Route key={idx} exact={route.exact} path={`${url}${route.path}`}>
                 <p className={`mt-20 text text_type_main-default text_color_inactive`}>
                   {route.sidebar}
                 </p>
