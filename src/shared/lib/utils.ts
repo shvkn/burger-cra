@@ -8,7 +8,10 @@ import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
 
 const processResponse = async <T>(response: Response): Promise<T> => {
   try {
-    return response.json();
+    if (response.ok) {
+      return response.json();
+    }
+    return Promise.reject(response.statusText);
   } catch (e) {
     console.log(e);
     throw e;
@@ -143,6 +146,7 @@ export const callRequestWithAccessToken = async <
       }
       return response;
     }
+    // throw e;
     return constructResponseBody<TBaseResponseBody>({
       success: false,
       message: Messages.INVALID_TOKEN,

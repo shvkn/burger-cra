@@ -18,9 +18,7 @@ export const FeedPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isSucceeded && !isLoading) {
-      dispatch(ingredientModel.actions.getIngredientsAsync());
-    }
+    dispatch(ingredientModel.actions.getIngredientsAsync());
     isWsClosed && dispatch(ordersModel.actions.connect({ route: '/orders/all' }));
     return () => {
       isWsOpened && dispatch(ordersModel.actions.close());

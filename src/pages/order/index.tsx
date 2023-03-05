@@ -15,6 +15,7 @@ export const OrderPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(ingredientModel.actions.getIngredientsAsync());
     dispatch(ordersModel.actions.connect({ route: '/orders/all' }));
     return () => {
       dispatch(ordersModel.actions.close());

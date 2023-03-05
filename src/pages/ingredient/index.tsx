@@ -1,14 +1,24 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { IngredientDetails, ingredientModel } from 'entities/ingredient';
 
+import { useAppDispatch } from 'shared/lib';
 import { DetailsLayout } from 'shared/ui';
 
 import styles from './styles.module.css';
 
 export const IngredientPage: FC = () => {
   const { id } = useParams<{ id: TIngredientId }>();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const promise = dispatch(ingredientModel.actions.getIngredientsAsync());
+    return () => {
+      promise.abort();
+    };
+  });
+
   const ingredient = ingredientModel.useIngredient(id);
   return ingredient ? (
     <main className={`mt-30 ${styles.layout}`}>

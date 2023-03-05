@@ -17,6 +17,7 @@ export const UserOrderPage: React.FC = () => {
   const isWsClosed = useAppSelector(ordersModel.selectors.selectIsWSClosed);
 
   useEffect(() => {
+    dispatch(ingredientModel.actions.getIngredientsAsync());
     isWsClosed &&
       dispatch(ordersModel.actions.connect({ route: '/orders', accessToken: getAccessToken() }));
     return () => {
