@@ -1,21 +1,25 @@
-import React, { ChangeEvent, FC, useMemo, useState } from 'react';
-import styles from './reset-password.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useMemo, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+
 import useForm from 'hooks/use-form';
+
 import { authModel } from 'entities/auth';
-import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
+
 import { Messages } from 'shared/config';
+import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
+
+import styles from './reset-password.module.css';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 
-const ResetPasswordPage: FC = () => {
+export const ResetPasswordPage: React.FC = () => {
   const [form, setValue] = useState<TResetPasswordParams>(initFormData);
   const history = useAppHistory();
   const dispatch = useAppDispatch();
   const { error } = authModel.useAuth();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValue({ ...form, [name]: value });
   };
@@ -78,5 +82,3 @@ const ResetPasswordPage: FC = () => {
     </main>
   );
 };
-
-export default ResetPasswordPage;

@@ -1,16 +1,20 @@
 import React, { useEffect } from 'react';
-import styles from './constructor.module.css';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BurgerIngredients } from 'widgets/burger-ingredients';
+
 import { BurgerConstructor } from 'widgets/burger-constructor';
-import { LoadingCurtain } from 'shared/ui';
+import { BurgerIngredients } from 'widgets/burger-ingredients';
+
 import { ingredientModel } from 'entities/ingredient';
+
 import { groupBy, useAppDispatch } from 'shared/lib';
+import { LoadingCurtain } from 'shared/ui';
+
+import styles from './constructor.module.css';
 
 const groupByType = (ingredients: TIngredient[]) => groupBy(ingredients, ({ type }) => type);
 
-const ConstructorPage: React.FC = () => {
+export const ConstructorPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -54,5 +58,3 @@ const ConstructorPage: React.FC = () => {
     </main>
   );
 };
-
-export default ConstructorPage;

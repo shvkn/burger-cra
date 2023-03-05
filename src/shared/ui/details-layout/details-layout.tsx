@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react';
-import { DetailsLayoutHeader } from './details-layout-header';
+
 import { DetailsLayoutContent } from './details-layout-content';
+import { DetailsLayoutHeader } from './details-layout-header';
 import styles from './details-layout.module.css';
 
 type TDetailsLayoutExtensions = {

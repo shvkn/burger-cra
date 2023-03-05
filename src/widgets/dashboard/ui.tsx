@@ -1,6 +1,8 @@
-import styles from 'pages/feed/feed.module.css';
 import React, { useMemo } from 'react';
+
 import { groupBy } from 'shared/lib';
+
+import styles from './styles.module.css';
 
 type TDashboardProps = {
   orders: TOrder[];

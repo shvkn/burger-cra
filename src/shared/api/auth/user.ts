@@ -1,5 +1,6 @@
-import { AUTH_URL } from './config';
 import { request } from 'shared/lib';
+
+import { AUTH_URL } from './config';
 
 const BASE_URL = `${AUTH_URL}/user`;
 

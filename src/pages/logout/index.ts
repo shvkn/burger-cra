@@ -1,1 +1,1 @@
-export { default } from 'pages/logout/logout';
+export { LogoutPage } from './logout';

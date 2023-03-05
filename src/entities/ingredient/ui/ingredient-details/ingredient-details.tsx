@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from 'entities/ingredient/ui/ingredient-details/ingredient-details.module.css';
+
+import styles from './ingredient-details.module.css';
 
 type TIngredientDetailsProps = {
   ingredient: TIngredient;

@@ -1,16 +1,20 @@
-import React, { ChangeEvent, FC, useState } from 'react';
-import styles from './forgot-password.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import useForm from 'hooks/use-form';
+
 import { authModel } from 'entities/auth';
+
 import { useAppDispatch, useAppHistory } from 'shared/lib';
+
+import styles from './forgot-password.module.css';
 
 const initFormData: TGetResetCodeParams = {
   email: '',
 };
 
-const ForgotPasswordPage: FC = () => {
+export const ForgotPasswordPage: React.FC = () => {
   const history = useAppHistory();
   const dispatch = useAppDispatch();
 
@@ -30,7 +34,7 @@ const ForgotPasswordPage: FC = () => {
   const [form, setValue] = useState<TGetResetCodeParams>(initFormData);
   const formRef = useForm(handleSubmit);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValue({ ...form, [name]: value });
   };
@@ -59,5 +63,3 @@ const ForgotPasswordPage: FC = () => {
     </main>
   );
 };
-
-export default ForgotPasswordPage;

@@ -1,5 +1,6 @@
-import styles from 'shared/ui/modal/modal-content/modal-content.module.css';
 import React from 'react';
+
+import styles from 'shared/ui/modal/modal-content/modal-content.module.css';
 
 export type TModalContentProps = {
   children: React.ReactNode;

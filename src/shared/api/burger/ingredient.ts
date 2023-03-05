@@ -1,5 +1,5 @@
-import { request } from 'shared/lib';
 import { NORMA_API } from 'shared/config';
+import { request } from 'shared/lib';
 
 export const getIngredientsRequest = () => {
   try {

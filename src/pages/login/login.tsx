@@ -1,25 +1,29 @@
-import React, { ChangeEvent, useState } from 'react';
 import {
   Button,
   EmailInput,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './login.module.css';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import useForm from 'hooks/use-form';
+
 import { authModel } from 'entities/auth';
+
 import { useAppDispatch } from 'shared/lib';
+
+import styles from './login.module.css';
 
 const initFormData: TLoginParams = {
   email: '',
   password: '',
 };
 
-const LoginPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [form, setValue] = useState<TLoginParams>(initFormData);
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     name && value && setValue({ ...form, [name]: value });
   };
@@ -74,5 +78,3 @@ const LoginPage: React.FC = () => {
     </main>
   );
 };
-
-export default LoginPage;

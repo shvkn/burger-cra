@@ -1,13 +1,16 @@
-import React from 'react';
-import { ordersModel } from 'entities/order';
+import React, { useEffect } from 'react';
+
 import { OrderList } from 'widgets/order-list';
-import { LoadingCurtain } from 'shared/ui';
+
+import { ordersModel } from 'entities/order';
+
 import { getAccessToken, useAppDispatch } from 'shared/lib';
+import { LoadingCurtain } from 'shared/ui';
 
 export const UserOrders: React.FC = () => {
   const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders();
   const dispatch = useAppDispatch();
-  React.useEffect(() => {
+  useEffect(() => {
     isWsClosed &&
       dispatch(
         ordersModel.actions.connect({

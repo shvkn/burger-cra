@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
-import { IngredientDetails } from 'entities/ingredient/ui';
-import { DetailsLayout } from 'shared/ui';
-import styles from './ingredient.module.css';
 import { useParams } from 'react-router-dom';
-import { ingredientModel } from 'entities/ingredient';
 
-const IngredientPage: FC = () => {
+import { IngredientDetails, ingredientModel } from 'entities/ingredient';
+
+import { DetailsLayout } from 'shared/ui';
+
+import styles from './ingredient.module.css';
+
+export const IngredientPage: FC = () => {
   const { id } = useParams<{ id: TIngredientId }>();
   const ingredient = ingredientModel.useIngredient(id);
   return ingredient ? (
@@ -21,5 +23,3 @@ const IngredientPage: FC = () => {
     </main>
   ) : null;
 };
-
-export default IngredientPage;

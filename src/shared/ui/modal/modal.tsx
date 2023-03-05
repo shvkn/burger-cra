@@ -1,10 +1,10 @@
-import React, { FC, ReactNode, useEffect } from 'react';
-import styles from './modal.module.css';
-import ReactDOM from 'react-dom';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
-import { ModalOverlay } from './modal-overlay';
 import { ModalContent } from './modal-content';
 import { ModalHeader } from './modal-header';
+import { ModalOverlay } from './modal-overlay';
+import styles from './modal.module.css';
 
 type TModalExtensions = {
   Header: typeof ModalHeader;
@@ -12,13 +12,13 @@ type TModalExtensions = {
 };
 
 type TModalProps = {
-  children: ReactNode;
+  children: React.ReactNode;
   handleClose: () => void;
 };
 
 const MODAL_ROOT = document.getElementById('react-modals') as HTMLElement;
 
-export const Modal: FC<TModalProps> & TModalExtensions = ({ children, handleClose }) => {
+export const Modal: React.FC<TModalProps> & TModalExtensions = ({ children, handleClose }) => {
   useEffect(() => {
     const handleCloseByEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
@@ -27,7 +27,7 @@ export const Modal: FC<TModalProps> & TModalExtensions = ({ children, handleClos
     return () => document.removeEventListener('keydown', handleCloseByEsc);
   }, [handleClose]);
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <>
       <div className={`${styles.modal}`}>{children}</div>
       <ModalOverlay onClick={handleClose} />

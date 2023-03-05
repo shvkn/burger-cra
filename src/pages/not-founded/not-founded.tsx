@@ -1,9 +1,11 @@
-import React, { FC } from 'react';
-import styles from './not-founded.module.css';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
+
 import { useAppHistory } from 'shared/lib';
 
-const NotFoundedPage: FC = () => {
+import styles from './not-founded.module.css';
+
+export const NotFoundedPage: React.FC = () => {
   const history = useAppHistory();
 
   const handleClick = (): void => {
@@ -20,5 +22,3 @@ const NotFoundedPage: FC = () => {
     </main>
   );
 };
-
-export default NotFoundedPage;

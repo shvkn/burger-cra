@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
+
 import { DndItemTypes } from 'shared/config';
 
 type TDragToConstructorProps = {

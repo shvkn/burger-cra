@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal } from 'shared/ui';
-import { IngredientDetails } from 'entities/ingredient/ui';
 import { useHistory, useParams } from 'react-router-dom';
-import { ingredientModel } from 'entities/ingredient';
+
+import { IngredientDetails, ingredientModel } from 'entities/ingredient';
+
+import { Modal } from 'shared/ui';
 
 export const IngredientModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,6 +1,12 @@
-import { createSlice, isAllOf, PayloadAction as PA } from '@reduxjs/toolkit';
+import { createSlice, isAllOf, PayloadAction } from '@reduxjs/toolkit';
+
 import { makeOrder } from 'services/actions/order';
-import { hasError } from 'shared/lib';
+
+export const hasError = (
+  action: PayloadAction<TBaseResponseBody>
+): action is PayloadAction<TBaseResponseBody & { success: true }> => {
+  return !action.payload?.success;
+};
 
 const initialState: TThunkState & {
   number: number | null;
@@ -10,7 +16,9 @@ const initialState: TThunkState & {
   error: {},
 };
 
-const hasOrder = (a: PA<TOrderResponseBody>): a is PA<Required<TOrderResponseBody>> => {
+const hasOrder = (
+  a: PayloadAction<TOrderResponseBody>
+): a is PayloadAction<Required<TOrderResponseBody>> => {
   return !!a.payload?.order;
 };
 

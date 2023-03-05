@@ -1,8 +1,10 @@
-import React, { FC, useMemo } from 'react';
-import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { calcTotalPrice, getOrderStatus } from '../lib';
 import { clsx } from 'clsx';
+import React, { useMemo } from 'react';
+
+import { calcTotalPrice, getOrderStatus } from '../lib';
+
+import styles from './order.module.css';
 
 const ingredientsToRenderCount = 6;
 
@@ -12,7 +14,7 @@ type TOrderProps = {
   mapIngredientsFn: (order: TOrder) => TIngredient[];
 };
 
-export const Order: FC<TOrderProps> = ({ order, mapIngredientsFn, hideStatus = false }) => {
+export const Order: React.FC<TOrderProps> = ({ order, mapIngredientsFn, hideStatus = false }) => {
   const ingredients = mapIngredientsFn(order).slice(0, ingredientsToRenderCount).reverse();
 
   const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);

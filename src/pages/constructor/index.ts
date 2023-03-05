@@ -1,1 +1,1 @@
-export { default } from 'pages/constructor/constructor';
+export { ConstructorPage } from './constructor';

@@ -1,6 +1,7 @@
-import styles from './modal-header.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
+
+import styles from './modal-header.module.css';
 
 export type TModalHeaderProps = {
   children?: React.ReactNode;

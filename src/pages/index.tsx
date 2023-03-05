@@ -1,21 +1,25 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { ProtectedRoute } from 'entities/auth/ui';
-import { UserOrderModal } from 'widgets/user-order-modal';
+
 import { IngredientModal } from 'widgets/ingredient-modal';
-import { OrderModal } from 'widgets/order-modal/order-modal';
-import ConstructorPage from './constructor';
-import LoginPage from './login';
-import RegistrationPage from './registration';
-import ForgotPasswordPage from './forgot-password';
-import ResetPasswordPage from './reset-password';
-import UserOrderPage from './user-order';
-import ProfilePage from './profile';
-import IngredientPage from './ingredient';
-import OrderPage from './order';
-import FeedPage from './feed';
-import NotFoundedPage from './not-founded';
+import { OrderModal } from 'widgets/order-modal';
+import { UserOrderModal } from 'widgets/user-order-modal';
+
+import { ProtectedRoute } from 'entities/auth';
+
 import { useAppLocation } from 'shared/lib';
+
+import { ConstructorPage } from './constructor';
+import { FeedPage } from './feed';
+import { ForgotPasswordPage } from './forgot-password';
+import { IngredientPage } from './ingredient';
+import { LoginPage } from './login';
+import { NotFoundedPage } from './not-founded';
+import { OrderPage } from './order';
+import { ProfilePage } from './profile';
+import { RegistrationPage } from './registration';
+import { ResetPasswordPage } from './reset-password';
+import { UserOrderPage } from './user-order';
 
 export const Routes: React.FC = () => {
   const location = useAppLocation();

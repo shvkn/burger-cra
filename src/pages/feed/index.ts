@@ -1,1 +1,1 @@
-export { default } from 'pages/feed/feed';
+export { FeedPage } from 'pages/feed/feed';

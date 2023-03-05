@@ -1,20 +1,22 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { DetailsLayout } from 'shared/ui';
-import styles from './user-order.module.css';
-import OrderInfo from 'entities/order/ui/order-info';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getAccessToken, getOrderIngredients, useAppDispatch, useAppSelector } from 'shared/lib';
-import { ordersModel } from 'entities/order';
-import { ingredientModel } from 'entities/ingredient';
+import { useParams } from 'react-router-dom';
 
-const UserOrderPage: React.FC = () => {
+import { ingredientModel } from 'entities/ingredient';
+import { OrderInfo, ordersModel } from 'entities/order';
+
+import { getAccessToken, getOrderIngredients, useAppDispatch, useAppSelector } from 'shared/lib';
+import { DetailsLayout } from 'shared/ui';
+
+import styles from './user-order.module.css';
+
+export const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const isWsOpened = useAppSelector(ordersModel.selectors.selectIsWSOpened);
   const isWsClosed = useAppSelector(ordersModel.selectors.selectIsWSClosed);
 
-  React.useEffect(() => {
+  useEffect(() => {
     isWsClosed &&
       dispatch(ordersModel.actions.connect({ route: '/orders', accessToken: getAccessToken() }));
     return () => {
@@ -37,5 +39,3 @@ const UserOrderPage: React.FC = () => {
     </main>
   ) : null;
 };
-
-export default UserOrderPage;

@@ -1,11 +1,15 @@
-import React from 'react';
-import styles from './styles.module.css';
-import { ModalRoute } from 'features/modal-route';
-import { Order } from 'entities/order';
-import { ingredientModel } from 'entities/ingredient';
-import { useRouteMatch } from 'react-router-dom';
 import { clsx } from 'clsx';
+import React, { memo } from 'react';
+import { useRouteMatch } from 'react-router-dom';
+
+import { ModalRoute } from 'features/modal-route';
+
+import { ingredientModel } from 'entities/ingredient';
+import { Order } from 'entities/order';
+
 import { getOrderIngredients } from 'shared/lib';
+
+import styles from './styles.module.css';
 
 type TOrderListParams = {
   orders: TOrder[];
@@ -13,7 +17,7 @@ type TOrderListParams = {
   extraClass?: string;
 };
 
-const MemoizedOrder = React.memo(Order);
+const MemoizedOrder = memo(Order);
 
 export const OrderList: React.FC<TOrderListParams> = ({ orders, heading, extraClass }) => {
   const { entities } = ingredientModel.useIngredients();

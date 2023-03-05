@@ -1,15 +1,19 @@
-import React, { ChangeEvent, FC, useState } from 'react';
-import styles from './registration.module.css';
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { authModel } from 'entities/auth';
+
 import useForm from 'hooks/use-form';
+
+import { authModel } from 'entities/auth';
+
 import { useAppDispatch } from 'shared/lib';
+
+import styles from './registration.module.css';
 
 const initFormData: TRegisterParams = {
   name: '',
@@ -17,11 +21,11 @@ const initFormData: TRegisterParams = {
   password: '',
 };
 
-const RegistrationPage: FC = () => {
+export const RegistrationPage: React.FC = () => {
   const [form, setValue] = useState<TRegisterParams>(initFormData);
   const dispatch = useAppDispatch();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValue({ ...form, [name]: value });
   };
@@ -71,5 +75,3 @@ const RegistrationPage: FC = () => {
     </main>
   );
 };
-
-export default RegistrationPage;

@@ -5,11 +5,12 @@ import {
   isFulfilled,
   isPending,
   isRejected,
+  PayloadAction,
 } from '@reduxjs/toolkit';
-import { getUser, login, logout, patchUser, register, resetPassword } from './actions';
-import { PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { useSelector } from 'react-redux';
+
+import { getUser, login, logout, patchUser, register, resetPassword } from './actions';
 
 const isPendingAction = isPending(login, register, logout, getUser, patchUser, resetPassword);
 const isRejectedAction = isRejected(login, register, logout, getUser, patchUser, resetPassword);

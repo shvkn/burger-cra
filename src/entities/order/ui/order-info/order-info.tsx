@@ -1,16 +1,19 @@
-import React, { FC, useMemo } from 'react';
-import styles from './order-info.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { countBy } from 'shared/lib';
-import { calcTotalPrice, getOrderStatus } from '../lib';
 import { clsx } from 'clsx';
+import React, { useMemo } from 'react';
+
+import { countBy } from 'shared/lib';
+
+import { calcTotalPrice, getOrderStatus } from '../lib';
+
+import styles from './order-info.module.css';
 
 type TOrderInfoProps = {
   order: TOrder;
   mapIngredientsFn: (order: TOrder) => TIngredient[];
 };
 
-const OrderInfo: FC<TOrderInfoProps> = ({ order, mapIngredientsFn }) => {
+export const OrderInfo: React.FC<TOrderInfoProps> = ({ order, mapIngredientsFn }) => {
   const ingredients = mapIngredientsFn(order);
   const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);
   const uniqIngredients = useMemo(
@@ -60,5 +63,3 @@ const OrderInfo: FC<TOrderInfoProps> = ({ order, mapIngredientsFn }) => {
     </article>
   );
 };
-
-export default OrderInfo;

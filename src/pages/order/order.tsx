@@ -1,14 +1,16 @@
-import React, { FC, useEffect } from 'react';
-import { DetailsLayout } from 'shared/ui';
-import OrderInfo from 'entities/order/ui/order-info/order-info';
-import styles from './order.module.css';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getOrderIngredients, useAppDispatch } from 'shared/lib';
-import { ordersModel } from 'entities/order';
-import { ingredientModel } from 'entities/ingredient';
+import { useParams } from 'react-router-dom';
 
-const OrderPage: FC = () => {
+import { ingredientModel } from 'entities/ingredient';
+import { OrderInfo, ordersModel } from 'entities/order';
+
+import { getOrderIngredients, useAppDispatch } from 'shared/lib';
+import { DetailsLayout } from 'shared/ui';
+
+import styles from './order.module.css';
+
+export const OrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
@@ -35,5 +37,3 @@ const OrderPage: FC = () => {
     </main>
   ) : null;
 };
-
-export default OrderPage;

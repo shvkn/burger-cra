@@ -1,10 +1,11 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Modal } from 'shared/ui';
-import OrderInfo from 'entities/order/ui/order-info';
-import { getOrderIngredients, useAppSelector } from 'shared/lib';
-import { ordersModel } from 'entities/order';
+
 import { ingredientModel } from 'entities/ingredient';
+import { OrderInfo, ordersModel } from 'entities/order';
+
+import { getOrderIngredients, useAppSelector } from 'shared/lib';
+import { Modal } from 'shared/ui';
 
 export const OrderModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();

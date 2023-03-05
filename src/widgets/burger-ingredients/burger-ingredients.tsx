@@ -1,11 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-ingredients.module.css';
-import { useIntersectionObserver } from 'shared/lib';
-import { BurgerIngredient } from 'entities/ingredient';
-import { useBurgerCounts } from 'entities/burger/model';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { DragToConstructor } from 'features/add-ingredient';
 import { ModalRoute } from 'features/modal-route';
+
+import { burgerModel } from 'entities/burger';
+import { BurgerIngredient } from 'entities/ingredient';
+
+import { useIntersectionObserver } from 'shared/lib';
+
+import styles from './burger-ingredients.module.css';
 
 type TBurgerIngredientsProps = {
   groups: [string, TIngredient[]][];
@@ -14,7 +18,7 @@ type TBurgerIngredientsProps = {
 export const BurgerIngredients: React.FC<TBurgerIngredientsProps> = ({ groups }) => {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const groupsRootRef = useRef<HTMLDivElement | null>(null);
-  const counts = useBurgerCounts();
+  const counts = burgerModel.useBurgerCounts();
   const {
     register,
     current: visibleType,

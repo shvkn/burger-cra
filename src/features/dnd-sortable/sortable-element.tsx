@@ -1,14 +1,19 @@
-import React, { FC, ReactNode, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+
 import { DndItemTypes } from 'shared/config';
 
 type TSortableElementProps = {
-  children: ReactNode;
+  children: React.ReactNode;
   index: number;
   handleMove: (hoverIndex: number, dragIndex: number) => void;
 };
 
-export const SortableElement: FC<TSortableElementProps> = ({ children, index, handleMove }) => {
+export const SortableElement: React.FC<TSortableElementProps> = ({
+  children,
+  index,
+  handleMove,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ isDragging }, dragRef] = useDrag({
     type: DndItemTypes.SORTABLE_ITEM,

@@ -4,9 +4,10 @@ import {
   createSlice,
   EntityState,
   isAllOf,
+  PayloadAction,
 } from '@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
+
 import { getIngredientsAsync } from './actions';
 
 const entityAdapter = createEntityAdapter<TIngredient>({ selectId: ({ _id }) => _id });

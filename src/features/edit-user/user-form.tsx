@@ -1,15 +1,18 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import styles from './user-from.module.css';
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useAppDispatch } from 'shared/lib';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { authModel } from 'entities/auth';
+
 import { VALIDATION_RULES } from 'shared/config';
+import { useAppDispatch } from 'shared/lib';
+
+import styles from './user-form.module.css';
 
 export const UserForm: React.FC = () => {
   const dispatch = useAppDispatch();

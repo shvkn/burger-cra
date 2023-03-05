@@ -1,21 +1,26 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useDrop } from 'react-dnd';
-import styles from './burger-constructor.module.css';
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Modal } from 'shared/ui';
-import { SortableElement } from 'features/dnd-sortable';
+import React, { FC, useEffect, useState } from 'react';
+import { useDrop } from 'react-dnd';
+
+import doneImage from 'images/done.svg';
 import * as orderActions from 'services/actions/order';
 import orderSelectors from 'services/selectors/order';
-import { ingredientModel } from 'entities/ingredient';
+
+import { SortableElement } from 'features/dnd-sortable';
+
 import { burgerModel } from 'entities/burger';
-import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
+import { ingredientModel } from 'entities/ingredient';
+
 import { DndItemTypes, Messages } from 'shared/config';
-import doneImage from 'images/done.svg';
+import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
+import { Modal } from 'shared/ui';
+
+import styles from './burger-constructor.module.css';
 
 type TDnDIngredientItem = { id: TIngredientId };
 

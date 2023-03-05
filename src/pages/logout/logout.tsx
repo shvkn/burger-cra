@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+
 import { authModel } from 'entities/auth';
+
 import { useAppDispatch } from 'shared/lib';
 
-const LogoutPage: React.FC = () => {
+export const LogoutPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -12,5 +14,3 @@ const LogoutPage: React.FC = () => {
 
   return <Redirect to={'/'} />;
 };
-
-export default LogoutPage;

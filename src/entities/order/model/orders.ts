@@ -6,10 +6,12 @@ import {
   isAllOf,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { connect, onClose, onGetMessage, onOpen, sendMessage } from 'entities/order/model/actions';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useSelector } from 'react-redux';
+
 import { getOrderIngredients, getOrderTotalPrice } from 'shared/lib';
+
+import { connect, onClose, onGetMessage, onOpen, sendMessage } from './actions';
 
 export const hasError = (
   action: PayloadAction<TBaseResponseBody>

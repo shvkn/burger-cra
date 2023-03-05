@@ -1,10 +1,13 @@
-import React, { FC } from 'react';
-import styles from './profile.module.css';
+import React from 'react';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
-import { UserOrders } from 'widgets/user-orders';
-import { UserForm } from 'features/edit-user';
 // TODO
-import LogoutPage from 'pages/logout';
+// import LogoutPage from 'pages/logout';
+
+import { UserOrders } from 'widgets/user-orders';
+
+import { UserForm } from 'features/edit-user';
+
+import styles from './profile.module.css';
 
 const linkCN = (isActive: boolean): string => {
   return `${styles.link} text text_type_main-medium ${
@@ -30,11 +33,11 @@ const routes: ReadonlyArray<TRouteItem> = [
   {
     path: '/logout',
     title: 'Выход',
-    children: <LogoutPage />,
+    children: null, // TODO
   },
 ];
 
-const ProfilePage: FC = () => {
+export const ProfilePage: React.FC = () => {
   const { url } = useRouteMatch();
 
   return (
@@ -77,5 +80,3 @@ const ProfilePage: FC = () => {
     </main>
   );
 };
-
-export default ProfilePage;

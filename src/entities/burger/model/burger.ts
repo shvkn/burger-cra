@@ -1,3 +1,8 @@
+import { createSelector, createSlice, Dictionary } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+
+import { sumBy } from 'shared/lib';
+
 import {
   addIngredient,
   moveIngredient,
@@ -6,9 +11,6 @@ import {
   setBun,
   setState,
 } from './actions';
-import { createSelector, createSlice, Dictionary } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import { sumBy } from 'shared/lib';
 
 const initialState: TBurgerSlice = {
   bun: '',

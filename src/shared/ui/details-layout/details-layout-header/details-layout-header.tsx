@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styles from './details-layout-header.module.css';
 
 type TDetailsLayoutHeaderProps = {

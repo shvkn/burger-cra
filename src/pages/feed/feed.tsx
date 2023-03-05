@@ -1,13 +1,17 @@
 import React from 'react';
-import styles from './feed.module.css';
-import { ordersModel } from 'entities/order';
-import { LoadingCurtain } from 'shared/ui';
-import { OrderList } from 'widgets/order-list';
-import { Dashboard } from 'widgets/dashboard';
-import { ingredientModel } from 'entities/ingredient';
-import { useAppDispatch } from 'shared/lib';
 
-const FeedPage: React.FC = () => {
+import { Dashboard } from 'widgets/dashboard';
+import { OrderList } from 'widgets/order-list';
+
+import { ingredientModel } from 'entities/ingredient';
+import { ordersModel } from 'entities/order';
+
+import { useAppDispatch } from 'shared/lib';
+import { LoadingCurtain } from 'shared/ui';
+
+import styles from './feed.module.css';
+
+export const FeedPage: React.FC = () => {
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =
     ordersModel.useOrders();
   const { isSucceeded, isLoading } = ingredientModel.useIngredients();
@@ -39,5 +43,3 @@ const FeedPage: React.FC = () => {
     </main>
   );
 };
-
-export default FeedPage;

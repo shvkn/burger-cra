@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Spinner } from '../spinner';
+
 import styles from './loading-curtain.module.css';
 
 export const LoadingCurtain: React.FC = () => (

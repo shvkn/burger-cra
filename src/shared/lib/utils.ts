@@ -1,9 +1,10 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { Dictionary } from '@reduxjs/toolkit';
-import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { CookieSerializeOptions } from 'cookie';
+
 import { authApi } from 'shared/api';
 import { Messages } from 'shared/config';
+import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
 
 const processResponse = async <T>(response: Response): Promise<T> => {
   try {
