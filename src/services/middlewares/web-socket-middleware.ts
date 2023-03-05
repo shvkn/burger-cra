@@ -6,8 +6,8 @@ const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions): Middl
     const { payload } = action;
     if (wsActions.connect.match(action)) {
       if (socket === null) {
-        const accessToken = payload?.accessToken;
-        const url = accessToken ? `${wsUrl}?token=${accessToken}` : wsUrl;
+        const { route, accessToken } = payload;
+        const url = accessToken ? `${wsUrl}${route}?token=${accessToken}` : `${wsUrl}${route}`;
         socket = new WebSocket(url);
       }
     }
