@@ -8,7 +8,7 @@ import { authModel } from 'entities/auth';
 
 import { useAppDispatch, useAppHistory } from 'shared/lib';
 
-import styles from './forgot-password.module.css';
+import styles from './styles.module.css';
 
 const initFormData: TGetResetCodeParams = {
   email: '',

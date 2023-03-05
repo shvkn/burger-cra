@@ -9,7 +9,7 @@ import { authModel } from 'entities/auth';
 import { Messages } from 'shared/config';
 import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
 
-import styles from './reset-password.module.css';
+import styles from './styles.module.css';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 

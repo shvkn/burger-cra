@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -10,7 +10,7 @@ import { ingredientModel } from 'entities/ingredient';
 import { groupBy, useAppDispatch } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
 
-import styles from './constructor.module.css';
+import styles from './styles.module.css';
 
 const groupByType = (ingredients: TIngredient[]) => groupBy(ingredients, ({ type }) => type);
 
@@ -28,7 +28,7 @@ export const ConstructorPage: React.FC = () => {
     ingredients,
   } = ingredientModel.useIngredients();
 
-  const groups: [string, TIngredient[]][] = React.useMemo(() => {
+  const groups: [string, TIngredient[]][] = useMemo(() => {
     const groupedByType = groupByType(ingredients);
     return [
       ['Булки', groupedByType['bun']],

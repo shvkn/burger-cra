@@ -8,7 +8,7 @@ import { OrderInfo, ordersModel } from 'entities/order';
 import { getAccessToken, getOrderIngredients, useAppDispatch, useAppSelector } from 'shared/lib';
 import { DetailsLayout } from 'shared/ui';
 
-import styles from './user-order.module.css';
+import styles from './styles.module.css';
 
 export const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useAppHistory } from 'shared/lib';
 
-import styles from './not-founded.module.css';
+import styles from './styles.module.css';
 
 export const NotFoundedPage: React.FC = () => {
   const history = useAppHistory();

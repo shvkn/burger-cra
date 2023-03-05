@@ -7,7 +7,7 @@ import { UserOrders } from 'widgets/user-orders';
 
 import { UserForm } from 'features/edit-user';
 
-import styles from './profile.module.css';
+import styles from './styles.module.css';
 
 const linkCN = (isActive: boolean): string => {
   return `${styles.link} text text_type_main-medium ${

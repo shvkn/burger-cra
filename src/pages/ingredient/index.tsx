@@ -5,7 +5,7 @@ import { IngredientDetails, ingredientModel } from 'entities/ingredient';
 
 import { DetailsLayout } from 'shared/ui';
 
-import styles from './ingredient.module.css';
+import styles from './styles.module.css';
 
 export const IngredientPage: FC = () => {
   const { id } = useParams<{ id: TIngredientId }>();

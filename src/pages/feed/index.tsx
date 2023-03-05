@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Dashboard } from 'widgets/dashboard';
 import { OrderList } from 'widgets/order-list';
@@ -9,7 +9,7 @@ import { ordersModel } from 'entities/order';
 import { useAppDispatch } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
 
-import styles from './feed.module.css';
+import styles from './styles.module.css';
 
 export const FeedPage: React.FC = () => {
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =
@@ -17,7 +17,7 @@ export const FeedPage: React.FC = () => {
   const { isSucceeded, isLoading } = ingredientModel.useIngredients();
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isSucceeded && !isLoading) {
       dispatch(ingredientModel.actions.getIngredientsAsync());
     }

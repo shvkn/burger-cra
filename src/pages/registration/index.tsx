@@ -13,7 +13,7 @@ import { authModel } from 'entities/auth';
 
 import { useAppDispatch } from 'shared/lib';
 
-import styles from './registration.module.css';
+import styles from './styles.module.css';
 
 const initFormData: TRegisterParams = {
   name: '',

@@ -12,7 +12,7 @@ import { authModel } from 'entities/auth';
 
 import { useAppDispatch } from 'shared/lib';
 
-import styles from './login.module.css';
+import styles from './styles.module.css';
 
 const initFormData: TLoginParams = {
   email: '',
