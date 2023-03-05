@@ -3,14 +3,14 @@ import { Redirect, Route } from 'react-router-dom';
 import { LoadingCurtain } from 'shared/ui';
 import { RouteProps } from 'react-router';
 import useConstructor from 'hooks/use-constructor';
-import { authModel } from 'entities/auth';
+import { authModel } from 'entities/auth/index';
 import { getAccessToken, getRefreshToken, useAppDispatch, useAppHistory } from 'shared/lib';
 
 type TProtectedRouteProps = {
   nonAuthOnly?: boolean;
 } & RouteProps;
 
-const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
+export const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   children,
   component,
   nonAuthOnly = false,
@@ -65,5 +65,3 @@ const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
     <Route {...rest} component={component} />
   ) : null;
 };
-
-export default ProtectedRoute;

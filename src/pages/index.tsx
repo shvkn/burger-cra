@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import ProtectedRoute from 'components/protected-route';
+import { ProtectedRoute } from 'entities/auth/ui';
 import UserOrderModal from 'components/modals/user-order-modal/user-order-modal';
 import IngredientModal from 'components/modals/ingredient-modal/ingredient-modal';
 import OrderModal from 'components/modals/order-modal/order-modal';
