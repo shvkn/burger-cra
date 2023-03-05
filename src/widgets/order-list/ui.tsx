@@ -9,7 +9,7 @@ import { clsx } from 'clsx';
 
 type TOrderListParams = {
   orders: TOrder[];
-  heading: React.ReactNode;
+  heading?: React.ReactNode;
   extraClass?: string;
 };
 
