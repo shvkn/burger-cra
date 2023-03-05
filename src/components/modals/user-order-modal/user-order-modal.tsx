@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Modal from 'components/modal';
+import { Modal } from 'shared/ui';
 import OrderInfo from 'components/order-info';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';

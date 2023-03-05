@@ -7,7 +7,7 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from 'components/modal/modal';
+import { Modal } from 'shared/ui';
 import OrderDetails from 'components/order-details';
 import SortableElement from 'components/sortable-element';
 import { DndItemTypes, Messages } from 'utils/constants';

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Modal from 'components/modal';
+import { Modal } from 'shared/ui';
 import IngredientDetails from 'components/ingredient-details';
 import { useHistory, useParams } from 'react-router-dom';
 import { ingredientModel } from 'entities/ingredient';
