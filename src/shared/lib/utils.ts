@@ -177,7 +177,7 @@ export const sortByKey = <T extends TIngredient, K extends keyof T>(
   };
 };
 
-/*export const getOrderIngredients = (
+export const getOrderIngredients = (
   order: TOrder,
   ingredientsEntities: Dictionary<TIngredient>
 ) => {
@@ -206,4 +206,4 @@ export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionar
   return sumBy(orderIngredients, (i) => {
     return i.type === 'bun' ? 2 * i.price : i.price;
   });
-};*/
+};

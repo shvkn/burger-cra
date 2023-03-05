@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Modal } from 'shared/ui';
-import IngredientDetails from 'components/ingredient-details';
+import { IngredientDetails } from 'entities/ingredient/ui';
 import { useHistory, useParams } from 'react-router-dom';
 import { ingredientModel } from 'entities/ingredient';
 
-const IngredientModal: FC = () => {
+const IngredientModal: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
   const ingredient = ingredientModel.useIngredient(id);

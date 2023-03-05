@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import IngredientDetails from 'components/ingredient-details';
+import { IngredientDetails } from 'entities/ingredient/ui';
 import { DetailsLayout } from 'shared/ui';
 import styles from './ingredient.module.css';
 import { useParams } from 'react-router-dom';

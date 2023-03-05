@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
-import styles from './ingredient-details.module.css';
+import React from 'react';
+import styles from 'entities/ingredient/ui/ingredient-details/ingredient-details.module.css';
 
 type TIngredientDetailsProps = {
   ingredient: TIngredient;
 };
 
-const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredient }) => (
+export const IngredientDetails: React.FC<TIngredientDetailsProps> = ({ ingredient }) => (
   <article className={styles.container}>
     <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
     <p className={`mt-4 mb-8 text text_type_main-medium ${styles.name}`}>{ingredient.name}</p>
@@ -27,5 +27,3 @@ const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredient }) => (
     </ul>
   </article>
 );
-
-export default IngredientDetails;
