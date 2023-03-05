@@ -3,8 +3,9 @@ import 'style/common.css';
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { Routes } from 'pages';
 import AppLayout from 'components/app-layout/app-layout';
+import { withProviders } from './providers';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <AppLayout>
       <Routes />
@@ -12,4 +13,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default withProviders(App);
