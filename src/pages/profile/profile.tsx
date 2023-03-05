@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from './profile.module.css';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
-import UserOrders from 'components/user-orders/user-orders';
+import { UserOrders } from 'widgets/user-orders';
 import { UserForm } from 'features/edit-user';
 // TODO
 import LogoutPage from 'pages/logout';

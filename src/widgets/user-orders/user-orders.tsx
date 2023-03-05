@@ -4,7 +4,7 @@ import { OrderList } from 'widgets/order-list';
 import { LoadingCurtain } from 'shared/ui';
 import { getAccessToken, useAppDispatch } from 'shared/lib';
 
-const UserOrders: React.FC = () => {
+export const UserOrders: React.FC = () => {
   const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders();
   const dispatch = useAppDispatch();
   React.useEffect(() => {
@@ -22,5 +22,3 @@ const UserOrders: React.FC = () => {
 
   return isWsConnecting ? <LoadingCurtain /> : <OrderList orders={orders} />;
 };
-
-export default UserOrders;
