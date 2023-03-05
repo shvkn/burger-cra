@@ -9,17 +9,6 @@
   width: 608px;
 }
 
-.ordersList {
-  flex-grow: 1;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.ordersList::-webkit-scrollbar-track {
-  margin-bottom: calc(var(--offset-base-size) * 15);
-}
-
 .dashboard {
   flex-grow: 1;
 }
@@ -48,9 +37,9 @@
 }
 
 .textShadow {
-  text-shadow: 0 0 16px rgb(51 51 255 / 0.25),
-  0 0 8px rgb(51 51 255 / 0.25),
-  0 4px 32px rgb(51 51 255 / 0.5);
+  text-shadow: 0 0 16px rgb(51 51 255 / 25%),
+  0 0 8px rgb(51 51 255 / 25%),
+  0 4px 32px rgb(51 51 255 / 50%);
 }
 
 .message {

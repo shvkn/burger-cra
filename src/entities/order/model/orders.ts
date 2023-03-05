@@ -119,12 +119,8 @@ export const selectors = {
   selectTotalToday,
 };
 
-export const useOrders = ({
-  ingredientsEntities,
-}: {
-  ingredientsEntities: Dictionary<TIngredient>;
-}) => {
-  const ingredients = useSelector(selectAll);
+export const useOrders = () => {
+  const orders = useSelector(selectAll);
   const entities = useSelector(selectEntities);
   const ids = useSelector(selectIds);
   const isEmpty = useSelector(selectIsEmpty);
@@ -133,10 +129,9 @@ export const useOrders = ({
   const isWsConnecting = useSelector(selectIsWSConnecting);
   const total = useSelector(selectTotal);
   const totalToday = useSelector(selectTotalToday);
-  const totalPrice = useSelector(selectTotalPrice);
 
   return {
-    ingredients,
+    orders,
     entities,
     ids,
     isEmpty,
@@ -145,6 +140,5 @@ export const useOrders = ({
     isWsConnecting,
     total,
     totalToday,
-    totalPrice,
   };
 };

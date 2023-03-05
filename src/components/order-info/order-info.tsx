@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import styles from './order-info.module.css';
-import OrderStatus from 'components/order-status';
+// import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { countBy, getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
 import { ingredientModel } from 'entities/ingredient';
@@ -37,7 +37,7 @@ const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
           order.status === 'done' && 'text_color_success'
         }`}
       >
-        <OrderStatus status={order.status} />
+        {/*<OrderStatus status={order.status} />*/}
       </p>
       <h2 className={'mt-15 mb-6 text text_type_main-medium'}>Состав:</h2>
       <ul className={`${styles.ingredients} scroll`}>

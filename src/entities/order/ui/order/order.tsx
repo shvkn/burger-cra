@@ -1,47 +1,28 @@
 import React, { FC, useMemo } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
 import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderStatus from 'components/order-status';
-import { useAppLocation } from 'services/slices';
-import { getOrderIngredients, getOrderTotalPrice } from 'utils/utils';
-import { ingredientModel } from 'entities/ingredient';
+import { calcTotalPrice, getOrderStatus } from './lib';
+import { clsx } from 'clsx';
 
 const ingredientsToRenderCount = 6;
 
 type TOrderProps = {
   order: TOrder;
   hideStatus?: boolean;
+  mapIngredientsFn: (order: TOrder) => TIngredient[];
 };
 
-export const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
-  const { url } = useRouteMatch();
-  const location = useAppLocation();
-  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
+export const Order: FC<TOrderProps> = ({ order, mapIngredientsFn, hideStatus = false }) => {
+  const ingredients = mapIngredientsFn(order).slice(0, ingredientsToRenderCount).reverse();
 
-  const orderIngredients = useMemo(
-    () => getOrderIngredients(order, ingredientsEntities),
-    [ingredientsEntities, order]
-  );
-
-  const totalPrice = useMemo(
-    () => getOrderTotalPrice(order, ingredientsEntities),
-    [ingredientsEntities, order]
-  );
-
-  const ingredientsToRender = useMemo(() => {
-    return orderIngredients.slice(0, ingredientsToRenderCount).reverse();
-  }, [orderIngredients]);
+  const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);
 
   const extraIngredientsCount = useMemo(() => {
-    return Math.max(orderIngredients.length - ingredientsToRenderCount, 0);
-  }, [orderIngredients]);
+    return Math.max(order.ingredients.length - ingredientsToRenderCount, 0);
+  }, [order.ingredients]);
 
   return (
-    <Link
-      to={{ pathname: `${url}/${order._id}`, state: { background: location } }}
-      className={`pt-6 pr-6 pb-6 pl-6 ${styles.container}`}
-    >
+    <div className={`pt-6 pr-6 pb-6 pl-6 ${styles.container}`}>
       <div className={styles.row}>
         <p className={`text text_type_digits-default ${styles.number}`}>{`#${order.number}`}</p>
         <p className={`ml-4 text text_type_main-default text_color_inactive ${styles.timestamp}`}>
@@ -52,17 +33,18 @@ export const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
         <p className={`text text_type_main-medium`}>{order.name}</p>
         {!hideStatus && (
           <p
-            className={`mt-2 text text_type_main-small ${
+            className={clsx(
+              'mt-2 text text_type_main-small',
               order.status === 'done' && 'text_color_success'
-            }`}
+            )}
           >
-            <OrderStatus status={order.status} />
+            {getOrderStatus(order.status)}
           </p>
         )}
       </div>
       <div className={`mt-6 ${styles.row}`}>
         <ul className={styles.ingredients}>
-          {ingredientsToRender.map((ingredient, idx) => (
+          {ingredients.map((ingredient, idx) => (
             <li key={idx} className={styles.ingredient}>
               <img
                 className={styles.ingredientImage}
@@ -84,6 +66,6 @@ export const Order: FC<TOrderProps> = ({ order, hideStatus = false }) => {
           <CurrencyIcon type='primary' />
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
