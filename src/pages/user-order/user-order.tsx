@@ -2,10 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { DetailsLayout } from 'shared/ui';
 import styles from './user-order.module.css';
-import OrderInfo from 'components/order-info';
+import OrderInfo from 'entities/order/ui/order-info';
 import { useSelector } from 'react-redux';
-import { getAccessToken, useAppDispatch, useAppSelector } from 'shared/lib';
+import { getAccessToken, getOrderIngredients, useAppDispatch, useAppSelector } from 'shared/lib';
 import { ordersModel } from 'entities/order';
+import { ingredientModel } from 'entities/ingredient';
 
 const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,7 +21,8 @@ const UserOrderPage: React.FC = () => {
       isWsOpened && dispatch(ordersModel.actions.close());
     };
   }, [dispatch, isWsClosed, isWsOpened]);
-
+  const { entities } = ingredientModel.useIngredients();
+  const mapIngredientsFn = (order: TOrder) => getOrderIngredients(order, entities);
   const order = useSelector(ordersModel.selectors.selectById(id));
   return order ? (
     <main className={`mt-30 ${styles.layout}`}>
@@ -29,7 +31,7 @@ const UserOrderPage: React.FC = () => {
           <p className={'text text_type_digits-default'}>{`#${order.number}`}</p>
         </DetailsLayout.Header>
         <DetailsLayout.Content>
-          <OrderInfo order={order} />
+          <OrderInfo order={order} mapIngredientsFn={mapIngredientsFn} />
         </DetailsLayout.Content>
       </DetailsLayout>
     </main>

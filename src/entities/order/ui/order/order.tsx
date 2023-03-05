@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import styles from './order.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { calcTotalPrice, getOrderStatus } from './lib';
+import { calcTotalPrice, getOrderStatus } from '../lib';
 import { clsx } from 'clsx';
 
 const ingredientsToRenderCount = 6;

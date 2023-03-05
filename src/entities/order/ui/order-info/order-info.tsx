@@ -1,43 +1,34 @@
 import React, { FC, useMemo } from 'react';
 import styles from './order-info.module.css';
-// import OrderStatus from 'components/order-status';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientModel } from 'entities/ingredient';
-import { countBy, getOrderIngredients, getOrderTotalPrice } from 'shared/lib';
+import { countBy } from 'shared/lib';
+import { calcTotalPrice, getOrderStatus } from '../lib';
+import { clsx } from 'clsx';
 
 type TOrderInfoProps = {
   order: TOrder;
+  mapIngredientsFn: (order: TOrder) => TIngredient[];
 };
 
-const OrderInfo: FC<TOrderInfoProps> = ({ order }) => {
-  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
-
-  const ingredients = useMemo(
-    () => getOrderIngredients(order, ingredientsEntities),
-    [ingredientsEntities, order]
-  );
-
-  const totalPrice = useMemo(
-    () => getOrderTotalPrice(order, ingredientsEntities),
-    [ingredientsEntities, order]
-  );
-
+const OrderInfo: FC<TOrderInfoProps> = ({ order, mapIngredientsFn }) => {
+  const ingredients = mapIngredientsFn(order);
+  const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);
   const uniqIngredients = useMemo(
     () => ingredients.filter((i, idx, arr) => arr.indexOf(i) === idx),
     [ingredients]
   );
-
   const ingredientsCounts = useMemo(() => countBy(ingredients, (i) => i._id), [ingredients]);
 
   return (
     <article className={styles.container}>
       <h1 className={'mt-5 text text_type_main-medium'}>{order.name}</h1>
       <p
-        className={`mt-2 text text_type_main-default ${
+        className={clsx(
+          'mt-2 text text_type_main-small',
           order.status === 'done' && 'text_color_success'
-        }`}
+        )}
       >
-        {/*<OrderStatus status={order.status} />*/}
+        {getOrderStatus(order.status)}
       </p>
       <h2 className={'mt-15 mb-6 text text_type_main-medium'}>Состав:</h2>
       <ul className={`${styles.ingredients} scroll`}>
