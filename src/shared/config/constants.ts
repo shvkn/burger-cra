@@ -8,3 +8,8 @@ export const Messages = {
   INVALID_TOKEN: 'Token is invalid',
   INCORRECT_RESET_TOKEN: 'Incorrect reset token',
 };
+export const VALIDATION_RULES = {
+  NAME: { required: true },
+  EMAIL: { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, required: true },
+  PASSWORD: { minLength: 6 },
+};
