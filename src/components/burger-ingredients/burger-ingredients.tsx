@@ -1,63 +1,36 @@
-import React, { FC, RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
-import IngredientsCategory from 'components/ingredients-category';
-import useIntersectionObserver, { TEntityEqualComparer } from 'hooks/use-intersection-observer';
-import { groupBy } from 'utils/utils';
-import { ingredientModel } from 'entities/ingredient';
+import { useIntersectionObserver } from 'shared/lib';
+import { BurgerIngredient } from 'entities/ingredient';
+import { useBurgerCounts } from 'entities/burger/model';
+import { DragToConstructor } from 'features/add-ingredient';
+import { ModalRoute } from 'features/modal-route';
 
-const categories: Array<{ type: TIngredientType; title: string }> = [
-  { type: 'bun', title: 'Булки' },
-  { type: 'sauce', title: 'Соусы' },
-  { type: 'main', title: 'Начинки' },
-];
-
-const entryEqualComparer: TEntityEqualComparer = (a, b) => {
-  return a.target.id === b.target.id;
+type TBurgerIngredientsProps = {
+  groups: [string, TIngredient[]][];
 };
 
-const BurgerIngredients: FC = () => {
-  const [activeTab, setActiveTab] = useState<TIngredientType>(categories[0].type);
-  const { ingredients } = ingredientModel.useIngredients();
-  const ingredientsByType: Record<TIngredientType, TIngredient[]> = groupBy(
-    ingredients,
-    (i) => i.type
-  );
-
-  const categoriesRootRef = useRef<HTMLUListElement>(null);
-  const categoriesRefs: Record<TIngredientType, RefObject<HTMLLIElement>> = {
-    bun: useRef<HTMLLIElement>(null),
-    main: useRef<HTMLLIElement>(null),
-    sauce: useRef<HTMLLIElement>(null),
-  };
-
-  const intersectingEntry = useIntersectionObserver(
-    Object.values(categoriesRefs),
-    entryEqualComparer,
-    {
-      root: categoriesRootRef.current,
-      rootMargin: '-50% 0px',
-    }
-  );
+const BurgerIngredients: React.FC<TBurgerIngredientsProps> = ({ groups }) => {
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const groupsRootRef = useRef<HTMLDivElement | null>(null);
+  const counts = useBurgerCounts();
+  const {
+    register,
+    current: visibleType,
+    elementsRefs: groupsRefs,
+  } = useIntersectionObserver<string>({
+    root: groupsRootRef.current,
+    rootMargin: '-50% 0px',
+  });
 
   useEffect(() => {
-    switch (intersectingEntry?.target.id) {
-      case 'bun':
-        setActiveTab('bun');
-        break;
-      case 'sauce':
-        setActiveTab('sauce');
-        break;
-      case 'main':
-        setActiveTab('main');
-        break;
-    }
-  }, [intersectingEntry]);
+    setActiveTab(visibleType);
+  }, [visibleType]);
 
   const handleTabClick = (value: string): void => {
-    const type = value as TIngredientType;
-    setActiveTab(type);
-    categoriesRefs[type]?.current?.scrollIntoView({ behavior: 'smooth' });
+    setActiveTab(value);
+    groupsRefs[value]?.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -65,19 +38,32 @@ const BurgerIngredients: FC = () => {
       <h1 className='mt-10 mb-5 heading text text_type_main-large'>Соберите бургер</h1>
       <div className='mb-10'>
         <ul className={`${styles.tabs}`}>
-          {categories.map(({ type, title }) => (
-            <li key={type}>
-              <Tab active={activeTab === type} value={type} onClick={handleTabClick}>
+          {groups.map(([title], idx) => (
+            <li key={idx}>
+              <Tab active={activeTab === `${idx}`} value={`${idx}`} onClick={handleTabClick}>
                 {title}
               </Tab>
             </li>
           ))}
         </ul>
       </div>
-      <ul className={`${styles.categories} scroll`} ref={categoriesRootRef}>
-        {categories.map(({ type, title }) => (
-          <li key={type} id={type} ref={categoriesRefs[type]}>
-            <IngredientsCategory title={title} items={ingredientsByType[type]} />
+      <ul className={`${styles.categories} scroll`}>
+        {groups.map(([title, ingredients], idx) => (
+          <li key={idx} {...register(`${idx}`)}>
+            <h2 className='text text_type_main-medium'>{title}</h2>
+            <div className='pt-6 pr-2 pb-10 pl-4'>
+              <ul className={`${styles.ingredients}`}>
+                {ingredients.map((ingredient) => (
+                  <li key={ingredient._id}>
+                    <ModalRoute path={`/ingredient/${ingredient._id}`}>
+                      <DragToConstructor ingredient={ingredient}>
+                        <BurgerIngredient ingredient={ingredient} count={counts(ingredient._id)} />
+                      </DragToConstructor>
+                    </ModalRoute>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </li>
         ))}
       </ul>

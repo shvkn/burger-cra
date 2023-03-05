@@ -52,7 +52,9 @@ const burgerSlice = createSlice({
 
 export const { reducer } = burgerSlice;
 
-const selectBurgerSlice = (state: TRootState) => state.burger;
+const selectBurgerSlice = (state: TRootState) => {
+  return state.burger;
+};
 const selectIngredientsIds = (state: TRootState) => selectBurgerSlice(state).ingredients;
 const selectBunId = (state: TRootState) => selectBurgerSlice(state).bun;
 const selectCounts = (state: TRootState) => selectBurgerSlice(state).counts;
@@ -127,4 +129,9 @@ export const useBurger = ({
     isBunSelected,
     isIngredientsSelected,
   };
+};
+
+export const useBurgerCounts = () => {
+  const counts = useSelector(selectCounts);
+  return (id: string) => counts[id];
 };
