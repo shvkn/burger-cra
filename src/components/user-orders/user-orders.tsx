@@ -1,36 +1,27 @@
-import React, { FC, useEffect } from 'react';
-import styles from 'pages/profile/profile.module.css';
-import { Order } from 'entities/order';
-import { useAppDispatch, useAppSelector } from 'services/slices';
-import userOrdersSelectors from 'services/selectors/user-orders';
-import actions from 'services/actions/user-orders';
+import React from 'react';
+import { useAppDispatch } from 'services/slices';
+import { ordersModel } from 'entities/order';
+import { getAccessToken } from 'utils/utils';
+import { OrderList } from 'widgets/order-list';
+import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 
-const MemoizedOrder = React.memo(Order);
-
-const UserOrders: FC = () => {
-  const orders = useAppSelector(userOrdersSelectors.selectAll);
-  const isWsOpened = useAppSelector(userOrdersSelectors.selectIsWSOpened);
-  const isWsClosed = useAppSelector(userOrdersSelectors.selectIsWSClosed);
+const UserOrders: React.FC = () => {
+  const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    isWsClosed && dispatch(actions.connect());
+  React.useEffect(() => {
+    isWsClosed &&
+      dispatch(
+        ordersModel.actions.connect({
+          route: '/orders',
+          accessToken: getAccessToken(),
+        })
+      );
     return () => {
-      isWsOpened && dispatch(actions.close());
+      isWsOpened && dispatch(ordersModel.actions.close());
     };
-  }, [dispatch, isWsClosed, isWsOpened]);
+  }, [dispatch, isWsOpened, isWsClosed]);
 
-  return (
-    <ul className={`${styles.ordersList} scroll`}>
-      {orders.map((order) => {
-        return (
-          <li key={order._id} className={'mb-4 mr-2'}>
-            <MemoizedOrder order={order} />
-          </li>
-        );
-      })}
-    </ul>
-  );
+  return isWsConnecting ? <LoadingCurtain /> : <OrderList orders={orders} />;
 };
 
 export default UserOrders;
