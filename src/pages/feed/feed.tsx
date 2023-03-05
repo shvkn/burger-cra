@@ -1,22 +1,21 @@
-import React, { FC, useEffect } from 'react';
+import React from 'react';
 import styles from './feed.module.css';
 import { ordersModel } from 'entities/order';
 import LoadingCurtain from 'components/loading-curtain/loading-curtain';
 import { useAppDispatch } from 'services/slices';
-import actions from 'services/actions/orders';
 import { OrderList } from 'widgets/order-list';
 import { Dashboard } from 'widgets/dashboard';
 
-const FeedPage: FC = () => {
+const FeedPage: React.FC = () => {
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =
     ordersModel.useOrders();
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    isWsClosed && dispatch(actions.connect());
+  React.useEffect(() => {
+    isWsClosed && dispatch(ordersModel.actions.connect({ route: '/orders/all' }));
     return () => {
-      isWsOpened && dispatch(actions.close());
+      isWsOpened && dispatch(ordersModel.actions.close());
     };
   }, [dispatch, isWsOpened, isWsClosed]);
 
