@@ -10,11 +10,35 @@ import {
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useSelector } from 'react-redux';
 
-import { getUser, login, logout, patchUser, register, resetPassword } from './actions';
+import {
+  getUser,
+  login,
+  logout,
+  patchUser,
+  register,
+  resetPassword,
+  refreshTokens,
+} from './actions';
 
-const isPendingAction = isPending(login, register, logout, getUser, patchUser, resetPassword);
+const isPendingAction = isPending(
+  login,
+  register,
+  logout,
+  getUser,
+  patchUser,
+  resetPassword,
+  refreshTokens
+);
 const isRejectedAction = isRejected(login, register, logout, getUser, patchUser, resetPassword);
-const isFulfilledAction = isFulfilled(login, register, logout, getUser, patchUser, resetPassword);
+const isFulfilledAction = isFulfilled(
+  login,
+  register,
+  logout,
+  getUser,
+  patchUser,
+  resetPassword,
+  refreshTokens
+);
 
 export const hasError = (
   action: PayloadAction<TBaseResponseBody>
@@ -50,6 +74,8 @@ const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(logout.pending, () => initialState)
+      .addCase(refreshTokens.pending, () => initialState)
+      .addCase(refreshTokens.rejected, () => initialState)
       .addMatcher(isPendingAction, (state) => {
         state.error = undefined;
         state.status = 'loading';
