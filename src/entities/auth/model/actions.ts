@@ -122,7 +122,7 @@ export const getUser = createAsyncThunk<TUserResponseBody, void, { state: TRootS
       throw e;
     }
   }
-  /*{
+  /*,{
     condition: (_, { getState }) => {
       const state = getState();
       const accessToken = getAccessToken();
