@@ -5,7 +5,6 @@ import {
   isFulfilled,
   isPending,
   isRejected,
-  PayloadAction,
 } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useSelector } from 'react-redux';
@@ -19,18 +18,7 @@ import {
   register,
   resetPassword,
 } from './actions';
-
-export const hasError = (
-  action: PayloadAction<TBaseResponseBody>
-): action is PayloadAction<TBaseResponseBody & { success: true }> => {
-  return !action.payload?.success;
-};
-
-const hasUser = (
-  action: PayloadAction<TUserResponseBody>
-): action is PayloadAction<Required<TUserResponseBody>> => {
-  return !!action.payload?.user;
-};
+import { hasUser } from './lib';
 
 const initialState: {
   user: TUser | undefined;
@@ -45,14 +33,16 @@ const initialState: {
 };
 
 const authSlice = createSlice({
+  initialState,
+  name: 'auth',
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(logout.pending, () => initialState)
+      .addCase(refreshTokens.rejected, () => initialState)
       .addCase(getUser.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(logout.pending, () => initialState)
-      // .addCase(refreshTokens.pending, () => initialState)
-      .addCase(refreshTokens.rejected, () => initialState)
       .addMatcher(
         isPending(login, register, logout, getUser, patchUser, resetPassword, refreshTokens),
         (state) => {
@@ -70,7 +60,7 @@ const authSlice = createSlice({
         }
       )
       .addMatcher(
-        isFulfilled(login, register, logout, getUser, patchUser, resetPassword),
+        isFulfilled(login, register, logout, getUser, patchUser, resetPassword, refreshTokens),
         (state) => {
           state.status = 'idle';
         }
@@ -80,9 +70,6 @@ const authSlice = createSlice({
         state.isAuthorized = true;
       });
   },
-  initialState,
-  name: 'auth',
-  reducers: {},
 });
 
 export const { reducer } = authSlice;
@@ -112,7 +99,6 @@ export const useAuth = () => {
   const isAuthorized = useSelector(selectIsAuthorized);
   const isFailed = useSelector(selectIsFailed);
   const isLoading = useSelector(selectIsLoading);
-  // const isSucceeded = useSelector(selectIsSucceeded);
   const error = useSelector(selectError);
   return {
     user,

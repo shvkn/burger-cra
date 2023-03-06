@@ -1,4 +1,4 @@
-import { AsyncThunk, Dispatch } from '@reduxjs/toolkit';
+import { AsyncThunk, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 
 import {
   dropAuthTokens,
@@ -68,3 +68,7 @@ export const callRequestWithAccessToken = async <
 };
 export const hasRefreshToken = () => !!getRefreshToken();
 export const hasAccessToken = () => !!getAccessToken();
+
+export const hasUser = (
+  action: PayloadAction<TUserResponseBody>
+): action is PayloadAction<Required<TUserResponseBody>> => !!action.payload?.user;
