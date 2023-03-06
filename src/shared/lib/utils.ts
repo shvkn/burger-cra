@@ -1,17 +1,14 @@
-import { Dictionary } from '@reduxjs/toolkit';
+import { AsyncThunk, Dictionary, Dispatch } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { CookieSerializeOptions } from 'cookie';
 
-import { authApi } from 'shared/api';
-import { Messages } from 'shared/config';
 import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
 
 const processResponse = async <T>(response: Response): Promise<T> => {
   try {
-    if (response.ok) {
-      return response.json();
-    }
-    return Promise.reject(response.statusText);
+    return response.ok
+      ? response.json()
+      : Promise.reject<T>(`Rejected ${response.url} (${response.status})`);
   } catch (e) {
     console.log(e);
     throw e;
@@ -19,7 +16,12 @@ const processResponse = async <T>(response: Response): Promise<T> => {
 };
 
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
-  return fetch(input, init).then(processResponse<T>);
+  try {
+    return fetch(input, init).then(processResponse<T>);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
 };
 
 export const getErrorMessage = (error: SerializedError | FetchBaseQueryError) => {
@@ -119,7 +121,7 @@ export const constructResponseBody = <T extends TBaseResponseBody>(
   return { ...params };
 };
 
-export const callRequestWithAccessToken = async <
+/*export const callRequestWithAccessToken = async <
   P extends TBaseResponseBody,
   T extends (token: string, ...rest: any[]) => Promise<P>
 >(
@@ -136,7 +138,7 @@ export const callRequestWithAccessToken = async <
     }
     const refreshToken = getRefreshToken();
     if (!!refreshToken) {
-      const response = await authApi.token.refreshTokens(refreshToken);
+      const response = await authApi.refreshTokens(refreshToken);
       if (response.success) {
         await processAuthResponse(response);
         const newAccessToken = getAccessToken();
@@ -154,7 +156,7 @@ export const callRequestWithAccessToken = async <
   } catch (e) {
     throw e;
   }
-};
+};*/
 export const getChangedEntries = <
   T extends { [x: string]: any },
   K extends { [k in keyof T]: any }
@@ -211,4 +213,48 @@ export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionar
   return sumBy(orderIngredients, (i) => {
     return i.type === 'bun' ? 2 * i.price : i.price;
   });
+};
+
+export const callRequestWithAccessToken = async <
+  P extends TBaseResponseBody,
+  T extends (token: string, ...rest: any[]) => Promise<P>,
+  K extends TAuthResponseBody
+>({
+  request,
+  params,
+  accessTokenGetterFn,
+  refreshTokenGetterFn,
+  dispatch,
+  refreshTokensThunkAction,
+}: {
+  request: T;
+  params?: T extends (token: string, ...rest: infer R) => any ? R : never;
+  accessTokenGetterFn: () => string | undefined;
+  refreshTokenGetterFn: () => string | undefined;
+  dispatch: Dispatch<any>;
+  refreshTokensThunkAction: AsyncThunk<Promise<K>, string, any>;
+}) => {
+  const refreshTokens = async () => {
+    const refreshToken = refreshTokenGetterFn();
+    if (!!refreshToken) {
+      await dispatch(refreshTokensThunkAction(refreshToken));
+      const accessToken = accessTokenGetterFn();
+      if (!!accessToken) {
+        return request.call(null, accessToken, ...(params || []));
+      }
+    }
+    return Promise.reject<K>();
+  };
+  try {
+    const accessToken = accessTokenGetterFn();
+    if (!!accessToken) {
+      const response = await request.call(null, accessToken, ...(params || []));
+      if (response.success) {
+        return response;
+      }
+    }
+    return refreshTokens();
+  } catch (e) {
+    return refreshTokens();
+  }
 };
