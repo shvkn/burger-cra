@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouteProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ import useConstructor from 'hooks/use-constructor';
 
 import { authModel } from 'entities/auth';
 
-import { getAccessToken, getRefreshToken, useAppDispatch, useAppHistory } from 'shared/lib';
+import { useAppDispatch, useAppHistory } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
 
 type TProtectedRouteProps = {
@@ -19,37 +19,21 @@ export const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   nonAuthOnly = false,
   ...rest
 }) => {
-  const { isAuthorized, isLoading: isAuthLoading, error } = authModel.useAuth();
+  const { isAuthorized, isLoading: isAuthLoading } = authModel.useAuth();
 
   const dispatch = useAppDispatch();
   const { location } = useAppHistory();
 
   const authOnly = !nonAuthOnly;
-  const accessToken = getAccessToken();
-  const refreshToken = getRefreshToken();
-  const hasAccessToken = !!accessToken;
-  const hasRefreshToken = !!refreshToken;
-  const hasAnyToken = hasAccessToken || hasAccessToken;
-  const hasError = !!error;
+  // const accessToken = getAccessToken();
+  // const refreshToken = getRefreshToken();
+  // const hasAccessToken = !!accessToken;
+  // const hasRefreshToken = !!refreshToken;
+  // const hasAnyToken = hasAccessToken || hasAccessToken;
+  // const hasError = !!error;
 
   useConstructor(() => {
-    if (error) {
-      return;
-    }
-    if (!isAuthLoading && hasAnyToken) {
-      dispatch(authModel.actions.getUser());
-    }
-  });
-
-  useEffect(() => {
-    if (!isAuthLoading) {
-      if (hasError || (isAuthorized && !hasAnyToken)) {
-        console.log(error);
-        dispatch(authModel.actions.logout());
-      } else if (!hasError && !hasAccessToken && hasRefreshToken) {
-        dispatch(authModel.actions.getUser());
-      }
-    }
+    dispatch(authModel.actions.getUser());
   });
 
   if (isAuthLoading && !isAuthorized) {

@@ -14,7 +14,6 @@ const processResponse = async <T>(response: Response): Promise<T> => {
     throw e;
   }
 };
-
 export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
   try {
     return fetch(input, init).then(processResponse<T>);
@@ -23,18 +22,15 @@ export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise
     throw e;
   }
 };
-
 export const getErrorMessage = (error: SerializedError | FetchBaseQueryError) => {
   if ('status' in error) {
     return 'error' in error ? error.error : JSON.stringify(error.data);
   }
   return error?.message;
 };
-
 export const sumBy = <T>(arr: ReadonlyArray<T>, fn: (i: T) => number): number => {
   return arr.reduce((acc, cur) => acc + fn(cur), 0);
 };
-
 export const groupBy = <T extends any, K extends (item: T) => string>(
   arr: ReadonlyArray<T>,
   fn: K
@@ -46,16 +42,13 @@ export const groupBy = <T extends any, K extends (item: T) => string>(
     return { ...prev, [groupKey]: group };
   }, {});
 };
-
 export const mapIdsToEntities = <T>(
   ids: ReadonlyArray<string>,
   entities: Dictionary<T>
 ): Array<T> => {
   return ids.map((id) => entities[id]).filter((i): i is T => !!i);
 };
-export const getToken = (name: keyof TAuthTokens): string | undefined => {
-  return getCookie(name);
-};
+export const getToken = (name: keyof TAuthTokens): string | undefined => getCookie(name);
 export const setToken = (
   name: keyof TAuthTokens,
   value: string | number | boolean,
@@ -65,23 +58,15 @@ export const setToken = (
 };
 export const getRefreshToken = () => getToken('refreshToken');
 export const getAccessToken = () => getToken('accessToken');
-export const deleteToken = (name: keyof TAuthTokens): void => {
-  deleteCookie(name);
-};
-export const setRefreshToken = (value: string): void => {
-  setToken('refreshToken', value);
-};
+export const deleteToken = (name: keyof TAuthTokens): void => deleteCookie(name);
+export const setRefreshToken = (value: string): void => setToken('refreshToken', value);
 export const setAccessToken = (value: string) => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 20 * 60 * 1000);
   setToken('accessToken', value, { expires });
 };
-export const dropRefreshToken = () => {
-  deleteToken('refreshToken');
-};
-export const dropAccessToken = () => {
-  deleteToken('accessToken');
-};
+export const dropRefreshToken = (): void => deleteToken('refreshToken');
+export const dropAccessToken = (): void => deleteToken('accessToken');
 export const dropAuthTokens = (): void => {
   dropAccessToken();
   dropRefreshToken();
@@ -106,7 +91,6 @@ export const processAuthResponse = (response: TAuthResponseBody) => {
   }
   return Promise.resolve(response);
 };
-
 export const countBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
   return arr.reduce<Record<string, number>>((prev, curr) => {
     const groupKey = fn(curr);
@@ -114,49 +98,11 @@ export const countBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
     return { ...prev, [groupKey]: count + 1 };
   }, {});
 };
-
 export const constructResponseBody = <T extends TBaseResponseBody>(
   params: T
 ): TBaseResponseBody => {
   return { ...params };
 };
-
-/*export const callRequestWithAccessToken = async <
-  P extends TBaseResponseBody,
-  T extends (token: string, ...rest: any[]) => Promise<P>
->(
-  request: T,
-  ...args: T extends (token: string, ...rest: infer R) => any ? R : never
-) => {
-  try {
-    const accessToken = getAccessToken();
-    if (!!accessToken) {
-      const response = await request.call(null, accessToken, ...args);
-      if (response.success) {
-        return response;
-      }
-    }
-    const refreshToken = getRefreshToken();
-    if (!!refreshToken) {
-      const response = await authApi.refreshTokens(refreshToken);
-      if (response.success) {
-        await processAuthResponse(response);
-        const newAccessToken = getAccessToken();
-        if (!!newAccessToken) {
-          return request.call(null, newAccessToken, ...args);
-        }
-      }
-      return response;
-    }
-    // throw e;
-    return constructResponseBody<TBaseResponseBody>({
-      success: false,
-      message: Messages.INVALID_TOKEN,
-    });
-  } catch (e) {
-    throw e;
-  }
-};*/
 export const getChangedEntries = <
   T extends { [x: string]: any },
   K extends { [k in keyof T]: any }
@@ -183,7 +129,6 @@ export const sortByKey = <T extends TIngredient, K extends keyof T>(
     return order === 'desc' ? t2 - t1 : t1 - t2;
   };
 };
-
 export const getOrderIngredients = (
   order: TOrder,
   ingredientsEntities: Dictionary<TIngredient>
@@ -207,14 +152,12 @@ export const getOrderIngredients = (
     return [];
   }
 };
-
 export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionary<TIngredient>) => {
   const orderIngredients = getOrderIngredients(order, ingredientsEntities);
   return sumBy(orderIngredients, (i) => {
     return i.type === 'bun' ? 2 * i.price : i.price;
   });
 };
-
 export const callRequestWithAccessToken = async <
   P extends TBaseResponseBody,
   T extends (token: string, ...rest: any[]) => Promise<P>,
@@ -234,13 +177,16 @@ export const callRequestWithAccessToken = async <
   dispatch: Dispatch<any>;
   refreshTokensThunkAction: AsyncThunk<Promise<K>, string, any>;
 }) => {
-  const refreshTokens = async () => {
+  const callRequest = async (accessToken: string) =>
+    request.call(null, accessToken, ...(params || []));
+
+  const refreshTokensAndCallRequest = async () => {
     const refreshToken = refreshTokenGetterFn();
     if (!!refreshToken) {
       await dispatch(refreshTokensThunkAction(refreshToken));
       const accessToken = accessTokenGetterFn();
       if (!!accessToken) {
-        return request.call(null, accessToken, ...(params || []));
+        return callRequest(accessToken);
       }
     }
     return Promise.reject<K>();
@@ -248,13 +194,13 @@ export const callRequestWithAccessToken = async <
   try {
     const accessToken = accessTokenGetterFn();
     if (!!accessToken) {
-      const response = await request.call(null, accessToken, ...(params || []));
+      const response = await callRequest(accessToken);
       if (response.success) {
         return response;
       }
     }
-    return refreshTokens();
+    return refreshTokensAndCallRequest();
   } catch (e) {
-    return refreshTokens();
+    return refreshTokensAndCallRequest();
   }
 };
