@@ -130,3 +130,8 @@ declare type TOrderWsMessage = {
   readonly total?: number;
   readonly totalToday?: number;
 } & TBaseResponseBody;
+
+declare type TAsyncThunkConfig = {
+  state: TRootState;
+  rejectValue: { success: false; message: string };
+};

@@ -15,30 +15,10 @@ import {
   login,
   logout,
   patchUser,
-  register,
-  resetPassword,
   refreshTokens,
+  register,
+  resetPassword,
 } from './actions';
-
-const isPendingAction = isPending(
-  login,
-  register,
-  logout,
-  getUser,
-  patchUser,
-  resetPassword,
-  refreshTokens
-);
-const isRejectedAction = isRejected(login, register, logout, getUser, patchUser, resetPassword);
-const isFulfilledAction = isFulfilled(
-  login,
-  register,
-  logout,
-  getUser,
-  patchUser,
-  resetPassword,
-  refreshTokens
-);
 
 export const hasError = (
   action: PayloadAction<TBaseResponseBody>
@@ -55,7 +35,7 @@ const hasUser = (
 const initialState: {
   user: TUser | undefined;
   isAuthorized: boolean;
-  status: 'idle' | 'loading' | 'failed' | 'succeeded';
+  status: 'idle' | 'loading' | 'failed';
   error: FetchBaseQueryError | SerializedError | undefined;
 } = {
   user: undefined,
@@ -65,43 +45,44 @@ const initialState: {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(logout.pending, () => initialState)
-      .addCase(refreshTokens.pending, () => initialState)
+      // .addCase(refreshTokens.pending, () => initialState)
       .addCase(refreshTokens.rejected, () => initialState)
-      .addMatcher(isPendingAction, (state) => {
-        state.error = undefined;
-        state.status = 'loading';
-      })
-      .addMatcher(isRejectedAction, (state, action) => {
-        state.status = 'failed';
-        // TODO протестировать на rejectWithValue
-        state.error = action.error ?? action.payload;
-      })
-      .addMatcher(isFulfilledAction, (state) => {
-        state.status = 'succeeded';
-      })
-      .addMatcher(isAllOf(isFulfilledAction, hasError), (state, action) => {
-        state.error = {
-          message:
-            action.payload?.message ??
-            `Unknown error. Check ${action.meta.requestId} on ${action.meta.requestStatus}`,
-        };
-        state.isAuthorized = false;
-        state.user = undefined;
-      })
-      .addMatcher(isAllOf(isFulfilledAction, hasUser), (state, action) => {
+      .addMatcher(
+        isPending(login, register, logout, getUser, patchUser, resetPassword, refreshTokens),
+        (state) => {
+          state.error = undefined;
+          state.status = 'loading';
+        }
+      )
+      .addMatcher(
+        isRejected(login, register, logout, getUser, patchUser, resetPassword, refreshTokens),
+        (state, action) => {
+          state.status = 'failed';
+          state.error = action.payload;
+          state.isAuthorized = false;
+          state.user = undefined;
+        }
+      )
+      .addMatcher(
+        isFulfilled(login, register, logout, getUser, patchUser, resetPassword),
+        (state) => {
+          state.status = 'idle';
+        }
+      )
+      .addMatcher(isAllOf(isFulfilled(login, getUser, patchUser), hasUser), (state, action) => {
         state.user = action.payload.user;
         state.isAuthorized = true;
       });
   },
+  initialState,
+  name: 'auth',
+  reducers: {},
 });
 
 export const { reducer } = authSlice;
@@ -113,7 +94,8 @@ const selectStatus = (state: TRootState) => selectAuthSlice(state).status;
 const selectError = (state: TRootState) => selectAuthSlice(state).error;
 
 const selectIsLoading = createSelector(selectStatus, (status) => status === 'loading');
-const selectIsSucceeded = createSelector(selectStatus, (status) => status === 'succeeded');
+// TODO Костыль
+const selectIsSucceeded = createSelector(selectStatus, (status) => status === 'loading');
 const selectIsFailed = createSelector(selectStatus, (status) => status === 'failed');
 
 export const selectors = {
@@ -130,14 +112,13 @@ export const useAuth = () => {
   const isAuthorized = useSelector(selectIsAuthorized);
   const isFailed = useSelector(selectIsFailed);
   const isLoading = useSelector(selectIsLoading);
-  const isSucceeded = useSelector(selectIsSucceeded);
+  // const isSucceeded = useSelector(selectIsSucceeded);
   const error = useSelector(selectError);
   return {
     user,
     isAuthorized,
     isFailed,
     isLoading,
-    isSucceeded,
     error,
   };
 };

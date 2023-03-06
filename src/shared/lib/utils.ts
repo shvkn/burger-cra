@@ -1,24 +1,28 @@
-import { AsyncThunk, Dictionary, Dispatch } from '@reduxjs/toolkit';
+import { Dictionary } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { CookieSerializeOptions } from 'cookie';
 
 import { deleteCookie, getCookie, setCookie } from 'shared/lib/cookie';
-
+//
 const processResponse = async <T>(response: Response): Promise<T> => {
   try {
-    return response.ok
-      ? response.json()
-      : Promise.reject<T>(`Rejected ${response.url} (${response.status})`);
+    const data = await response.json();
+    return response.ok ? data : Promise.reject<T>(data);
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };
-export const request = <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
+
+export const request = async <T>(input: RequestInfo | URL, init: RequestInit): Promise<T> => {
   try {
-    return fetch(input, init).then(processResponse<T>);
+    return fetch(input, init)
+      .then(processResponse<T>)
+      .catch((reason) => {
+        console.log(reason, '2');
+        return Promise.reject<T>(reason);
+      });
   } catch (e) {
-    console.log(e);
+    console.log(e, '2+');
     throw e;
   }
 };
@@ -77,19 +81,6 @@ export const extractToken = (authHeader: string): string | undefined => {
   } catch (e) {
     return undefined;
   }
-};
-export const processAuthResponse = (response: TAuthResponseBody) => {
-  const { success, accessToken, refreshToken } = response;
-  if (success && !!accessToken && !!refreshToken) {
-    const extractedToken = extractToken(accessToken);
-    if (!!extractedToken) {
-      setAccessToken(extractedToken);
-    }
-    setRefreshToken(refreshToken);
-  } else {
-    dropAuthTokens();
-  }
-  return Promise.resolve(response);
 };
 export const countBy = <T extends any>(arr: Array<T>, fn: (item: T) => any) => {
   return arr.reduce<Record<string, number>>((prev, curr) => {
@@ -157,50 +148,4 @@ export const getOrderTotalPrice = (order: TOrder, ingredientsEntities: Dictionar
   return sumBy(orderIngredients, (i) => {
     return i.type === 'bun' ? 2 * i.price : i.price;
   });
-};
-export const callRequestWithAccessToken = async <
-  P extends TBaseResponseBody,
-  T extends (token: string, ...rest: any[]) => Promise<P>,
-  K extends TAuthResponseBody
->({
-  request,
-  params,
-  accessTokenGetterFn,
-  refreshTokenGetterFn,
-  dispatch,
-  refreshTokensThunkAction,
-}: {
-  request: T;
-  params?: T extends (token: string, ...rest: infer R) => any ? R : never;
-  accessTokenGetterFn: () => string | undefined;
-  refreshTokenGetterFn: () => string | undefined;
-  dispatch: Dispatch<any>;
-  refreshTokensThunkAction: AsyncThunk<Promise<K>, string, any>;
-}) => {
-  const callRequest = async (accessToken: string) =>
-    request.call(null, accessToken, ...(params || []));
-
-  const refreshTokensAndCallRequest = async () => {
-    const refreshToken = refreshTokenGetterFn();
-    if (!!refreshToken) {
-      await dispatch(refreshTokensThunkAction(refreshToken));
-      const accessToken = accessTokenGetterFn();
-      if (!!accessToken) {
-        return callRequest(accessToken);
-      }
-    }
-    return Promise.reject<K>();
-  };
-  try {
-    const accessToken = accessTokenGetterFn();
-    if (!!accessToken) {
-      const response = await callRequest(accessToken);
-      if (response.success) {
-        return response;
-      }
-    }
-    return refreshTokensAndCallRequest();
-  } catch (e) {
-    return refreshTokensAndCallRequest();
-  }
 };

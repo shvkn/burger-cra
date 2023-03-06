@@ -29,7 +29,8 @@ export const ForgotPasswordPage: React.FC = () => {
             state: { from: history.location },
           });
         }
-      });
+      })
+      .catch(() => {});
   };
   const [form, setValue] = useState<TGetResetCodeParams>(initFormData);
   const formRef = useForm(handleSubmit);

@@ -19,24 +19,16 @@ export const ProtectedRoute: React.FC<TProtectedRouteProps> = ({
   nonAuthOnly = false,
   ...rest
 }) => {
-  const { isAuthorized, isLoading: isAuthLoading } = authModel.useAuth();
-
+  const { isAuthorized, isLoading } = authModel.useAuth();
   const dispatch = useAppDispatch();
   const { location } = useAppHistory();
-
   const authOnly = !nonAuthOnly;
-  // const accessToken = getAccessToken();
-  // const refreshToken = getRefreshToken();
-  // const hasAccessToken = !!accessToken;
-  // const hasRefreshToken = !!refreshToken;
-  // const hasAnyToken = hasAccessToken || hasAccessToken;
-  // const hasError = !!error;
 
   useConstructor(() => {
     dispatch(authModel.actions.getUser());
   });
 
-  if (isAuthLoading && !isAuthorized) {
+  if (isLoading && !isAuthorized) {
     return <LoadingCurtain />;
   }
   if (authOnly && !isAuthorized) {
