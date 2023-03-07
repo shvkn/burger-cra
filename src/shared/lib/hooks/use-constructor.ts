@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useConstructor = (callbackFn: (...args: any[]) => any) => {
+export const useConstructor = (callbackFn: (...args: any[]) => any) => {
   const [called, setCalled] = useState<boolean>(false);
   if (called) {
     return;
@@ -8,5 +8,3 @@ const useConstructor = (callbackFn: (...args: any[]) => any) => {
   callbackFn();
   setCalled(true);
 };
-
-export default useConstructor;

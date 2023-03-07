@@ -2,11 +2,9 @@ import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-comp
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import useForm from 'hooks/use-form';
-
 import { authModel } from 'entities/auth';
 
-import { useAppDispatch, useAppHistory } from 'shared/lib';
+import { useAppDispatch, useAppHistory, useForm } from 'shared/lib';
 
 import styles from './styles.module.css';
 

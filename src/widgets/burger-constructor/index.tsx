@@ -11,14 +11,12 @@ import doneImage from 'images/done.svg';
 import * as orderActions from 'services/actions/order';
 import orderSelectors from 'services/selectors/order';
 
-import { SortableElement } from 'features/dnd-sortable';
-
 import { burgerModel } from 'entities/burger';
 import { ingredientModel } from 'entities/ingredient';
 
 import { DndItemTypes, Messages } from 'shared/config';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
-import { Modal } from 'shared/ui';
+import { Modal, SortableElement } from 'shared/ui';
 
 import styles from './styles.module.css';
 

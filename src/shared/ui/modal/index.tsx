@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { ModalContent } from './modal-content';
 import { ModalHeader } from './modal-header';
 import { ModalOverlay } from './modal-overlay';
-import styles from './modal.module.css';
+import styles from './styles.module.css';
 
 type TModalExtensions = {
   Header: typeof ModalHeader;

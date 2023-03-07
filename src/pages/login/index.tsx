@@ -6,11 +6,9 @@ import {
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import useForm from 'hooks/use-form';
-
 import { authModel } from 'entities/auth';
 
-import { useAppDispatch } from 'shared/lib';
+import { useAppDispatch, useForm } from 'shared/lib';
 
 import styles from './styles.module.css';
 

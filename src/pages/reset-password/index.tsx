@@ -2,12 +2,10 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import React, { useMemo, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import useForm from 'hooks/use-form';
-
 import { authModel } from 'entities/auth';
 
 import { Messages } from 'shared/config';
-import { getErrorMessage, useAppDispatch, useAppHistory } from 'shared/lib';
+import { getErrorMessage, useAppDispatch, useAppHistory, useForm } from 'shared/lib';
 
 import styles from './styles.module.css';
 

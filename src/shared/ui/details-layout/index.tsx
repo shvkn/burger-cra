@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 
 import { DetailsLayoutContent } from './details-layout-content';
 import { DetailsLayoutHeader } from './details-layout-header';
-import styles from './details-layout.module.css';
+import styles from './styles.module.css';
 
 type TDetailsLayoutExtensions = {
   Header: typeof DetailsLayoutHeader;

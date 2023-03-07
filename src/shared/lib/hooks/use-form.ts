@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const useForm = (handleSubmit: (e: SubmitEvent) => void) => {
+export const useForm = (handleSubmit: (e: SubmitEvent) => void) => {
   const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
     const formRefValue = formRef.current;
@@ -9,5 +9,3 @@ const useForm = (handleSubmit: (e: SubmitEvent) => void) => {
   }, [handleSubmit]);
   return formRef;
 };
-
-export default useForm;

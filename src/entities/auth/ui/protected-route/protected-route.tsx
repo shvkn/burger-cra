@@ -2,11 +2,9 @@ import React from 'react';
 import { RouteProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 
-import useConstructor from 'hooks/use-constructor';
-
 import { authModel } from 'entities/auth';
 
-import { useAppDispatch, useAppHistory } from 'shared/lib';
+import { useAppDispatch, useAppHistory, useConstructor } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
 
 type TProtectedRouteProps = {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Spinner } from '../spinner';
 
-import styles from './loading-curtain.module.css';
+import styles from './styles.module.css';
 
 export const LoadingCurtain: React.FC = () => (
   <div className={styles.container}>
