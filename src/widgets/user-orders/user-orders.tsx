@@ -3,13 +3,17 @@ import React, { useEffect } from 'react';
 import { OrderList } from 'widgets/order-list';
 
 import { authModel } from 'entities/auth';
+import { ingredientModel } from 'entities/ingredient';
 import { ordersModel } from 'entities/order';
 
 import { getAccessToken, useAppDispatch } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
 
 export const UserOrders: React.FC = () => {
-  const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders();
+  const { entities: ingredientsEntities } = ingredientModel.useIngredients();
+  const { orders, isWsOpened, isWsClosed, isWsConnecting } = ordersModel.useOrders({
+    ingredientsEntities,
+  });
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(authModel.actions.getUser())

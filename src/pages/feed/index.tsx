@@ -12,9 +12,13 @@ import { LoadingCurtain } from 'shared/ui';
 import styles from './styles.module.css';
 
 export const FeedPage: React.FC = () => {
+  const {
+    isSucceeded,
+    isLoading,
+    entities: ingredientsEntities,
+  } = ingredientModel.useIngredients();
   const { orders, total, totalToday, isWsOpened, isWsClosed, isWsConnecting } =
-    ordersModel.useOrders();
-  const { isSucceeded, isLoading } = ingredientModel.useIngredients();
+    ordersModel.useOrders({ ingredientsEntities });
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { groupBy } from 'shared/lib';
 import styles from './styles.module.css';
 
 type TDashboardProps = {
-  orders: TOrder[];
+  orders: Array<Omit<TOrder, 'ingredients'> & { ingredients: TIngredient[] }>;
   total: number;
   totalToday: number;
 };

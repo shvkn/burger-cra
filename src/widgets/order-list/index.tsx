@@ -4,15 +4,12 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { ModalRoute } from 'features/modal-route';
 
-import { ingredientModel } from 'entities/ingredient';
 import { Order } from 'entities/order';
-
-import { getOrderIngredients } from 'shared/lib';
 
 import styles from './styles.module.css';
 
 type TOrderListParams = {
-  orders: TOrder[];
+  orders: TOrderEntity[];
   heading?: React.ReactNode;
   extraClass?: string;
 };
@@ -20,9 +17,7 @@ type TOrderListParams = {
 const MemoizedOrder = memo(Order);
 
 export const OrderList: React.FC<TOrderListParams> = ({ orders, heading, extraClass }) => {
-  const { entities } = ingredientModel.useIngredients();
   const { url } = useRouteMatch();
-  const mapIngredientsFn = (order: TOrder) => getOrderIngredients(order, entities);
   return !!orders.length ? (
     <div className={styles.container}>
       {heading && heading}
@@ -30,7 +25,7 @@ export const OrderList: React.FC<TOrderListParams> = ({ orders, heading, extraCl
         {orders.map((order) => (
           <li key={order._id} className={'mb-4 mr-2'}>
             <ModalRoute path={`${url}/${order._id}`}>
-              <MemoizedOrder order={order} mapIngredientsFn={mapIngredientsFn} hideStatus />
+              <MemoizedOrder order={order} hideStatus />
             </ModalRoute>
           </li>
         ))}

@@ -4,19 +4,17 @@ import React, { useMemo } from 'react';
 
 import { calcTotalPrice, getOrderStatus } from '../lib';
 
-import styles from './order.module.css';
+import styles from './styles.module.css';
 
 const ingredientsToRenderCount = 6;
 
 type TOrderProps = {
-  order: TOrder;
+  order: TOrderEntity;
   hideStatus?: boolean;
-  mapIngredientsFn: (order: TOrder) => TIngredient[];
 };
 
-export const Order: React.FC<TOrderProps> = ({ order, mapIngredientsFn, hideStatus = false }) => {
-  const ingredients = mapIngredientsFn(order).slice(0, ingredientsToRenderCount).reverse();
-
+export const Order: React.FC<TOrderProps> = ({ order, hideStatus = false }) => {
+  const ingredients = order.ingredients;
   const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);
 
   const extraIngredientsCount = useMemo(() => {

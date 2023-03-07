@@ -9,7 +9,7 @@ import {
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { useSelector } from 'react-redux';
 
-import { getOrderIngredients, getOrderTotalPrice } from 'shared/lib';
+import { getOrderIngredients, getOrderTotalPrice, mapIdsToEntities } from 'shared/lib';
 
 import { connect, onClose, onGetMessage, onOpen, sendMessage } from './actions';
 
@@ -121,8 +121,15 @@ export const selectors = {
   selectTotalToday,
 };
 
-export const useOrders = () => {
-  const orders = useSelector(selectAll);
+export const useOrders = ({
+  ingredientsEntities,
+}: {
+  ingredientsEntities: Dictionary<TIngredient>;
+}) => {
+  const orders = useSelector(selectAll).map((order) => ({
+    ...order,
+    ingredients: mapIdsToEntities(order.ingredients, ingredientsEntities),
+  }));
   const entities = useSelector(selectEntities);
   const ids = useSelector(selectIds);
   const isEmpty = useSelector(selectIsEmpty);
