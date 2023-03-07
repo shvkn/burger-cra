@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
-import { ModalRoute } from 'features/modal-route';
-
 import { authModel } from 'entities/auth';
 import { ingredientModel } from 'entities/ingredient';
 import { Order, ordersModel } from 'entities/order';
 
 import { getAccessToken, useAppDispatch } from 'shared/lib';
-import { LoadingCurtain } from 'shared/ui';
+import { LoadingCurtain, ModalRoute } from 'shared/ui';
 
 import styles from './styles.module.css';
 

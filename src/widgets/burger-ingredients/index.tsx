@@ -2,12 +2,12 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { DragToConstructor } from 'features/add-ingredient';
-import { ModalRoute } from 'features/modal-route';
 
 import { burgerModel } from 'entities/burger';
 import { BurgerIngredient } from 'entities/ingredient';
 
 import { useIntersectionObserver } from 'shared/lib';
+import { ModalRoute } from 'shared/ui';
 
 import styles from './styles.module.css';
 

@@ -3,13 +3,12 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { Dashboard } from 'widgets/dashboard';
 
-import { ModalRoute } from 'features/modal-route';
-
 import { ingredientModel } from 'entities/ingredient';
 import { Order, ordersModel } from 'entities/order';
 
 import { useAppDispatch } from 'shared/lib';
 import { LoadingCurtain } from 'shared/ui';
+import { ModalRoute } from 'shared/ui/modal-route';
 
 import styles from './styles.module.css';
 
