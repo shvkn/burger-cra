@@ -12,3 +12,20 @@
 .message {
   margin: auto;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 608px;
+}
+
+.ordersList {
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ordersList::-webkit-scrollbar-track {
+  margin-bottom: calc(var(--offset-base-size) * 15);
+}

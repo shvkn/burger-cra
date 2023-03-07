@@ -16,7 +16,7 @@ type TOrderProps = {
 export const Order: React.FC<TOrderProps> = ({ order, hideStatus = false }) => {
   const ingredients = order.ingredients;
   const totalPrice = useMemo(() => calcTotalPrice(ingredients), [ingredients]);
-
+  const visibleIngredients = ingredients.slice(0, ingredientsToRenderCount);
   const extraIngredientsCount = useMemo(() => {
     return Math.max(order.ingredients.length - ingredientsToRenderCount, 0);
   }, [order.ingredients]);
@@ -44,7 +44,7 @@ export const Order: React.FC<TOrderProps> = ({ order, hideStatus = false }) => {
       </div>
       <div className={`mt-6 ${styles.row}`}>
         <ul className={styles.ingredients}>
-          {ingredients.map((ingredient, idx) => (
+          {visibleIngredients.map((ingredient, idx) => (
             <li key={idx} className={styles.ingredient}>
               <img
                 className={styles.ingredientImage}

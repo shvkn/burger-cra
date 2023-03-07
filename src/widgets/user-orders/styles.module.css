@@ -1,11 +1,8 @@
-.container {
+.ordersList {
   display: flex;
   flex-direction: column;
   width: 608px;
-}
-
-.ordersList {
-  flex-grow: 1;
+  height: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
