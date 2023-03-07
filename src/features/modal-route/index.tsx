@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { useAppLocation } from 'shared/lib';
 
+import styles from './styles.module.css';
+
 type TModalRoute = {
   children: React.ReactNode;
   path: string;
@@ -12,7 +14,11 @@ type TModalRoute = {
 export const ModalRoute: React.FC<TModalRoute> = ({ path, children, ...rest }) => {
   const location = useAppLocation();
   return (
-    <Link {...rest} to={{ pathname: path, state: { background: location } }}>
+    <Link
+      {...rest}
+      to={{ pathname: path, state: { background: location } }}
+      className={styles.link}
+    >
       {children}
     </Link>
   );
