@@ -20,7 +20,7 @@ import { DndItemTypes, Messages } from 'shared/config';
 import { useAppDispatch, useAppHistory, useAppSelector } from 'shared/lib';
 import { Modal } from 'shared/ui';
 
-import styles from './burger-constructor.module.css';
+import styles from './styles.module.css';
 
 type TDnDIngredientItem = { id: TIngredientId };
 

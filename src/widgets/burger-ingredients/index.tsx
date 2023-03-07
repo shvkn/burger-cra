@@ -9,7 +9,7 @@ import { BurgerIngredient } from 'entities/ingredient';
 
 import { useIntersectionObserver } from 'shared/lib';
 
-import styles from './burger-ingredients.module.css';
+import styles from './styles.module.css';
 
 type TBurgerIngredientsProps = {
   groups: [string, TIngredient[]][];

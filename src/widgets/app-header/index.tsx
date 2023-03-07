@@ -2,7 +2,7 @@ import { BurgerIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-compon
 import React, { FC } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
-import styles from './app-header.module.css';
+import styles from './styles.module.css';
 
 const getLinkCN = (isActive: boolean) => {
   return `pt-4 pl-5 pb-4 pr-5 text text_type_main-default text_color_${
@@ -10,7 +10,7 @@ const getLinkCN = (isActive: boolean) => {
   } ${styles.link}`;
 };
 
-const AppHeader: FC = () => {
+export const AppHeader: FC = () => {
   const isActiveFeed = useRouteMatch('/feed');
   const isActiveProfile = useRouteMatch('/profile');
   const isActiveConstructor = useRouteMatch({ path: '/', exact: true });
@@ -47,5 +47,3 @@ const AppHeader: FC = () => {
     </header>
   );
 };
-
-export default AppHeader;
