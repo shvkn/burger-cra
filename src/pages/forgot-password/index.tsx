@@ -14,7 +14,7 @@ const initFormData: TGetResetCodeParams = {
   email: '',
 };
 
-export const ForgotPasswordPage: React.FC = () => {
+const ForgotPasswordPage: React.FC = () => {
   const history = useAppHistory();
   const dispatch = useAppDispatch();
 
@@ -64,3 +64,5 @@ export const ForgotPasswordPage: React.FC = () => {
     </main>
   );
 };
+
+export default ForgotPasswordPage;

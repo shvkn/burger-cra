@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { IngredientModal } from 'widgets/ingredient-modal';
@@ -9,18 +9,18 @@ import { ProtectedRoute } from 'entities/auth';
 
 import { useAppLocation } from 'shared/lib';
 
-import { ConstructorPage } from './constructor';
-import { FeedPage } from './feed';
-import { ForgotPasswordPage } from './forgot-password';
-import { IngredientPage } from './ingredient';
-import { LoginPage } from './login';
-import { LogoutPage } from './logout';
-import { NotFoundedPage } from './not-founded';
-import { OrderPage } from './order';
-import { ProfilePage } from './profile';
-import { RegistrationPage } from './registration';
-import { ResetPasswordPage } from './reset-password';
-import { UserOrderPage } from './user-order';
+const ConstructorPage = lazy(() => import('./constructor'));
+const FeedPage = lazy(() => import('./feed'));
+const ForgotPasswordPage = lazy(() => import('./forgot-password'));
+const IngredientPage = lazy(() => import('./ingredient'));
+const LoginPage = lazy(() => import('./login'));
+const LogoutPage = lazy(() => import('./logout'));
+const NotFoundedPage = lazy(() => import('./not-founded'));
+const OrderPage = lazy(() => import('./order'));
+const ProfilePage = lazy(() => import('./profile'));
+const RegistrationPage = lazy(() => import('./registration'));
+const ResetPasswordPage = lazy(() => import('./reset-password'));
+const UserOrderPage = lazy(() => import('./user-order'));
 
 export const Routes: React.FC = () => {
   const location = useAppLocation();
@@ -41,7 +41,6 @@ export const Routes: React.FC = () => {
         <Route path='/logout' component={LogoutPage} />
         <Route path='*' component={NotFoundedPage} />
       </Switch>
-      ;
       {background && (
         <Switch>
           <Route path='/profile/orders/:id' component={UserOrderModal} />

@@ -8,7 +8,7 @@ import { DetailsLayout } from 'shared/ui';
 
 import styles from './styles.module.css';
 
-export const IngredientPage: FC = () => {
+const IngredientPage: FC = () => {
   const { id } = useParams<{ id: TIngredientId }>();
   const dispatch = useAppDispatch();
 
@@ -33,3 +33,5 @@ export const IngredientPage: FC = () => {
     </main>
   ) : null;
 };
+
+export default IngredientPage;

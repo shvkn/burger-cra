@@ -30,7 +30,7 @@ const routes: ReadonlyArray<TRouteItem> = [
   },
 ];
 
-export const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const { url } = useRouteMatch();
 
   return (
@@ -83,3 +83,5 @@ export const ProfilePage: React.FC = () => {
     </main>
   );
 };
+
+export default ProfilePage;

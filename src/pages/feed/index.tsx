@@ -13,7 +13,7 @@ import { LoadingCurtain } from 'shared/ui';
 
 import styles from './styles.module.css';
 
-export const FeedPage: React.FC = () => {
+const FeedPage: React.FC = () => {
   const {
     isSucceeded,
     isLoading,
@@ -56,3 +56,5 @@ export const FeedPage: React.FC = () => {
     </main>
   );
 };
+
+export default FeedPage;

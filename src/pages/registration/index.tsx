@@ -21,7 +21,7 @@ const initFormData: TRegisterParams = {
   password: '',
 };
 
-export const RegistrationPage: React.FC = () => {
+const RegistrationPage: React.FC = () => {
   const [form, setValue] = useState<TRegisterParams>(initFormData);
   const dispatch = useAppDispatch();
 
@@ -75,3 +75,5 @@ export const RegistrationPage: React.FC = () => {
     </main>
   );
 };
+
+export default RegistrationPage;

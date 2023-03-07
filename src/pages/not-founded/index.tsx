@@ -5,7 +5,7 @@ import { useAppHistory } from 'shared/lib';
 
 import styles from './styles.module.css';
 
-export const NotFoundedPage: React.FC = () => {
+const NotFoundedPage: React.FC = () => {
   const history = useAppHistory();
 
   const handleClick = (): void => {
@@ -22,3 +22,5 @@ export const NotFoundedPage: React.FC = () => {
     </main>
   );
 };
+
+export default NotFoundedPage;

@@ -14,7 +14,7 @@ import styles from './styles.module.css';
 
 const groupByType = (ingredients: TIngredient[]) => groupBy(ingredients, ({ type }) => type);
 
-export const ConstructorPage: React.FC = () => {
+const ConstructorPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,3 +58,5 @@ export const ConstructorPage: React.FC = () => {
     </main>
   );
 };
+
+export default ConstructorPage;

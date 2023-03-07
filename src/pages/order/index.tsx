@@ -10,7 +10,7 @@ import { DetailsLayout } from 'shared/ui';
 
 import styles from './styles.module.css';
 
-export const OrderPage: React.FC = () => {
+const OrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
@@ -38,3 +38,5 @@ export const OrderPage: React.FC = () => {
     </main>
   ) : null;
 };
+
+export default OrderPage;

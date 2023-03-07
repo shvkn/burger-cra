@@ -10,7 +10,7 @@ import { DetailsLayout } from 'shared/ui';
 
 import styles from './styles.module.css';
 
-export const UserOrderPage: React.FC = () => {
+const UserOrderPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const isWsOpened = useAppSelector(ordersModel.selectors.selectIsWSOpened);
@@ -40,3 +40,5 @@ export const UserOrderPage: React.FC = () => {
     </main>
   ) : null;
 };
+
+export default UserOrderPage;

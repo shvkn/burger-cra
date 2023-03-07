@@ -19,7 +19,7 @@ const initFormData: TLoginParams = {
   password: '',
 };
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [form, setValue] = useState<TLoginParams>(initFormData);
 
@@ -78,3 +78,5 @@ export const LoginPage: React.FC = () => {
     </main>
   );
 };
+
+export default LoginPage;

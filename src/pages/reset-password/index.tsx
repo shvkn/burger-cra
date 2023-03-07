@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 
 const initFormData: TResetPasswordParams = { password: '', token: '' };
 
-export const ResetPasswordPage: React.FC = () => {
+const ResetPasswordPage: React.FC = () => {
   const [form, setValue] = useState<TResetPasswordParams>(initFormData);
   const history = useAppHistory();
   const dispatch = useAppDispatch();
@@ -82,3 +82,5 @@ export const ResetPasswordPage: React.FC = () => {
     </main>
   );
 };
+
+export default ResetPasswordPage;
