@@ -1,0 +1,61 @@
+.burgerConstructor {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.message {
+  margin: auto;
+  text-align: center;
+}
+
+.bun {
+  flex: 0;
+}
+
+.ingredients {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ingredients::-webkit-scrollbar-track {
+  margin-top: calc(var(--offset-base-size) * 4);
+  margin-bottom: calc(var(--offset-base-size) * 4);
+}
+
+.ingredient {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 568px;
+  cursor: move;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.panel {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: auto;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.id {
+  text-shadow: 0 0 16px rgb(51 51 255 / 25%), 0 0 8px rgb(51 51 255 / 25%), 0 4px 32px rgb(51 51 255 / 50%);
+}

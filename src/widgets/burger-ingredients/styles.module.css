@@ -1,0 +1,29 @@
+.burgerIngredients {
+  display: grid;
+}
+
+.tabs {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.categories {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.categories::-webkit-scrollbar-track {
+  margin-bottom: calc(var(--offset-base-size) * 13);
+}
+
+.ingredients {
+  display: grid;
+  grid-gap: calc(var(--offset-base-size) * 8) calc(var(--offset-base-size) * 6);
+  grid-template-columns: repeat(2, min-content);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

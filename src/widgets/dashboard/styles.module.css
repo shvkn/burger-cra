@@ -1,0 +1,33 @@
+
+.dashboard {
+  flex-grow: 1;
+}
+
+.dashboardOrdersList {
+  display: flex;
+  height: 370px;
+}
+
+.ordersNumbers {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(5, min-content);
+  grid-template-rows: repeat(10, auto);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.orderNumber:nth-of-type(10n) {
+  margin-bottom: 0;
+}
+
+.orderNumber:nth-of-type(-n + 10) {
+  margin-left: 0;
+}
+
+.textShadow {
+  text-shadow: 0 0 16px rgb(51 51 255 / 25%),
+  0 0 8px rgb(51 51 255 / 25%),
+  0 4px 32px rgb(51 51 255 / 50%);
+}

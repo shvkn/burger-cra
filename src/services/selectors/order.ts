@@ -1,5 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { TRootState } from 'services/types';
 
 const selectOrderSlice = (state: TRootState) => state.order;
 const selectOrderNumber = (state: TRootState) => selectOrderSlice(state).number;
