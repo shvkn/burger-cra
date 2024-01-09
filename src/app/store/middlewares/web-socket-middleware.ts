@@ -4,29 +4,43 @@ export const WebSocketMiddleware = (wsUrl: string, wsActions: TWebSocketActions)
   let socket: WebSocket | null = null;
   return (store) => (next) => (action) => {
     const { payload } = action;
-    if (wsActions.connect.match(action)) {
-      if (socket === null) {
+
+    function isCloseConnectionAction() {
+      return wsActions.close.match(action);
+    }
+
+    function isSendMessageAction() {
+      return wsActions.sendMessage.match(action);
+    }
+
+    function isConnectionAction() {
+      return wsActions.connect.match(action);
+    }
+
+    if (!socket) {
+      if (isConnectionAction()) {
         const { route, accessToken } = payload;
         const url = accessToken ? `${wsUrl}${route}?token=${accessToken}` : `${wsUrl}${route}`;
         socket = new WebSocket(url);
       }
-    }
-    if (socket) {
+    } else {
       socket.onopen = (event: Event) => {
         store.dispatch(wsActions.onOpen(event.type));
       };
+
       socket.onclose = (event: CloseEvent) => {
         store.dispatch(wsActions.onClose(event.type));
-        socket = null;
       };
+
       socket.onmessage = (event: MessageEvent) => {
-        const { data } = event;
-        store.dispatch(wsActions.onGetMessage(JSON.parse(data)));
+        store.dispatch(wsActions.onGetMessage(JSON.parse(event.data)));
       };
-      if (wsActions.sendMessage.match(action)) {
+
+      if (isSendMessageAction()) {
         socket.send(JSON.stringify(payload));
       }
-      if (wsActions.close.match(action)) {
+
+      if (isCloseConnectionAction()) {
         socket.close();
         socket = null;
       }
