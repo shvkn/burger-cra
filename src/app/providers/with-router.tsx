@@ -3,11 +3,16 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { LoadingCurtain } from 'shared/ui';
 
-// eslint-disable-next-line react/display-name
-export const withRouter = (component: () => React.ReactNode) => () => {
-  return (
-    <BrowserRouter>
-      <React.Suspense fallback={<LoadingCurtain />}>{component()}</React.Suspense>
-    </BrowserRouter>
-  );
-};
+export function withRouter<T extends JSX.IntrinsicAttributes>(
+  Component: React.ComponentType<T>
+): React.ComponentType<T> {
+  return function wrappedWithRouterComponent(props: T): JSX.Element {
+    return (
+      <BrowserRouter>
+        <React.Suspense fallback={<LoadingCurtain />}>
+          <Component {...props} />
+        </React.Suspense>
+      </BrowserRouter>
+    );
+  };
+}

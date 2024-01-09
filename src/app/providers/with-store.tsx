@@ -4,7 +4,14 @@ import { Provider } from 'react-redux';
 // eslint-disable-next-line boundaries/element-types
 import { store } from '../store';
 
-// eslint-disable-next-line react/display-name
-export const withStore = (component: () => React.ReactNode) => () => {
-  return <Provider store={store}>{component()}</Provider>;
-};
+export function withStore<T extends JSX.IntrinsicAttributes>(
+  Component: React.ComponentType<T>
+): React.ComponentType<T> {
+  return function wrappedWithStoreComponent(props: T): JSX.Element {
+    return (
+      <Provider store={store}>
+        <Component {...props} />
+      </Provider>
+    );
+  };
+}
