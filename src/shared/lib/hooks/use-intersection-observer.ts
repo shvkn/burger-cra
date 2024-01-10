@@ -7,11 +7,12 @@ export const useIntersectionObserver = <T extends string>({
   root = null,
   rootMargin = '0%',
 }: IntersectionObserverInit): {
-  current: T | null;
+  current: string | null;
   register: (name: T) => object;
   elementsRefs: Record<T, RefObject<HTMLElement>>;
 } => {
-  const [current, setCurrent] = useState<T | null>(null);
+  // const [current, setCurrent] = useState<RefObject<HTMLElement> | null>(null);
+  const [current, setCurrent] = useState<string | null>(null);
   const elementsRefs = useRef({} as Record<T, RefObject<HTMLElement>>);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -21,22 +22,31 @@ export const useIntersectionObserver = <T extends string>({
     return { ref };
   };
 
-  const update = (key: T) => {
-    if (!!key && key !== current) {
-      setCurrent(key);
-    }
+  const extractId = (element: HTMLElement) => {
+    const name = element.dataset[datasetName];
+    return name;
   };
 
   useEffect(() => {
     const updateEntry = (entries: Array<IntersectionObserverEntry>) => {
       entries.forEach((item) => {
-        const target = item.target as HTMLElement;
         if (item.isIntersecting) {
-          const name = target.dataset[datasetName];
-          if (!!name) {
-            update(name as T);
+          const element = item.target as HTMLElement;
+          console.log(element, item);
+          const id = extractId(element);
+          console.log(id);
+          if (id) {
+            setCurrent(id);
           }
         }
+
+        // if (item.intersectionRatio >= 0.5) {
+        //   console.log({ element, isIntersecting: item.isIntersecting });
+        //   const name = element.dataset[datasetName];
+        //   if (!!name) {
+        //     update(name as T);
+        //   }
+        // }
       });
     };
 
