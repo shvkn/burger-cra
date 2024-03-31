@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkreact_burger=self.webpackChunkreact_burger||[]).push([[180],{4180:function(e,t,u){u.r(t);var r=u(2791),c=u(4880),n=u(6897),a=u(5472),f=u(184);t.default=function(){var e=(0,a.TL)();return(0,r.useEffect)((function(){e(n.l.actions.logout())}),[e]),(0,f.jsx)(c.l_,{to:"/"})}}}]);
+//# sourceMappingURL=180.4f56ff4a.chunk.js.map
